@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyu.cardequity.payment.biz.dal.dao.PayChannelInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo">
+        <id column="CHANNEL_NO" jdbcType="VARCHAR" property="channelNo"/>
+        <result column="CHANNEL_NAME" jdbcType="VARCHAR" property="channelName"/>
+        <result column="PAY_ORG_NO" jdbcType="VARCHAR" property="payOrgNo"/>
+        <result column="PAY_INTERFACE_TYPE" jdbcType="VARCHAR" property="payInterfaceType"/>
+        <result column="PAY_MODE" jdbcType="VARCHAR" property="payMode"/>
+        <result column="CHECK_LEVEL" jdbcType="VARCHAR" property="checkLevel"/>
+        <result column="CONTINUITY_FAIL_NUM" jdbcType="VARCHAR" property="continuityFailNum"/>
+        <result column="CERTIFICATE_TYPES" jdbcType="VARCHAR" property="certificateTypes"/>
+        <result column="STATE" jdbcType="VARCHAR" property="state"/>
+        <result column="SIGN_ORDER" jdbcType="INTEGER" property="signOrder"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="PAY_LOG_FACTORY" jdbcType="VARCHAR" property="payLogFactory"
+                typeHandler="com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler"/>
+        <result column="PAY_STRATEGY" jdbcType="VARCHAR" property="payStrategy"
+                typeHandler="com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler"/>
+
+        <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    CHANNEL_NO, CHANNEL_NAME, PAY_ORG_NO, PAY_INTERFACE_TYPE, PAY_MODE, CHECK_LEVEL, CONTINUITY_FAIL_NUM, CERTIFICATE_TYPES,
+    STATE, SIGN_ORDER, REMARK, PAY_LOG_FACTORY, PAY_STRATEGY, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_PAY_CHANNEL_INFO
+        where CHANNEL_NO = #{channelNo,jdbcType=VARCHAR}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="INIT_DATE" jdbcType="DATE" property="initDate"/>
+        <result column="TRANS_ACTION_DATE" jdbcType="DATE" property="transActionDate"/>
+        <result column="APP_SHEET_SERIAL_NO" jdbcType="VARCHAR" property="appSheetSerialNo"/>
+        <result column="BUSIN_CODE" jdbcType="VARCHAR" property="businCode"/>
+        <result column="BATCH_NO" jdbcType="VARCHAR" property="batchNo"/>
+        <result column="CLIENT_ID" jdbcType="VARCHAR" property="clientId"/>
+        <result column="TRANS_ACCOUNT_ID" jdbcType="VARCHAR" property="transAccountId"/>
+        <result column="CLIENT_NAME" jdbcType="VARCHAR" property="clientName"/>
+        <result column="BANK_CODE" jdbcType="VARCHAR" property="bankCode"/>
+        <result column="BANK_CARD_NO" jdbcType="VARCHAR" property="bankCardNo"/>
+        <result column="STATE" jdbcType="VARCHAR" property="state"
+                typeHandler="com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler"/>
+        <result column="OCCUR_BALANCE" jdbcType="DECIMAL" property="occurBalance"/>
+        <result column="PAY_CHANNEL_NO" jdbcType="VARCHAR" property="payChannelNo"/>
+        <result column="CERTIFICATE_TYPE" jdbcType="VARCHAR" property="certificateType"/>
+        <result column="CERTIFICATE_NO" jdbcType="VARCHAR" property="certificateNo"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="PAY_SERIAL_NO" jdbcType="VARCHAR" property="paySerialNo"/>
+        <result column="THIRD_SERIAL_NO" jdbcType="VARCHAR" property="thirdSerialNo"/>
+        <result column="RESP_CODE" jdbcType="VARCHAR" property="respCode"/>
+        <result column="RESP_INFO" jdbcType="VARCHAR" property="respInfo"/>
+        <result column="ROUTE_VO_ID_FLAG" jdbcType="VARCHAR" property="routeVoIdFlag"/>
+
+        <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+
+        <discriminator javaType="java.lang.String" column="TYPE">
+            <case value="1" resultType="com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay">
+                <result column="ALIPAY_SUBJECT" jdbcType="VARCHAR" property="alipaySubject"/>
+                <result column="ALIPAY_TIMEOUT_EXPRESS" jdbcType="VARCHAR" property="alipayTimeoutExpress"/>
+                <result column="ALIPAY_GOODS_TYPE" jdbcType="VARCHAR" property="alipayGoodsType"/>
+                <result column="ALIPAY_SYNC_MESSAGE" jdbcType="VARCHAR" property="alipaySyncMessage"/>
+                <result column="ALIPAY_ASYNC_MESSAGE" jdbcType="VARCHAR" property="alipayAsyncMessage"/>
+                <result column="ALIPAY_TRADE_STATUS" jdbcType="VARCHAR" property="alipayTradeStatus"/>
+                <result column="ALIPAY_OUR_RESPONSE" jdbcType="VARCHAR" property="alipayOurResponse"/>
+            </case>
+        </discriminator>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    ID, INIT_DATE, TRANS_ACTION_DATE, APP_SHEET_SERIAL_NO, BUSIN_CODE, BATCH_NO, CLIENT_ID, TRANS_ACCOUNT_ID, CLIENT_NAME,
+    BANK_CODE, BANK_CARD_NO, STATE, OCCUR_BALANCE, PAY_CHANNEL_NO, CERTIFICATE_TYPE, CERTIFICATE_NO, REMARK, PAY_SERIAL_NO,
+    THIRD_SERIAL_NO, RESP_CODE, RESP_INFO, ROUTE_VO_ID_FLAG, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME, TYPE
+    </sql>
+
+    <sql id="Base_Column_List_ALIPAY">
+    ALIPAY_SUBJECT, ALIPAY_TIMEOUT_EXPRESS, ALIPAY_GOODS_TYPE, ALIPAY_SYNC_MESSAGE, ALIPAY_ASYNC_MESSAGE, ALIPAY_OUR_RESPONSE
+    </sql>
+
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from TB_PAY_LOG where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
+        insert into TB_PAY_LOG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="initDate != null">
+                INIT_DATE,
+            </if>
+            <if test="transActionDate != null">
+                TRANS_ACTION_DATE,
+            </if>
+            <if test="appSheetSerialNo != null">
+                APP_SHEET_SERIAL_NO,
+            </if>
+            <if test="businCode != null">
+                BUSIN_CODE,
+            </if>
+            <if test="batchNo != null">
+                BATCH_NO,
+            </if>
+            <if test="clientId != null">
+                CLIENT_ID,
+            </if>
+            <if test="transAccountId != null">
+                TRANS_ACCOUNT_ID,
+            </if>
+            <if test="clientName != null">
+                CLIENT_NAME,
+            </if>
+            <if test="bankCode != null">
+                BANK_CODE,
+            </if>
+            <if test="bankCardNo != null">
+                BANK_CARD_NO,
+            </if>
+            <if test="state != null">
+                STATE,
+            </if>
+            <if test="occurBalance != null">
+                OCCUR_BALANCE,
+            </if>
+            <if test="payChannelNo != null">
+                PAY_CHANNEL_NO,
+            </if>
+            <if test="certificateType != null">
+                CERTIFICATE_TYPE,
+            </if>
+            <if test="certificateNo != null">
+                CERTIFICATE_NO,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="paySerialNo != null">
+                PAY_SERIAL_NO,
+            </if>
+            <if test="thirdSerialNo != null">
+                THIRD_SERIAL_NO,
+            </if>
+            <if test="respCode != null">
+                RESP_CODE,
+            </if>
+            <if test="respInfo != null">
+                RESP_INFO,
+            </if>
+            <if test="routeVoIdFlag != null">
+                ROUTE_VO_ID_FLAG,
+            </if>
+            <if test="createAuthor != null">
+                CREATE_AUTHOR,
+            </if>
+            <if test="updateAuthor != null">
+                UPDATE_AUTHOR,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="type != null">
+                TYPE,
+            </if>
+            <if test="alipaySubject != null">
+                ALIPAY_SUBJECT,
+            </if>
+            <if test="alipayTimeoutExpress != null">
+                ALIPAY_TIMEOUT_EXPRESS,
+            </if>
+            <if test="alipayGoodsType != null">
+                ALIPAY_GOODS_TYPE,
+            </if>
+            <if test="alipaySyncMessage != null">
+                ALIPAY_SYNC_MESSAGE,
+            </if>
+            <if test="alipayAsyncMessage != null">
+                ALIPAY_ASYNC_MESSAGE,
+            </if>
+            <if test="alipayOurResponse != null">
+                ALIPAY_OUR_RESPONSE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="initDate != null">
+                #{initDate,jdbcType=DATE},
+            </if>
+            <if test="transActionDate != null">
+                #{transActionDate,jdbcType=DATE},
+            </if>
+            <if test="appSheetSerialNo != null">
+                #{appSheetSerialNo,jdbcType=VARCHAR},
+            </if>
+            <if test="businCode != null">
+                #{businCode,jdbcType=VARCHAR},
+            </if>
+            <if test="batchNo != null">
+                #{batchNo,jdbcType=VARCHAR},
+            </if>
+            <if test="clientId != null">
+                #{clientId,jdbcType=VARCHAR},
+            </if>
+            <if test="transAccountId != null">
+                #{transAccountId,jdbcType=VARCHAR},
+            </if>
+            <if test="clientName != null">
+                #{clientName,jdbcType=VARCHAR},
+            </if>
+            <if test="bankCode != null">
+                #{bankCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bankCardNo != null">
+                #{bankCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR,typeHandler=com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler},
+            </if>
+            <if test="occurBalance != null">
+                #{occurBalance,jdbcType=DECIMAL},
+            </if>
+            <if test="payChannelNo != null">
+                #{payChannelNo,jdbcType=VARCHAR},
+            </if>
+            <if test="certificateType != null">
+                #{certificateType,jdbcType=VARCHAR},
+            </if>
+            <if test="certificateNo != null">
+                #{certificateNo,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="paySerialNo != null">
+                #{paySerialNo,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdSerialNo != null">
+                #{thirdSerialNo,jdbcType=VARCHAR},
+            </if>
+            <if test="respCode != null">
+                #{respCode,jdbcType=VARCHAR},
+            </if>
+            <if test="respInfo != null">
+                #{respInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="routeVoIdFlag != null">
+                #{routeVoIdFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="createAuthor != null">
+                #{createAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAuthor != null">
+                #{updateAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="alipaySubject != null">
+                #{alipaySubject,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayTimeoutExpress != null">
+                #{alipayTimeoutExpress,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayGoodsType != null">
+                #{alipayGoodsType,jdbcType=VARCHAR},
+            </if>
+            <if test="alipaySyncMessage != null">
+                #{alipaySyncMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayAsyncMessage != null">
+                #{alipayAsyncMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayOurResponse != null">
+                #{alipayOurResponse,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateAlipayPrepayment" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
+        update TB_PAY_LOG
+        <set>
+            <if test="state != null">
+                STATE =
+                #{state,jdbcType=VARCHAR,typeHandler=com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler},
+            </if>
+            <if test="respInfo != null">
+                RESP_INFO = #{respInfo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateAlipaySyncMessage" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
+        update TB_PAY_LOG
+        <set>
+            <if test="state != null">
+                STATE =
+                #{state,jdbcType=VARCHAR,typeHandler=com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler},
+            </if>
+            <if test="alipaySyncMessage != null">
+                ALIPAY_SYNC_MESSAGE = #{alipaySyncMessage,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateAlipayAsyncMessage" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
+        update TB_PAY_LOG
+        <set>
+            <if test="state != null">
+                STATE =
+                #{state,jdbcType=VARCHAR,typeHandler=com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler},
+            </if>
+            <if test="alipayAsyncMessage != null">
+                ALIPAY_ASYNC_MESSAGE = #{alipayAsyncMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdSerialNo != null">
+                THIRD_SERIAL_NO = #{thirdSerialNo,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayTradeStatus != null">
+                ALIPAY_TRADE_STATUS = #{alipayTradeStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayOurResponse != null">
+                ALIPAY_OUR_RESPONSE = #{alipayOurResponse,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateAlipayTradeClose" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
+        update TB_PAY_LOG
+        <set>
+            <if test="alipayTradeCloseMessage != null">
+                ALIPAY_TRADE_CLOSE_MESSAGE = #{alipayTradeCloseMessage,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getByAppSheetSerialNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from TB_PAY_LOG where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+    </select>
+
+</mapper>
