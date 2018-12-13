@@ -85,6 +85,12 @@ public class PayLogController implements PayLogApi {
         return payLogService.alipayTradeClose(alipayTradeCloseDto);
     }
 
+    /**
+     * 支付宝统一收单交易查询接口
+     *
+     * @param alipayTradeQueryDto
+     * @return
+     */
     @Override
     @PostMapping(value = "/alipayTradeQuery")
     public Result alipayTradeQuery(AlipayTradeQueryDto alipayTradeQueryDto) {
