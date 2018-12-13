@@ -4,6 +4,7 @@ import com.youyu.cardequity.payment.dto.AlipayPrepayment4PayLogDto;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
+import com.youyu.cardequity.payment.dto.alipay.AlipayTradeQueryDto;
 import com.youyu.common.api.Result;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -62,5 +63,15 @@ public interface PayLogApi {
     @ApiOperation(value = "支付宝统一收单交易关闭接口")
     @PostMapping(value = "/alipayTradeClose")
     Result alipayTradeClose(@RequestBody AlipayTradeCloseDto alipayTradeCloseDto);
+
+    /**
+     * 支付宝统一收单线下交易查询接口
+     *
+     * @param alipayTradeQueryDto
+     * @return
+     */
+    @ApiOperation(value = "支付宝统一收单线下交易查询接口")
+    @PostMapping(value = "/alipayTradeQuery")
+    Result alipayTradeQuery(@RequestBody AlipayTradeQueryDto alipayTradeQueryDto);
 
 }

@@ -3,8 +3,7 @@ package com.youyu.cardequity.payment.dto.alipay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -14,8 +13,7 @@ import java.io.Serializable;
  * @date 2018年12月8日 下午10:00:00
  * @work 支付宝同步通知结果中的result部分
  */
-@Setter
-@Getter
+@Data
 @ApiModel
 public class AlipaySyncMessageResultDto implements Serializable {
 
@@ -32,6 +30,4 @@ public class AlipaySyncMessageResultDto implements Serializable {
     @ApiModelProperty(value = "alipay_trade_app_pay_response部分")
     private AlipaySyncMessageResponseDto alipayTradeAppPayResponse;
 
-    public AlipaySyncMessageResultDto() {
-    }
 }

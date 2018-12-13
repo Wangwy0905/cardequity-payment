@@ -29,7 +29,4 @@ public class AlipaySyncMessageDto implements Serializable {
     @ApiModelProperty(value = "支付宝同步通知结果中的result部分")
     private AlipaySyncMessageResultDto alipaySyncMessageResultDto;
 
-    public AlipaySyncMessageDto() {
-    }
-
 }

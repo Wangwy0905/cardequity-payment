@@ -3,6 +3,7 @@ package com.youyu.cardequity.payment.biz.service.impl;
 import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayAsyncMessage;
 import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipaySyncMessage;
 import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayTradeClose;
+import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayTradeQuery;
 import com.youyu.cardequity.payment.biz.dal.dao.PayChannelInfoMapper;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo;
@@ -13,6 +14,7 @@ import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageResultDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
+import com.youyu.cardequity.payment.dto.alipay.AlipayTradeQueryDto;
 import com.youyu.common.api.Result;
 import com.youyu.common.dto.BaseDto;
 import com.youyu.common.service.AbstractService;
@@ -46,7 +48,6 @@ public class PayLogServiceImpl extends AbstractService<String, PayLogDto, PayLog
     @Autowired
     private PayLogMapper payLogMapper;
 
-    // TODO: 2018/12/9 查询到单号后需要直接返回，支持重复做
     @Override
     public <T extends BaseDto> T alipay(PayLogDto payLogDto, PayLogService payLogService) {
         String payChannelNo = payLogDto.getPayChannelNo();
@@ -110,6 +111,15 @@ public class PayLogServiceImpl extends AbstractService<String, PayLogDto, PayLog
         PayLog payLog = payLogMapper.getByAppSheetSerialNo(appSheetSerialNo);
         Result result = payLog.doCommand(getBeanByClass(PayLogCommond4AlipayTradeClose.class), alipayTradeCloseDto);
         payLogMapper.updateAlipayTradeClose(payLog);
+        return result;
+    }
+
+    @Override
+    public Result alipayTradeQuery(AlipayTradeQueryDto alipayTradeQueryDto) {
+        String appSheetSerialNo = alipayTradeQueryDto.getAppSheetSerialNo();
+        PayLog payLog = payLogMapper.getByAppSheetSerialNo(appSheetSerialNo);
+        Result result = payLog.doCommand(getBeanByClass(PayLogCommond4AlipayTradeQuery.class), alipayTradeQueryDto);
+        payLogMapper.updateAlipayTradeQuery(payLog);
         return result;
     }
 

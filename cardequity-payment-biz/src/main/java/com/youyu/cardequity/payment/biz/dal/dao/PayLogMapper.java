@@ -42,11 +42,18 @@ public interface PayLogMapper extends YyMapper<PayLog> {
     void updateAlipayAsyncMessage(PayLog payLog);
 
     /**
-     * 支付宝交易关闭相关信息
+     * 支付宝交易关闭相关信息:主要更新交易关闭消息
      *
      * @param payLog
      */
     void updateAlipayTradeClose(PayLog payLog);
+
+    /**
+     * 支付宝查询交易更新相关信息:主要更新交易查询消息
+     *
+     * @param payLog
+     */
+    void updateAlipayTradeQuery(PayLog payLog);
 
     /**
      * 插入
@@ -64,5 +71,4 @@ public interface PayLogMapper extends YyMapper<PayLog> {
      * @return
      */
     PayLog getByAppSheetSerialNo(@Param("appSheetSerialNo") String appSheetSerialNo);
-
 }
