@@ -28,6 +28,13 @@ public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
     @Value("${alipay.alipayPublicKey:}")
     private String alipayPublicKey;
 
+    /**
+     * @param payLog
+     * @param t      支付宝异步参数:Map
+     * @param <T>
+     * @param <R>
+     * @return
+     */
     @Override
     public <T, R> R executeCmd(PayLog payLog, T t) {
         Map<String, String> params2Map = (Map<String, String>) t;

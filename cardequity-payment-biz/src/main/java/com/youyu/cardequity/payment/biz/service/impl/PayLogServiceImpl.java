@@ -3,7 +3,7 @@ package com.youyu.cardequity.payment.biz.service.impl;
 import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayAsyncMessage;
 import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipaySyncMessage;
 import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayTradeClose;
-import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayTradeQuery;
+import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4TimeAlipayTradeQuery;
 import com.youyu.cardequity.payment.biz.dal.dao.PayChannelInfoMapper;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo;
@@ -14,21 +14,21 @@ import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageResultDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
-import com.youyu.cardequity.payment.dto.alipay.AlipayTradeQueryDto;
 import com.youyu.common.api.Result;
 import com.youyu.common.dto.BaseDto;
 import com.youyu.common.service.AbstractService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
-import static com.youyu.cardequity.payment.biz.help.constant.Constant.ALIPAY_ASYNC_RESPONSE_FAIL;
-import static com.youyu.cardequity.payment.biz.help.constant.Constant.ALIPAY_OUT_TRADE_NO;
+import static com.youyu.cardequity.payment.biz.help.constant.Constant.*;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -48,8 +48,14 @@ public class PayLogServiceImpl extends AbstractService<String, PayLogDto, PayLog
     @Autowired
     private PayLogMapper payLogMapper;
 
+    @Value("${alipay.async.notify.threshold.start:15}")
+    private Integer alipayAsyncNotifyThresholdStart;
+    @Value("${alipay.async.notify.threshold.end:10}")
+    private Integer alipayAsyncNotifyThresholdEnd;
+
     @Override
     public <T extends BaseDto> T alipay(PayLogDto payLogDto, PayLogService payLogService) {
+        // TODO: 2018/12/13 支持重复做
         String payChannelNo = payLogDto.getPayChannelNo();
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payChannelNo);
         PayLog payLog = payChannelInfo.createPayLog(payLogDto);
@@ -115,12 +121,11 @@ public class PayLogServiceImpl extends AbstractService<String, PayLogDto, PayLog
     }
 
     @Override
-    public Result alipayTradeQuery(AlipayTradeQueryDto alipayTradeQueryDto) {
-        String appSheetSerialNo = alipayTradeQueryDto.getAppSheetSerialNo();
-        PayLog payLog = payLogMapper.getByAppSheetSerialNo(appSheetSerialNo);
-        Result result = payLog.doCommand(getBeanByClass(PayLogCommond4AlipayTradeQuery.class), alipayTradeQueryDto);
-        payLogMapper.updateAlipayTradeQuery(payLog);
-        return result;
+    public void timeAlipayTradeQuery() {
+        List<PayLog> payLogs = payLogMapper.getByTimeAlipayTradeQuery(alipayAsyncNotifyThresholdStart, alipayAsyncNotifyThresholdEnd, ALIPAY_PAY_TYPE, ALIPAY_ASYNC_RESPONSE_SUCC);
+        for (PayLog payLog : payLogs) {
+            payLog.doCommand(getBeanByClass(PayLogCommond4TimeAlipayTradeQuery.class), null);
+        }
     }
 
     /**

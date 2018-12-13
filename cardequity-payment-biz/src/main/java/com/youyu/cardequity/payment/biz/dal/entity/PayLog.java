@@ -191,9 +191,20 @@ public class PayLog extends BaseEntity<String> {
         return payChannelInfo.doPay(this);
     }
 
+    /**
+     * @param payLogCommond
+     * @param t             针对不同的命令支持不同的参数转化
+     * @param <T>
+     * @param <R>
+     * @return
+     */
     public <T, R> R doCommand(PayLogCommond payLogCommond, T t) {
         R response = payLogCommond.executeCmd(this, t);
         return response;
+    }
+
+    public boolean canPayTradeQuery() {
+        return state.canPayTradeQuery();
     }
 
     @Override

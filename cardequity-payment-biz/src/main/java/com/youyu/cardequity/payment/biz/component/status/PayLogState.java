@@ -52,4 +52,13 @@ public abstract class PayLogState {
     public PayLogState paymentFail() {
         throw new RuntimeException("支付状态[" + this + "]不可以转化为支付失败状态操作!");
     }
+
+    /**
+     * 是否可以进行交易查询
+     *
+     * @return
+     */
+    public boolean canPayTradeQuery() {
+        return true;
+    }
 }

@@ -4,7 +4,6 @@ import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
-import com.youyu.cardequity.payment.dto.alipay.AlipayTradeQueryDto;
 import com.youyu.common.api.Result;
 import com.youyu.common.dto.BaseDto;
 import com.youyu.common.service.IService;
@@ -70,10 +69,7 @@ public interface PayLogService extends IService<PayLogDto, PayLog> {
     Result alipayTradeClose(AlipayTradeCloseDto alipayTradeCloseDto);
 
     /**
-     * 支付宝交易查询
-     *
-     * @param alipayTradeQueryDto
-     * @return
+     * 定时任务查询支付宝交易
      */
-    Result alipayTradeQuery(AlipayTradeQueryDto alipayTradeQueryDto);
+    void timeAlipayTradeQuery();
 }

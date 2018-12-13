@@ -24,4 +24,9 @@ public class PayLogState4NonPayment extends PayLogState {
     public PayLogState paymenting() {
         return getBeanByClass(PayLogState4Paymenting.class);
     }
+
+    @Override
+    public boolean canPayTradeQuery() {
+        return false;
+    }
 }

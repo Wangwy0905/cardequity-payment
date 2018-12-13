@@ -6,7 +6,6 @@ import com.youyu.cardequity.payment.dto.AlipayPrepayment4PayLogDto;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
-import com.youyu.cardequity.payment.dto.alipay.AlipayTradeQueryDto;
 import com.youyu.common.api.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,14 +85,14 @@ public class PayLogController implements PayLogApi {
     }
 
     /**
-     * 支付宝统一收单交易查询接口
+     * 定时任务调用:支付宝统一收单线下交易查询接口
      *
-     * @param alipayTradeQueryDto
      * @return
      */
     @Override
-    @PostMapping(value = "/alipayTradeQuery")
-    public Result alipayTradeQuery(AlipayTradeQueryDto alipayTradeQueryDto) {
-        return payLogService.alipayTradeQuery(alipayTradeQueryDto);
+    @PostMapping(value = "/timeAlipayTradeQuery")
+    public Result timeAlipayTradeQuery() {
+        payLogService.timeAlipayTradeQuery();
+        return ok();
     }
 }

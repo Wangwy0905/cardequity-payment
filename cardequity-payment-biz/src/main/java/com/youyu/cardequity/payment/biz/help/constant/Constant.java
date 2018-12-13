@@ -61,4 +61,9 @@ public final class Constant {
      */
     public static final String ALIPAY_PRODUCT_CODE = "QUICK_MSECURITY_PAY";
 
+
+    /**
+     * 支付类型
+     */
+    public static final String ALIPAY_PAY_TYPE = "1";
 }

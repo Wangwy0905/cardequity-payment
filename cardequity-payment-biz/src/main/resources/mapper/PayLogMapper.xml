@@ -43,6 +43,8 @@
                 <result column="ALIPAY_ASYNC_MESSAGE" jdbcType="VARCHAR" property="alipayAsyncMessage"/>
                 <result column="ALIPAY_TRADE_STATUS" jdbcType="VARCHAR" property="alipayTradeStatus"/>
                 <result column="ALIPAY_OUR_RESPONSE" jdbcType="VARCHAR" property="alipayOurResponse"/>
+                <result column="ALIPAY_TRADE_CLOSE_MESSAGE" jdbcType="VARCHAR" property="alipayTradeCloseMessage"/>
+                <result column="ALIPAY_TRADE_QUERY_MESSAGE" jdbcType="VARCHAR" property="alipayTradeQueryMessage"/>
             </case>
         </discriminator>
     </resultMap>
@@ -54,7 +56,7 @@
     </sql>
 
     <sql id="Base_Column_List_ALIPAY">
-    ALIPAY_SUBJECT, ALIPAY_TIMEOUT_EXPRESS, ALIPAY_GOODS_TYPE, ALIPAY_SYNC_MESSAGE, ALIPAY_ASYNC_MESSAGE, ALIPAY_OUR_RESPONSE
+    ALIPAY_SUBJECT, ALIPAY_TIMEOUT_EXPRESS, ALIPAY_GOODS_TYPE, ALIPAY_SYNC_MESSAGE, ALIPAY_ASYNC_MESSAGE, ALIPAY_OUR_RESPONSE, ALIPAY_TRADE_CLOSE_MESSAGE, ALIPAY_TRADE_QUERY_MESSAGE
     </sql>
 
     <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -163,6 +165,12 @@
             <if test="alipayOurResponse != null">
                 ALIPAY_OUR_RESPONSE,
             </if>
+            <if test="alipayTradeCloseMessage != null">
+                ALIPAY_TRADE_CLOSE_MESSAGE,
+            </if>
+            <if test="alipayTradeQueryMessage != null">
+                ALIPAY_TRADE_QUERY_MESSAGE,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -264,6 +272,12 @@
             <if test="alipayOurResponse != null">
                 #{alipayOurResponse,jdbcType=VARCHAR},
             </if>
+            <if test="alipayTradeCloseMessage != null">
+                #{alipayTradeCloseMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayTradeQueryMessage != null">
+                #{alipayTradeQueryMessage,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
     <update id="updateAlipayPrepayment" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
@@ -323,9 +337,20 @@
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>
+    <update id="updateAlipayTradeQuery" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
+
+    </update>
 
     <select id="getByAppSheetSerialNo" resultMap="BaseResultMap" parameterType="java.lang.String">
         select * from TB_PAY_LOG where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getByTimeAlipayTradeQuery" resultMap="BaseResultMap">
+        select * from TB_PAY_LOG
+        where TYPE = #{alipayPayType,jdbcType=VARCHAR}
+        and ALIPAY_OUR_RESPONSE != #{alipayAsyncResponseSucc,jdbcType=VARCHAR}
+        and CREATE_TIME between CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdStart,jdbcType=INTEGER} MINUTE
+        AND CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdEnd,jdbcType=INTEGER} MINUTE
     </select>
 
 </mapper>

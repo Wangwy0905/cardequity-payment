@@ -22,6 +22,13 @@ public class PayLogCommond4AlipaySyncMessage extends PayLogCommond {
     @Value("${alipay.appId:}")
     private String appId;
 
+    /**
+     * @param payLog
+     * @param t      支付宝同步参数:AlipaySyncMessageDto
+     * @param <T>
+     * @param <R>
+     * @return
+     */
     @Override
     public <T, R> R executeCmd(PayLog payLog, T t) {
         AlipaySyncMessageDto alipaySyncMessageDto = (AlipaySyncMessageDto) t;

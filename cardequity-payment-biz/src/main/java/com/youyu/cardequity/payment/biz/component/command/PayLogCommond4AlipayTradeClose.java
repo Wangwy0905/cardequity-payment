@@ -41,6 +41,13 @@ public class PayLogCommond4AlipayTradeClose extends PayLogCommond {
     @Autowired
     private AlipayClient alipayClient;
 
+    /**
+     * @param payLog
+     * @param t      支付宝交易关闭参数:AlipayTradeCloseDto
+     * @param <T>
+     * @param <R>
+     * @return
+     */
     @Override
     public <T, R> R executeCmd(PayLog payLog, T t) {
         AlipayTradeCloseDto alipayTradeCloseDto = (AlipayTradeCloseDto) t;

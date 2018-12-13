@@ -2,7 +2,7 @@ package com.youyu.cardequity.payment.biz.dal.entity;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.response.AlipayTradeCloseResponse;
-import com.youyu.cardequity.common.base.exception.BusinessException;
+import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.youyu.cardequity.common.base.util.StringUtil;
 import com.youyu.cardequity.payment.biz.enums.ResultStatusEnum;
 import com.youyu.cardequity.payment.dto.AlipayPrepayment4PayLogDto;
@@ -48,7 +48,6 @@ public class PayLog4Alipay extends PayLog {
     private static final BigDecimal LEFT_AMOUNT = string2BigDecimal("0.01");
     private static final BigDecimal RIGHT_AMOUNT = string2BigDecimal("100000000");
     private static final String[] GOODS_TYPES = {"0", "1"};
-    private static final String PAY_TYPE = "1";
 
     @Column(name = "ALIPAY_SUBJECT")
     private String alipaySubject;
@@ -74,13 +73,16 @@ public class PayLog4Alipay extends PayLog {
     @Column(name = "ALIPAY_TRADE_CLOSE_MESSAGE")
     private String alipayTradeCloseMessage;
 
+    @Column(name = "ALIPAY_TRADE_QUERY_MESSAGE")
+    private String alipayTradeQueryMessage;
+
     public PayLog4Alipay() {
     }
 
     public PayLog4Alipay(PayLogDto payLogDto) {
         super(payLogDto);
         checkParameters(payLogDto);
-        this.type = PAY_TYPE;
+        this.type = ALIPAY_PAY_TYPE;
         this.alipaySubject = payLogDto.getSubject();
         this.alipayTimeoutExpress = payLogDto.getTimeoutExpress();
         this.alipayGoodsType = payLogDto.getGoodsType();
@@ -119,6 +121,15 @@ public class PayLog4Alipay extends PayLog {
 
     public void analysisAlipayTradeClose(AlipayTradeCloseResponse alipayTradeCloseResponse) {
         this.alipayTradeCloseMessage = toJSONString(alipayTradeCloseResponse);
+    }
+
+    public void analysisAlipayTradeQueryResponse(AlipayTradeQueryResponse alipayTradeQueryResponse) {
+        this.alipayTradeQueryMessage = toJSONString(alipayTradeQueryResponse);
+    }
+
+    public void parseTradeStatus(AlipayTradeQueryResponse alipayTradeQueryResponse) {
+        this.alipayTradeStatus = alipayTradeQueryResponse.getTradeStatus();
+        this.state = matches(alipayTradeStatus, ALIPAY_TRADE_FINISHED, ALIPAY_TRADE_SUCCESS) ? state.paymentSucc() : state.paymentFail();
     }
 
     private void checkParameters(PayLogDto payLogDto) {

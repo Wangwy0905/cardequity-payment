@@ -22,16 +22,39 @@
         </dependency>
 
         <dependency>
+            <groupId>com.youyu.platform</groupId>
+            <artifactId>common-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.youyu.platform</groupId>
+            <artifactId>common-dao</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.youyu.platform</groupId>
+            <artifactId>common-handler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.youyu.platform</groupId>
+            <artifactId>common-monitor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.youyu.platform</groupId>
+            <artifactId>common-generator</artifactId>
+            <version>${common-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.youyu.cardequity</groupId>
+            <artifactId>cardequity-common-spring</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.alipay</groupId>
             <artifactId>alipay-sdk-java</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.alipay</groupId>
             <artifactId>commons-logging</artifactId>

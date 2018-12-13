@@ -19,4 +19,9 @@ public class PayLogState4PaymentQueuing extends PayLogState {
     public PayLogState paymentQueuing() {
         return getBeanByClass(PayLogState4Paymenting.class);
     }
+
+    @Override
+    public boolean canPayTradeQuery() {
+        return false;
+    }
 }
