@@ -30,7 +30,7 @@ public interface PayLogMapper extends YyMapper<PayLog> {
     void updateAlipayPrepayment(PayLog payLog);
 
     /**
-     * 更新支付宝同步通知信息:主要更新状态和同步消息
+     * 更新支付宝同步通知信息:主要更新同步消息
      *
      * @param payLog
      */
@@ -49,13 +49,6 @@ public interface PayLogMapper extends YyMapper<PayLog> {
      * @param payLog
      */
     void updateAlipayTradeClose(PayLog payLog);
-
-    /**
-     * 支付宝查询交易更新相关信息:主要更新交易查询消息
-     *
-     * @param payLog
-     */
-    void updateAlipayTradeQuery(PayLog payLog);
 
     /**
      * 插入

@@ -101,7 +101,7 @@ public class PayLog4Alipay extends PayLog {
     public void analysisAlipaySycnMessage(AlipaySyncMessageDto alipaySyncMessageDto, String sellerId, String appId) {
         this.alipaySyncMessage = toJSONString(alipaySyncMessageDto);
 
-        String resultStatus = alipaySyncMessageDto.getResultStatus();
+        /*String resultStatus = alipaySyncMessageDto.getResultStatus();
         ResultStatusEnum resultStatusEnum = getResultStatusEnum(resultStatus);
         if (resultStatusEnum.paySucc()) {
             AlipaySyncMessageResponseDto alipayTradeAppPayResponse = alipaySyncMessageDto.getAlipaySyncMessageResultDto().getAlipayTradeAppPayResponse();
@@ -110,7 +110,7 @@ public class PayLog4Alipay extends PayLog {
             return;
         }
 
-        this.state = state.paymentFail();
+        this.state = state.paymentFail();*/
     }
 
     public String analysisAlipayAsyncMessage(Map<String, String> params2Map, String sellerId, String appId, String alipayPublicKey) {

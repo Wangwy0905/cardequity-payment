@@ -212,6 +212,10 @@ public class PayLog extends BaseEntity<String> {
         return state.canPayTradeClose();
     }
 
+    public boolean canRepetitionPay() {
+        return state.canRepetitionPay();
+    }
+
     @Override
     public String getId() {
         return id;

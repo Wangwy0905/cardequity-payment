@@ -29,4 +29,9 @@ public class PayLogState4PaymentSucc extends PayLogState {
     public boolean canPayTradeClose() {
         return false;
     }
+
+    @Override
+    public boolean canRepetitionPay() {
+        return false;
+    }
 }

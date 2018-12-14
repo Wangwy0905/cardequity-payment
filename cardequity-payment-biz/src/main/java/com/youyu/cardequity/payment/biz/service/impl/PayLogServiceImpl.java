@@ -18,6 +18,7 @@ import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageResultDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
 import com.youyu.common.api.Result;
 import com.youyu.common.dto.BaseDto;
+import com.youyu.common.exception.BizException;
 import com.youyu.common.service.AbstractService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import java.util.Map;
 import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.payment.biz.help.constant.Constant.*;
+import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.PAYMENT_SUCCESS_ORDER_CANNOT_REPETITION_PAY;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
@@ -68,6 +70,9 @@ public class PayLogServiceImpl extends AbstractService<String, PayLogDto, PayLog
         String appSheetSerialNo = payLog.getAppSheetSerialNo();
         PayLog existPayLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(appSheetSerialNo, RouteVoIdFlagEnum.NORMAL.getCode());
         if (nonNull(existPayLog)) {
+            if (!existPayLog.canRepetitionPay()) {
+                throw new BizException(PAYMENT_SUCCESS_ORDER_CANNOT_REPETITION_PAY.getCode(), PAYMENT_SUCCESS_ORDER_CANNOT_REPETITION_PAY.getFormatDesc(payLog.getAppSheetSerialNo()));
+            }
             payLogMapper.updateByAppSheetSerialNoRouteVoIdFlag(appSheetSerialNo, RouteVoIdFlagEnum.FAIL.getCode());
         }
         payLogMapper.insertSelective(payLog);

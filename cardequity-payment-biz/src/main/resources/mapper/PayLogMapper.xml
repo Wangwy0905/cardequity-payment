@@ -296,10 +296,6 @@
     <update id="updateAlipaySyncMessage" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
         update TB_PAY_LOG
         <set>
-            <if test="state != null">
-                STATE =
-                #{state,jdbcType=VARCHAR,typeHandler=com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler},
-            </if>
             <if test="alipaySyncMessage != null">
                 ALIPAY_SYNC_MESSAGE = #{alipaySyncMessage,jdbcType=VARCHAR},
             </if>
@@ -336,9 +332,6 @@
             </if>
         </set>
         where ID = #{id,jdbcType=VARCHAR}
-    </update>
-    <update id="updateAlipayTradeQuery" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
-
     </update>
 
     <select id="getByAppSheetSerialNoRouteVoIdFlag" resultMap="BaseResultMap">
