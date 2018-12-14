@@ -6,12 +6,12 @@ import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
+import com.youyu.cardequity.payment.biz.component.properties.AlipayProperties;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
 import com.youyu.cardequity.payment.dto.AlipayPrepayment4PayLogDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import static com.youyu.cardequity.payment.biz.help.constant.Constant.ALIPAY_PRODUCT_CODE;
@@ -29,8 +29,8 @@ import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 @Component
 public class PayLogStrategy4Alipay extends PayLogStrategy {
 
-    @Value("${alipay.notify.url:}")
-    private String notifyUrl;
+    @Autowired
+    private AlipayProperties alipayProperties;
 
     @Autowired
     private AlipayClient alipayClient;
@@ -53,7 +53,7 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
         AlipayTradeAppPayRequest alipayTradeAppPayRequest = new AlipayTradeAppPayRequest();
         AlipayTradeAppPayModel alipayTradeAppPayModel = getAlipayTradeAppPayModel(payLog4Alipay);
         alipayTradeAppPayRequest.setBizModel(alipayTradeAppPayModel);
-        alipayTradeAppPayRequest.setNotifyUrl(notifyUrl);
+        alipayTradeAppPayRequest.setNotifyUrl(alipayProperties.getNotifyUrl());
         return alipayTradeAppPayRequest;
     }
 
