@@ -70,9 +70,10 @@ public interface PayLogMapper extends YyMapper<PayLog> {
      * 根据订单单号查询
      *
      * @param appSheetSerialNo
+     * @param routeVoIdFlag
      * @return
      */
-    PayLog getByAppSheetSerialNo(@Param("appSheetSerialNo") String appSheetSerialNo);
+    PayLog getByAppSheetSerialNoRouteVoIdFlag(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("routeVoIdFlag") String routeVoIdFlag);
 
     /**
      * 在阈值范围内还未收到支付宝异步回调通知时,主动查询未通知的订单进行主动查询
@@ -84,4 +85,12 @@ public interface PayLogMapper extends YyMapper<PayLog> {
      * @return
      */
     List<PayLog> getByTimeAlipayTradeQuery(@Param("alipayAsyncNotifyThresholdStart") Integer alipayAsyncNotifyThresholdStart, @Param("alipayAsyncNotifyThresholdEnd") Integer alipayAsyncNotifyThresholdEnd, @Param("alipayPayType") String alipayPayType, @Param("alipayAsyncResponseSucc") String alipayAsyncResponseSucc);
+
+    /**
+     * 根据单号更新支付路由信息
+     *
+     * @param appSheetSerialNo
+     * @param routeVoIdFlag
+     */
+    void updateByAppSheetSerialNoRouteVoIdFlag(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("routeVoIdFlag") String routeVoIdFlag);
 }

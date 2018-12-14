@@ -39,4 +39,8 @@ public class AlipayProperties implements Serializable {
 
     private String notifyUrl;
 
+    private Integer asyncNotifyThresholdStart = 15;
+
+    private Integer asyncNotifyThresholdEnd = 10;
+
 }

@@ -8,10 +8,13 @@ import com.youyu.common.entity.BaseEntity;
 import com.youyu.common.exception.BizException;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.ibatis.type.JdbcType;
+import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import static com.youyu.cardequity.payment.biz.enums.PayChannelStateEnum.getPayChannelStateEnum;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.PAYMENT_CHANNEL_STATUS_IS_ABNORMAL;
@@ -98,12 +101,14 @@ public class PayChannelInfo extends BaseEntity<String> {
      * 工厂策略
      */
     @Column(name = "PAY_LOG_FACTORY")
+    @ColumnType(typeHandler = com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler.class,jdbcType = JdbcType.VARCHAR)
     private PayLogFactory payLogFactory;
 
     /**
      * 支付策略
      */
     @Column(name = "PAY_STRATEGY")
+    @Transient
     private PayLogStrategy payStrategy;
 
     public PayChannelInfo() {

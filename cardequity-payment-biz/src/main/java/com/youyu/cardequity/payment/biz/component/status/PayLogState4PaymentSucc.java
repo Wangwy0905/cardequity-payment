@@ -24,4 +24,9 @@ public class PayLogState4PaymentSucc extends PayLogState {
     public PayLogState paymentFail() {
         return getBeanByClass(PayLogState4PaymentFail.class);
     }
+
+    @Override
+    public boolean canPayTradeClose() {
+        return false;
+    }
 }

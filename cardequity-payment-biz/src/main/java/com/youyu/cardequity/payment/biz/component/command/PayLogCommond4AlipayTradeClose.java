@@ -9,13 +9,13 @@ import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
 import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
+import com.youyu.common.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_TRANSACTIONS_CLOSED_FAIL;
-import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_TRANSACTION_CLOSED_EXCEPTION;
+import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.*;
 import static com.youyu.common.api.Result.fail;
 import static com.youyu.common.api.Result.ok;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
@@ -52,6 +52,10 @@ public class PayLogCommond4AlipayTradeClose extends PayLogCommond {
     public <T, R> R executeCmd(PayLog payLog, T t) {
         AlipayTradeCloseDto alipayTradeCloseDto = (AlipayTradeCloseDto) t;
         PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLog;
+        if (!payLog4Alipay.canPayTradeClose()) {
+            throw new BizException(PAYMENT_SUCCESS_ORDER_CANNOT_CLOSED.getCode(), PAYMENT_SUCCESS_ORDER_CANNOT_CLOSED.getFormatDesc(payLog.getAppSheetSerialNo()));
+        }
+
         AlipayTradeCloseRequest alipayTradeCloseRequest = getAlipayTradeCloseRequest(payLog4Alipay, alipayTradeCloseDto);
         try {
             AlipayTradeCloseResponse alipayTradeCloseResponse = alipayClient.execute(alipayTradeCloseRequest);

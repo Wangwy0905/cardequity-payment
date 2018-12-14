@@ -72,4 +72,5 @@ public interface PayLogService extends IService<PayLogDto, PayLog> {
      * 定时任务查询支付宝交易
      */
     void timeAlipayTradeQuery();
+
 }

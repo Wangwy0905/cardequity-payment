@@ -38,6 +38,7 @@ public class PayLogCommond4TimeAlipayTradeQuery extends PayLogCommond {
     @Override
     public <T, R> R executeCmd(PayLog payLog, T t) {
         if (!payLog.canPayTradeQuery()) {
+            log.info("订单号:[{}]对应的支付不能进行支付宝交易查询操作!", payLog.getAppSheetSerialNo());
             return null;
         }
 

@@ -61,4 +61,8 @@ public abstract class PayLogState {
     public boolean canPayTradeQuery() {
         return true;
     }
+
+    public boolean canPayTradeClose() {
+        return true;
+    }
 }

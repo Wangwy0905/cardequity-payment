@@ -341,8 +341,9 @@
 
     </update>
 
-    <select id="getByAppSheetSerialNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="getByAppSheetSerialNoRouteVoIdFlag" resultMap="BaseResultMap">
         select * from TB_PAY_LOG where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+        and ROUTE_VO_ID_FLAG = #{routeVoIdFlag,jdbcType=VARCHAR}
     </select>
 
     <select id="getByTimeAlipayTradeQuery" resultMap="BaseResultMap">
@@ -352,5 +353,11 @@
         and CREATE_TIME between CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdStart,jdbcType=INTEGER} MINUTE
         AND CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdEnd,jdbcType=INTEGER} MINUTE
     </select>
+
+    <update id="updateByAppSheetSerialNoRouteVoIdFlag">
+        update TB_PAY_LOG
+        set ROUTE_VO_ID_FLAG = #{routeVoIdFlag,jdbcType=VARCHAR}
+        where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+    </update>
 
 </mapper>

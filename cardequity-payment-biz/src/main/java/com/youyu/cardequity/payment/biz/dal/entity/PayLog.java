@@ -183,6 +183,7 @@ public class PayLog extends BaseEntity<String> {
         this.remark = payLogDto.getRemark();
         this.state = getBeanByClass(PayLogState4NonPayment.class);
         this.payChannelNo = payLogDto.getPayChannelNo();
+        this.routeVoIdFlag = "0";
     }
 
     public <T> T pay() {
@@ -205,6 +206,10 @@ public class PayLog extends BaseEntity<String> {
 
     public boolean canPayTradeQuery() {
         return state.canPayTradeQuery();
+    }
+
+    public boolean canPayTradeClose() {
+        return state.canPayTradeClose();
     }
 
     @Override

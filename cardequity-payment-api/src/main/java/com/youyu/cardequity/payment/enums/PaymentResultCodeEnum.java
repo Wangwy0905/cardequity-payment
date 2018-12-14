@@ -35,7 +35,8 @@ public enum PaymentResultCodeEnum implements CardequityIBaseResultCode {
     PAYMENT_CHANNEL_STATE_NUMERATION_ABNORMAL("0006", "未查询到支付渠道状态code:{0}所对应的支付渠道状态枚举!"),
     PAYMENT_CHANNEL_STATUS_IS_ABNORMAL("0007", "支付渠道:{0}的支付状态:{1}不能进行支付操作!"),
     ALIPAY_TRANSACTION_CLOSED_EXCEPTION("0008", "订单号:{0}对应的支付宝交易关闭异常!"),
-    ALIPAY_TRANSACTIONS_CLOSED_FAIL("0009", "订单号:{0}对应的支付宝交易关闭失败!");
+    ALIPAY_TRANSACTIONS_CLOSED_FAIL("0009", "订单号:{0}对应的支付宝交易关闭失败!"),
+    PAYMENT_SUCCESS_ORDER_CANNOT_CLOSED("0010","支付成功的订单号:{0}不能关闭!");
 
     private String code;
 
