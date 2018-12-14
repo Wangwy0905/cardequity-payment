@@ -16,10 +16,8 @@
         <result column="STATE" jdbcType="VARCHAR" property="state"/>
         <result column="SIGN_ORDER" jdbcType="INTEGER" property="signOrder"/>
         <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
-        <result column="PAY_LOG_FACTORY" jdbcType="VARCHAR" property="payLogFactory"
-                typeHandler="com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler"/>
-        <result column="PAY_STRATEGY" jdbcType="VARCHAR" property="payStrategy"
-                typeHandler="com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler"/>
+        <result column="PAY_LOG_FACTORY" jdbcType="VARCHAR" property="payLogFactory"/>
+        <result column="PAY_STRATEGY" jdbcType="VARCHAR" property="payStrategy"/>
 
         <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
         <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>

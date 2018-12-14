@@ -16,8 +16,7 @@
         <result column="CLIENT_NAME" jdbcType="VARCHAR" property="clientName"/>
         <result column="BANK_CODE" jdbcType="VARCHAR" property="bankCode"/>
         <result column="BANK_CARD_NO" jdbcType="VARCHAR" property="bankCardNo"/>
-        <result column="STATE" jdbcType="VARCHAR" property="state"
-                typeHandler="com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler"/>
+        <result column="STATE" jdbcType="VARCHAR" property="state"/>
         <result column="OCCUR_BALANCE" jdbcType="DECIMAL" property="occurBalance"/>
         <result column="PAY_CHANNEL_NO" jdbcType="VARCHAR" property="payChannelNo"/>
         <result column="CERTIFICATE_TYPE" jdbcType="VARCHAR" property="certificateType"/>
@@ -207,7 +206,7 @@
                 #{bankCardNo,jdbcType=VARCHAR},
             </if>
             <if test="state != null">
-                #{state,jdbcType=VARCHAR,typeHandler=com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler},
+                #{state,jdbcType=VARCHAR},
             </if>
             <if test="occurBalance != null">
                 #{occurBalance,jdbcType=DECIMAL},
@@ -285,7 +284,7 @@
         <set>
             <if test="state != null">
                 STATE =
-                #{state,jdbcType=VARCHAR,typeHandler=com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler},
+                #{state,jdbcType=VARCHAR},
             </if>
             <if test="respInfo != null">
                 RESP_INFO = #{respInfo,jdbcType=VARCHAR},
@@ -307,7 +306,7 @@
         <set>
             <if test="state != null">
                 STATE =
-                #{state,jdbcType=VARCHAR,typeHandler=com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler},
+                #{state,jdbcType=VARCHAR},
             </if>
             <if test="alipayAsyncMessage != null">
                 ALIPAY_ASYNC_MESSAGE = #{alipayAsyncMessage,jdbcType=VARCHAR},
