@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByName;
+import static com.youyu.cardequity.common.base.util.StatusAndStrategyNumUtil.getNumber;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.biz.enums.PayChannelStateEnum.getPayChannelStateEnum;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.PAYMENT_CHANNEL_STATUS_IS_ABNORMAL;
@@ -107,7 +108,7 @@ public class PayChannelInfo extends BaseEntity<String> {
      * 支付策略
      */
     @Column(name = "PAY_LOG_STRATEGY")
-    private PayLogStrategy payStrategy;
+    private PayLogStrategy payLogStrategy;
 
     public PayChannelInfo() {
     }
@@ -125,7 +126,7 @@ public class PayChannelInfo extends BaseEntity<String> {
         this.signOrder = payChannelInfoDto.getSignOrder();
         this.remark = payChannelInfoDto.getRemark();
         this.payLogFactory = (PayLogFactory) getBeanByName(PayLogFactory.class.getSimpleName() + payChannelInfoDto.getPayLogFactoryNumber());
-        this.payStrategy = (PayLogStrategy) getBeanByName(PayLogStrategy.class.getSimpleName() + payChannelInfoDto.getPayStrategyNumber());
+        this.payLogStrategy = (PayLogStrategy) getBeanByName(PayLogStrategy.class.getSimpleName() + payChannelInfoDto.getPayStrategyNumber());
     }
 
     public PayLog createPayLog(PayLogDto payLogDto) {
@@ -135,7 +136,7 @@ public class PayChannelInfo extends BaseEntity<String> {
 
     public <T> T doPay(PayLog payLog) {
         checkState();
-        return payStrategy.executePay(payLog);
+        return payLogStrategy.executePay(payLog);
     }
 
     private void checkState() {
@@ -153,5 +154,14 @@ public class PayChannelInfo extends BaseEntity<String> {
     @Override
     public void setId(String id) {
         this.channelNo = id;
+    }
+
+    public String getPayLogFactoryNumber() {
+
+        return getNumber(payLogFactory);
+    }
+
+    public String getPayStrategyNumber() {
+        return getNumber(payLogStrategy);
     }
 }

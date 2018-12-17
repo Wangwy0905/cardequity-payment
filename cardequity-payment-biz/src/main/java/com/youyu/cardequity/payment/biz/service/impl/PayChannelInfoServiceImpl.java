@@ -31,9 +31,11 @@ public class PayChannelInfoServiceImpl extends BaseServiceImpl<PayChannelInfoDto
 
     @Override
     public void update(BaseDto dto) {
-        /*PayChannelInfoDto payChannelInfoDto = (PayChannelInfoDto) dto;
+        PayChannelInfoDto payChannelInfoDto = (PayChannelInfoDto) dto;
         PayChannelInfo payChannelInfo = new PayChannelInfo(payChannelInfoDto);
-        payChannelInfoMapper.updateByPrimaryKeySelective(payChannelInfo);*/
+        payChannelInfo.setId(payChannelInfoDto.getId());
+        payChannelInfo.setChannelNo(payChannelInfoDto.getChannelNo());
+        payChannelInfoMapper.updateByPrimaryKeySelective(payChannelInfo);
     }
 
     @Override
