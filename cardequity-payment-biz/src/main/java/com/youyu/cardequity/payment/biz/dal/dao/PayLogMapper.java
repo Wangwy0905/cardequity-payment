@@ -1,7 +1,6 @@
 package com.youyu.cardequity.payment.biz.dal.dao;
 
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
-import com.youyu.common.mapper.YyMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
  * @date 2018年12月10日 下午10:00:00
  * @work 支付日志Mapper
  */
-public interface PayLogMapper extends YyMapper<PayLog> {
+public interface PayLogMapper {
 
     /**
      * 根据主键查询
@@ -56,7 +55,6 @@ public interface PayLogMapper extends YyMapper<PayLog> {
      * @param payLog
      * @return
      */
-    @Override
     int insertSelective(PayLog payLog);
 
     /**

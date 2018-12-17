@@ -19,7 +19,6 @@ import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
 import com.youyu.common.api.Result;
 import com.youyu.common.dto.BaseDto;
 import com.youyu.common.exception.BizException;
-import com.youyu.common.service.AbstractService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +44,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  */
 @Slf4j
 @Service
-public class PayLogServiceImpl extends AbstractService<String, PayLogDto, PayLog, PayLogMapper> implements PayLogService {
+public class PayLogServiceImpl implements PayLogService {
 
     @Autowired
     private PayChannelInfoMapper payChannelInfoMapper;

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyu.cardequity.payment.biz.dal.dao.PayOrgInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.PayOrgInfo">
+        <id column="PAY_ORG_NO" jdbcType="VARCHAR" property="payOrgNo"/>
+        <result column="PAY_ORG_NAME" jdbcType="VARCHAR" property="payOrgName"/>
+        <result column=" REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column=" UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column=" CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column=" CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column=" UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+    </resultMap>
+
+    <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayOrgInfo">
+        insert into TB_PAY_ORG_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="payOrgNo != null">
+                PAY_ORG_NO,
+            </if>
+            <if test="payOrgName != null">
+                PAY_ORG_NAME,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="createAuthor != null">
+                CREATE_AUTHOR,
+            </if>
+            <if test="updateAuthor != null">
+                UPDATE_AUTHOR,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="payOrgNo != null">
+                #{payOrgNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payOrgName != null">
+                #{payOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createAuthor != null">
+                #{createAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAuthor != null">
+                #{updateAuthor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from TB_PAY_ORG_INFO where PAY_ORG_NO = #{payOrgNo,jdbcType=VARCHAR}
+    </delete>
+    <update id="updateByPrimaryKeySelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayOrgInfo">
+        update TB_PAY_ORG_INFO
+        <set>
+            <if test="payOrgName != null">
+                PAY_ORG_NAME = #{payOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createAuthor != null">
+                CREATE_AUTHOR = #{createAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAuthor != null">
+                UPDATE_AUTHOR = #{updateAuthor,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where PAY_ORG_NO = #{payOrgNo,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

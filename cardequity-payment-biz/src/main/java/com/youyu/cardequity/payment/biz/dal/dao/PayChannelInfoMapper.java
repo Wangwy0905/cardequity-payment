@@ -2,7 +2,6 @@ package com.youyu.cardequity.payment.biz.dal.dao;
 
 import com.youyu.cardequity.common.base.annotation.SpringBean;
 import com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo;
-import com.youyu.common.mapper.YyMapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -12,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
  * @work 支付渠道Mapper
  */
 @SpringBean
-public interface PayChannelInfoMapper extends YyMapper<PayChannelInfo> {
+public interface PayChannelInfoMapper {
 
     /**
      * 根据支付渠道号查询

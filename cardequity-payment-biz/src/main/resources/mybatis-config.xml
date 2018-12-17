@@ -57,13 +57,13 @@
     <!--</plugins>-->
 
     <typeHandlers>
-        <typeHandler handler="com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler"
+        <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogFactoryTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.factory.PayLogFactory"/>
 
-        <typeHandler handler="com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler"
+        <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogStrategyTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.strategy.PayLogStrategy"/>
 
-        <typeHandler handler="com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler"
+        <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogStatusTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.status.PayLogState"/>
 
     </typeHandlers>

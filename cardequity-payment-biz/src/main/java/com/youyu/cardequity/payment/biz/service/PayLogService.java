@@ -6,7 +6,6 @@ import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
 import com.youyu.common.api.Result;
 import com.youyu.common.dto.BaseDto;
-import com.youyu.common.service.IService;
 
 import java.util.Map;
 
@@ -16,7 +15,7 @@ import java.util.Map;
  * @date 2018年12月6日 下午10:00:00
  * @work PayLog支付日志Service
  */
-public interface PayLogService extends IService<PayLogDto, PayLog> {
+public interface PayLogService {
 
     /**
      * 支付方法
