@@ -19,6 +19,12 @@ public class AlipaySyncMessageDto implements Serializable {
 
     private static final long serialVersionUID = -6473340282982301041L;
 
+    /**
+     * 9000:代表支付宝同步支付成功
+     * 其他:失败
+     */
+    public static final String RESULT_STATUS_SUCCESS = "9000";
+
     @ApiModelProperty(value = "描述")
     private String memo;
 
