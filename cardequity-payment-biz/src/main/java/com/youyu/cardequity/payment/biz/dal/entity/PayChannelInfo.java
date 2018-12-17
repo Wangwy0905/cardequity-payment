@@ -3,19 +3,19 @@ package com.youyu.cardequity.payment.biz.dal.entity;
 import com.youyu.cardequity.payment.biz.component.factory.PayLogFactory;
 import com.youyu.cardequity.payment.biz.component.strategy.PayLogStrategy;
 import com.youyu.cardequity.payment.biz.enums.PayChannelStateEnum;
+import com.youyu.cardequity.payment.dto.PayChannelInfoDto;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.common.entity.BaseEntity;
 import com.youyu.common.exception.BizException;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.ibatis.type.JdbcType;
-import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
+import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByName;
+import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.biz.enums.PayChannelStateEnum.getPayChannelStateEnum;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.PAYMENT_CHANNEL_STATUS_IS_ABNORMAL;
 
@@ -101,17 +101,31 @@ public class PayChannelInfo extends BaseEntity<String> {
      * 工厂策略
      */
     @Column(name = "PAY_LOG_FACTORY")
-    @ColumnType(typeHandler = com.youyu.cardequity.common.orm.mybatis.handler.String2StatusStrategyTypeHandler.class,jdbcType = JdbcType.VARCHAR)
     private PayLogFactory payLogFactory;
 
     /**
      * 支付策略
      */
-    @Column(name = "PAY_STRATEGY")
-    @Transient
+    @Column(name = "PAY_LOG_STRATEGY")
     private PayLogStrategy payStrategy;
 
     public PayChannelInfo() {
+    }
+
+    public PayChannelInfo(PayChannelInfoDto payChannelInfoDto) {
+        this.channelNo = uuid4NoRail();
+        this.channelName = payChannelInfoDto.getChannelName();
+        this.payOrgNo = payChannelInfoDto.getPayOrgNo();
+        this.payInterfaceType = payChannelInfoDto.getPayInterfaceType();
+        this.payMode = payChannelInfoDto.getPayMode();
+        this.checkLevel = payChannelInfoDto.getCheckLevel();
+        this.continuityFailNum = payChannelInfoDto.getContinuityFailNum();
+        this.certificateTypes = payChannelInfoDto.getCertificateTypes();
+        this.state = payChannelInfoDto.getState();
+        this.signOrder = payChannelInfoDto.getSignOrder();
+        this.remark = payChannelInfoDto.getRemark();
+        this.payLogFactory = (PayLogFactory) getBeanByName(PayLogFactory.class.getSimpleName() + payChannelInfoDto.getPayLogFactoryNumber());
+        this.payStrategy = (PayLogStrategy) getBeanByName(PayLogStrategy.class.getSimpleName() + payChannelInfoDto.getPayStrategyNumber());
     }
 
     public PayLog createPayLog(PayLogDto payLogDto) {

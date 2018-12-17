@@ -15,13 +15,13 @@ import lombok.Data;
 @ApiModel
 public class CompanyInfoDto extends BaseDto<String> {
 
-    @ApiModelProperty(value = "公司Id:手动定义，不重复即可")
+    @ApiModelProperty(value = "公司Id")
     private String companyId;
 
     @ApiModelProperty(value = "公司名称")
     private String companyName;
 
-    @ApiModelProperty(value = "备注:")
+    @ApiModelProperty(value = "备注")
     private String remark;
 
     @Override

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyu.cardequity.payment.biz.dal.dao.ChannelFareInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.ChannelFareInfo">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="CHANNEL_NO" jdbcType="VARCHAR" property="channelNo"/>
+        <result column=" COMPANY_ID" jdbcType="VARCHAR" property="companyId"/>
+        <result column=" AMOUNT_LEVEL_START" jdbcType="DECIMAL" property="amountLevelStart"/>
+        <result column=" AMOUNT_LEVEL_END" jdbcType="DECIMAL" property="amountLevelEnd"/>
+        <result column=" MAX_FARE" jdbcType="DECIMAL" property="maxFare"/>
+        <result column=" MIN_FARE" jdbcType="DECIMAL" property="minFare"/>
+        <result column=" FARE_RATIO" jdbcType="DECIMAL" property="fareRatio"/>
+        <result column=" FIXED_FARE" jdbcType="DECIMAL" property="fixedFare"/>
+        <result column=" RELATION_BANKS" jdbcType="VARCHAR" property="relationBanks"/>
+        <result column=" REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column=" UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column=" CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column=" CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column=" UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+    </resultMap>
+
+    <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.ChannelFareInfo">
+        insert into TB_CHANNEL_FARE_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="channelNo != null">
+                CHANNEL_NO,
+            </if>
+            <if test="companyId != null">
+                COMPANY_ID,
+            </if>
+            <if test="amountLevelStart != null">
+                AMOUNT_LEVEL_START,
+            </if>
+            <if test="amountLevelEnd != null">
+                AMOUNT_LEVEL_END,
+            </if>
+            <if test="maxFare != null">
+                MAX_FARE,
+            </if>
+            <if test="minFare != null">
+                MIN_FARE,
+            </if>
+            <if test="fareRatio != null">
+                FARE_RATIO,
+            </if>
+            <if test="fixedFare != null">
+                FIXED_FARE,
+            </if>
+            <if test="relationBanks != null">
+                RELATION_BANKS,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="createAuthor != null">
+                CREATE_AUTHOR,
+            </if>
+            <if test="updateAuthor != null">
+                UPDATE_AUTHOR,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="channelNo != null">
+                #{channelNo,jdbcType=VARCHAR},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=VARCHAR},
+            </if>
+            <if test="amountLevelStart != null">
+                #{amountLevelStart,jdbcType=DECIMAL},
+            </if>
+            <if test="amountLevelEnd != null">
+                #{amountLevelEnd,jdbcType=DECIMAL},
+            </if>
+            <if test="maxFare != null">
+                #{maxFare,jdbcType=DECIMAL},
+            </if>
+            <if test="minFare != null">
+                #{minFare,jdbcType=DECIMAL},
+            </if>
+            <if test="fareRatio != null">
+                #{fareRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="fixedFare != null">
+                #{fixedFare,jdbcType=DECIMAL},
+            </if>
+            <if test="relationBanks != null">
+                #{relationBanks,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createAuthor != null">
+                #{createAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAuthor != null">
+                #{updateAuthor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from TB_CHANNEL_FARE_INFO where ID = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.youyu.cardequity.payment.biz.dal.entity.ChannelFareInfo">
+        update TB_CHANNEL_FARE_INFO
+        <set>
+            <if test="channelNo != null">
+                CHANNEL_NO = #{channelNo,jdbcType=VARCHAR},
+            </if>
+            <if test="companyId != null">
+                COMPANY_ID = #{companyId,jdbcType=VARCHAR},
+            </if>
+            <if test="amountLevelStart != null">
+                AMOUNT_LEVEL_START = #{amountLevelStart,jdbcType=DECIMAL},
+            </if>
+            <if test="amountLevelEnd != null">
+                AMOUNT_LEVEL_END = #{amountLevelEnd,jdbcType=DECIMAL},
+            </if>
+            <if test="maxFare != null">
+                MAX_FARE = #{maxFare,jdbcType=DECIMAL},
+            </if>
+            <if test="minFare != null">
+                MIN_FARE = #{minFare,jdbcType=DECIMAL},
+            </if>
+            <if test="fareRatio != null">
+                FARE_RATIO = #{fareRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="fixedFare != null">
+                FIXED_FARE = #{fixedFare,jdbcType=DECIMAL},
+            </if>
+            <if test="relationBanks != null">
+                RELATION_BANKS = #{relationBanks,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createAuthor != null">
+                CREATE_AUTHOR = #{createAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAuthor != null">
+                UPDATE_AUTHOR = #{updateAuthor,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

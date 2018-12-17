@@ -17,7 +17,7 @@
         <result column="SIGN_ORDER" jdbcType="INTEGER" property="signOrder"/>
         <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
         <result column="PAY_LOG_FACTORY" jdbcType="VARCHAR" property="payLogFactory"/>
-        <result column="PAY_STRATEGY" jdbcType="VARCHAR" property="payStrategy"/>
+        <result column="PAY_LOG_STRATEGY" jdbcType="VARCHAR" property="payStrategy"/>
 
         <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
         <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
@@ -27,7 +27,7 @@
 
     <sql id="Base_Column_List">
     CHANNEL_NO, CHANNEL_NAME, PAY_ORG_NO, PAY_INTERFACE_TYPE, PAY_MODE, CHECK_LEVEL, CONTINUITY_FAIL_NUM, CERTIFICATE_TYPES,
-    STATE, SIGN_ORDER, REMARK, PAY_LOG_FACTORY, PAY_STRATEGY, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME
+    STATE, SIGN_ORDER, REMARK, PAY_LOG_FACTORY, PAY_LOG_STRATEGY, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME
     </sql>
 
     <select id="getById" parameterType="java.lang.String" resultMap="BaseResultMap">
