@@ -20,6 +20,14 @@ public class PayLogDto extends BaseDto<String> {
 
     private static final long serialVersionUID = 1340491747252445259L;
 
+    /**
+     * 支付宝支付渠道
+     */
+    public static final String PAY_CHANNEL_NO_ALIPAY = "000001";
+
+    @ApiModelProperty(value = "主键")
+    private String id;
+
     @ApiModelProperty(value = "自然日")
     private LocalDate initDate;
 
@@ -58,4 +66,6 @@ public class PayLogDto extends BaseDto<String> {
 
     @ApiModelProperty(value = "商品主类型：0—虚拟类商品，1—实物类商品")
     private String goodsType;
+
+
 }
