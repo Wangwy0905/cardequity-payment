@@ -13,6 +13,38 @@
         <result column=" CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
         <result column=" UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
     </resultMap>
+
+    <sql id="Base_Column_List">
+        COMPANY_ID, COMPANY_NAME, REMARK, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+    </sql>
+
+    <select id="getByEntity" parameterType="com.youyu.cardequity.payment.biz.dal.entity.CompanyInfo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from TB_COMPANY_INFO
+        <where>
+            <if test="id != null">
+                COMPANY_ID = #{companyId,jdbcType=VARCHAR}
+            </if>
+            <if test="companyName != null">
+                and COMPANY_NAME = #{companyName,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null">
+                and REMARK = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null">
+                and UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createAuthor != null">
+                and CREATE_AUTHOR = #{createAuthor,jdbcType=VARCHAR}
+            </if>
+            <if test="updateAuthor != null">
+                and UPDATE_AUTHOR = #{updateAuthor,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
     <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.CompanyInfo">
         insert into TB_COMPANY_INFO
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -62,9 +94,11 @@
             </if>
         </trim>
     </insert>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete from TB_COMPANY_INFO where COMPANY_ID = #{companyId,jdbcType=VARCHAR}
     </delete>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.CompanyInfo">
         update TB_COMPANY_INFO
         <set>

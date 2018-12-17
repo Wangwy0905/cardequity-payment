@@ -1,6 +1,6 @@
 package com.youyu.cardequity.payment.dto;
 
-import com.youyu.common.dto.BaseDto;
+import com.youyu.cardequity.common.base.base.BasePageQuery;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
  */
 @Data
 @ApiModel
-public class ChannelFareInfoDto extends BaseDto<String> {
+public class ChannelFareInfoDto extends BasePageQuery<String> {
 
     @ApiModelProperty(value = "主键")
     private String id;

@@ -5,6 +5,7 @@ import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
 import com.youyu.common.api.Result;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2018年12月12日 下午10:00:00
  * @work 支付日志Api定义
  */
+@Api(tags = "支付日志管理Api")
 @FeignClient(name = "cardequity-payment")
 @RequestMapping(path = "/payLog")
 public interface PayLogApi {

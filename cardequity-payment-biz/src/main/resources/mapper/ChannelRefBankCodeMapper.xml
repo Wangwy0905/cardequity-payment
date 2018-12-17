@@ -4,209 +4,279 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.youyu.cardequity.payment.biz.dal.dao.ChannelRefBankCodeMapper">
 
-    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.ChannelRefBankCode" >
+    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.ChannelRefBankCode">
         <id column="ID" jdbcType="VARCHAR" property="id"/>
-        <result column="CHANNEL_NO" jdbcType="VARCHAR"  property="channelNo"/>
-        <result column=" BANK_CODE" jdbcType="VARCHAR"  property="bankCode"/>
-        <result column=" PAY_INTERFACE_TYPE" jdbcType="VARCHAR"  property="payInterfaceType"/>
-        <result column=" PAY_MODE" jdbcType="VARCHAR"  property="payMode"/>
-        <result column=" PER_DAY_UP" jdbcType="DECIMAL"  property="perDayUp"/>
-        <result column=" PER_DAY_AND_PERSON_UP" jdbcType="DECIMAL"  property="perDayAndPersonUp"/>
-        <result column=" MAX_AMOUNT" jdbcType="DECIMAL"  property="maxAmount"/>
-        <result column=" CONTINUITY_FAIL_NUM" jdbcType="INTEGER"  property="continuityFailNum"/>
-        <result column=" MSG_SEND_FLAG" jdbcType="VARCHAR"  property="msgSendFlag"/>
-        <result column=" STATE" jdbcType="VARCHAR"  property="state"/>
-        <result column=" REMARK" jdbcType="VARCHAR"  property="remark"/>
-        <result column=" DATE_FLAG" jdbcType="VARCHAR"  property="dateFlag"/>
-        <result column=" WEIGHT_VALUE" jdbcType="INTEGER"  property="weightValue"/>
-        <result column=" CHANNEL_BANK_CODE" jdbcType="VARCHAR"  property="channelBankCode"/>
-        <result column=" UPDATE_TIME" jdbcType="TIMESTAMP"  property="updateTime"/>
-        <result column=" CREATE_TIME" jdbcType="TIMESTAMP"  property="createTime"/>
-        <result column=" CREATE_AUTHOR" jdbcType="VARCHAR"  property="createAuthor"/>
-        <result column=" UPDATE_AUTHOR" jdbcType="VARCHAR"  property="updateAuthor"/>
+        <result column="CHANNEL_NO" jdbcType="VARCHAR" property="channelNo"/>
+        <result column=" BANK_CODE" jdbcType="VARCHAR" property="bankCode"/>
+        <result column=" PAY_INTERFACE_TYPE" jdbcType="VARCHAR" property="payInterfaceType"/>
+        <result column=" PAY_MODE" jdbcType="VARCHAR" property="payMode"/>
+        <result column=" PER_DAY_UP" jdbcType="DECIMAL" property="perDayUp"/>
+        <result column=" PER_DAY_AND_PERSON_UP" jdbcType="DECIMAL" property="perDayAndPersonUp"/>
+        <result column=" MAX_AMOUNT" jdbcType="DECIMAL" property="maxAmount"/>
+        <result column=" CONTINUITY_FAIL_NUM" jdbcType="INTEGER" property="continuityFailNum"/>
+        <result column=" MSG_SEND_FLAG" jdbcType="VARCHAR" property="msgSendFlag"/>
+        <result column=" STATE" jdbcType="VARCHAR" property="state"/>
+        <result column=" REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column=" DATE_FLAG" jdbcType="VARCHAR" property="dateFlag"/>
+        <result column=" WEIGHT_VALUE" jdbcType="INTEGER" property="weightValue"/>
+        <result column=" CHANNEL_BANK_CODE" jdbcType="VARCHAR" property="channelBankCode"/>
+        <result column=" UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column=" CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column=" CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column=" UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
     </resultMap>
 
-    <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.ChannelRefBankCode" >
+    <sql id="Base_Column_List">
+        ID, CHANNEL_NO, BANK_CODE, PAY_INTERFACE_TYPE, PAY_MODE, PER_DAY_UP, PER_DAY_AND_PERSON_UP,
+        MAX_AMOUNT, CONTINUITY_FAIL_NUM, MSG_SEND_FLAG, STATE, REMARK, DATE_FLAG, WEIGHT_VALUE, CHANNEL_BANK_CODE,
+        UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+    </sql>
+
+    <select id="getByEntity" parameterType="com.youyu.cardequity.payment.biz.dal.entity.ChannelRefBankCode" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from TB_CHANNEL_REF_BANK_CODE
+        <where>
+            <if test="id != null">
+                ID = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="channelNo != null">
+                and CHANNEL_NO = #{channelNo,jdbcType=VARCHAR}
+            </if>
+            <if test="bankCode != null">
+                and BANK_CODE = #{bankCode,jdbcType=VARCHAR}
+            </if>
+            <if test="payInterfaceType != null">
+                and PAY_INTERFACE_TYPE = #{payInterfaceType,jdbcType=VARCHAR}
+            </if>
+            <if test="payMode != null">
+                and PAY_MODE = #{payMode,jdbcType=VARCHAR}
+            </if>
+            <if test="perDayUp != null">
+                and PER_DAY_UP = #{perDayUp,jdbcType=DECIMAL}
+            </if>
+            <if test="perDayAndPersonUp != null">
+                and PER_DAY_AND_PERSON_UP = #{perDayAndPersonUp,jdbcType=DECIMAL}
+            </if>
+            <if test="maxAmount != null">
+                and MAX_AMOUNT = #{maxAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="continuityFailNum != null">
+                and CONTINUITY_FAIL_NUM = #{continuityFailNum,jdbcType=INTEGER}
+            </if>
+            <if test="msgSendFlag != null">
+                and MSG_SEND_FLAG = #{msgSendFlag,jdbcType=VARCHAR}
+            </if>
+            <if test="state != null">
+                and STATE = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null">
+                and REMARK = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="dateFlag != null">
+                and DATE_FLAG = #{dateFlag,jdbcType=VARCHAR}
+            </if>
+            <if test="weightValue != null">
+                and WEIGHT_VALUE = #{weightValue,jdbcType=INTEGER}
+            </if>
+            <if test="channelBankCode != null">
+                and CHANNEL_BANK_CODE = #{channelBankCode,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null">
+                and UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createAuthor != null">
+                and CREATE_AUTHOR = #{createAuthor,jdbcType=VARCHAR}
+            </if>
+            <if test="updateAuthor != null">
+                and UPDATE_AUTHOR = #{updateAuthor,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.ChannelRefBankCode">
         insert into TB_CHANNEL_REF_BANK_CODE
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
                 ID,
             </if>
-            <if test="channelNo != null" >
+            <if test="channelNo != null">
                 CHANNEL_NO,
             </if>
-            <if test="bankCode != null" >
+            <if test="bankCode != null">
                 BANK_CODE,
             </if>
-            <if test="payInterfaceType != null" >
+            <if test="payInterfaceType != null">
                 PAY_INTERFACE_TYPE,
             </if>
-            <if test="payMode != null" >
+            <if test="payMode != null">
                 PAY_MODE,
             </if>
-            <if test="perDayUp != null" >
+            <if test="perDayUp != null">
                 PER_DAY_UP,
             </if>
-            <if test="perDayAndPersonUp != null" >
+            <if test="perDayAndPersonUp != null">
                 PER_DAY_AND_PERSON_UP,
             </if>
-            <if test="maxAmount != null" >
+            <if test="maxAmount != null">
                 MAX_AMOUNT,
             </if>
-            <if test="continuityFailNum != null" >
+            <if test="continuityFailNum != null">
                 CONTINUITY_FAIL_NUM,
             </if>
-            <if test="msgSendFlag != null" >
+            <if test="msgSendFlag != null">
                 MSG_SEND_FLAG,
             </if>
-            <if test="state != null" >
+            <if test="state != null">
                 STATE,
             </if>
-            <if test="remark != null" >
+            <if test="remark != null">
                 REMARK,
             </if>
-            <if test="dateFlag != null" >
+            <if test="dateFlag != null">
                 DATE_FLAG,
             </if>
-            <if test="weightValue != null" >
+            <if test="weightValue != null">
                 WEIGHT_VALUE,
             </if>
-            <if test="channelBankCode != null" >
+            <if test="channelBankCode != null">
                 CHANNEL_BANK_CODE,
             </if>
-            <if test="updateTime != null" >
+            <if test="updateTime != null">
                 UPDATE_TIME,
             </if>
-            <if test="createTime != null" >
+            <if test="createTime != null">
                 CREATE_TIME,
             </if>
-            <if test="createAuthor != null" >
+            <if test="createAuthor != null">
                 CREATE_AUTHOR,
             </if>
-            <if test="updateAuthor != null" >
+            <if test="updateAuthor != null">
                 UPDATE_AUTHOR,
             </if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
                 #{id,jdbcType=VARCHAR},
             </if>
-            <if test="channelNo != null" >
+            <if test="channelNo != null">
                 #{channelNo,jdbcType=VARCHAR},
             </if>
-            <if test="bankCode != null" >
+            <if test="bankCode != null">
                 #{bankCode,jdbcType=VARCHAR},
             </if>
-            <if test="payInterfaceType != null" >
+            <if test="payInterfaceType != null">
                 #{payInterfaceType,jdbcType=VARCHAR},
             </if>
-            <if test="payMode != null" >
+            <if test="payMode != null">
                 #{payMode,jdbcType=VARCHAR},
             </if>
-            <if test="perDayUp != null" >
+            <if test="perDayUp != null">
                 #{perDayUp,jdbcType=DECIMAL},
             </if>
-            <if test="perDayAndPersonUp != null" >
+            <if test="perDayAndPersonUp != null">
                 #{perDayAndPersonUp,jdbcType=DECIMAL},
             </if>
-            <if test="maxAmount != null" >
+            <if test="maxAmount != null">
                 #{maxAmount,jdbcType=DECIMAL},
             </if>
-            <if test="continuityFailNum != null" >
+            <if test="continuityFailNum != null">
                 #{continuityFailNum,jdbcType=INTEGER},
             </if>
-            <if test="msgSendFlag != null" >
+            <if test="msgSendFlag != null">
                 #{msgSendFlag,jdbcType=VARCHAR},
             </if>
-            <if test="state != null" >
+            <if test="state != null">
                 #{state,jdbcType=VARCHAR},
             </if>
-            <if test="remark != null" >
+            <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="dateFlag != null" >
+            <if test="dateFlag != null">
                 #{dateFlag,jdbcType=VARCHAR},
             </if>
-            <if test="weightValue != null" >
+            <if test="weightValue != null">
                 #{weightValue,jdbcType=INTEGER},
             </if>
-            <if test="channelBankCode != null" >
+            <if test="channelBankCode != null">
                 #{channelBankCode,jdbcType=VARCHAR},
             </if>
-            <if test="updateTime != null" >
+            <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="createTime != null" >
+            <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="createAuthor != null" >
+            <if test="createAuthor != null">
                 #{createAuthor,jdbcType=VARCHAR},
             </if>
-            <if test="updateAuthor != null" >
+            <if test="updateAuthor != null">
                 #{updateAuthor,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete from TB_CHANNEL_REF_BANK_CODE where ID = #{id,jdbcType=VARCHAR}
     </delete>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.ChannelRefBankCode" >
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.youyu.cardequity.payment.biz.dal.entity.ChannelRefBankCode">
         update TB_CHANNEL_REF_BANK_CODE
         <set>
-            <if test="channelNo != null" >
+            <if test="channelNo != null">
                 CHANNEL_NO = #{channelNo,jdbcType=VARCHAR},
             </if>
-            <if test="bankCode != null" >
+            <if test="bankCode != null">
                 BANK_CODE = #{bankCode,jdbcType=VARCHAR},
             </if>
-            <if test="payInterfaceType != null" >
+            <if test="payInterfaceType != null">
                 PAY_INTERFACE_TYPE = #{payInterfaceType,jdbcType=VARCHAR},
             </if>
-            <if test="payMode != null" >
+            <if test="payMode != null">
                 PAY_MODE = #{payMode,jdbcType=VARCHAR},
             </if>
-            <if test="perDayUp != null" >
+            <if test="perDayUp != null">
                 PER_DAY_UP = #{perDayUp,jdbcType=DECIMAL},
             </if>
-            <if test="perDayAndPersonUp != null" >
+            <if test="perDayAndPersonUp != null">
                 PER_DAY_AND_PERSON_UP = #{perDayAndPersonUp,jdbcType=DECIMAL},
             </if>
-            <if test="maxAmount != null" >
+            <if test="maxAmount != null">
                 MAX_AMOUNT = #{maxAmount,jdbcType=DECIMAL},
             </if>
-            <if test="continuityFailNum != null" >
+            <if test="continuityFailNum != null">
                 CONTINUITY_FAIL_NUM = #{continuityFailNum,jdbcType=INTEGER},
             </if>
-            <if test="msgSendFlag != null" >
+            <if test="msgSendFlag != null">
                 MSG_SEND_FLAG = #{msgSendFlag,jdbcType=VARCHAR},
             </if>
-            <if test="state != null" >
+            <if test="state != null">
                 STATE = #{state,jdbcType=VARCHAR},
             </if>
-            <if test="remark != null" >
+            <if test="remark != null">
                 REMARK = #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="dateFlag != null" >
+            <if test="dateFlag != null">
                 DATE_FLAG = #{dateFlag,jdbcType=VARCHAR},
             </if>
-            <if test="weightValue != null" >
+            <if test="weightValue != null">
                 WEIGHT_VALUE = #{weightValue,jdbcType=INTEGER},
             </if>
-            <if test="channelBankCode != null" >
+            <if test="channelBankCode != null">
                 CHANNEL_BANK_CODE = #{channelBankCode,jdbcType=VARCHAR},
             </if>
-            <if test="updateTime != null" >
+            <if test="updateTime != null">
                 UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="createTime != null" >
+            <if test="createTime != null">
                 CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="createAuthor != null" >
+            <if test="createAuthor != null">
                 CREATE_AUTHOR = #{createAuthor,jdbcType=VARCHAR},
             </if>
-            <if test="updateAuthor != null" >
+            <if test="updateAuthor != null">
                 UPDATE_AUTHOR = #{updateAuthor,jdbcType=VARCHAR},
             </if>
         </set>

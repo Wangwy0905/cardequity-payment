@@ -22,6 +22,61 @@
         <result column=" UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
     </resultMap>
 
+    <sql id="Base_Column_List">
+        ID, CHANNEL_NO, COMPANY_ID, AMOUNT_LEVEL_START, AMOUNT_LEVEL_END, MAX_FARE, MIN_FARE, FARE_RATIO, FIXED_FARE, RELATION_BANKS, REMARK, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+    </sql>
+
+    <select id="getByEntity" parameterType="com.youyu.cardequity.payment.biz.dal.entity.ChannelFareInfo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from TB_CHANNEL_FARE_INFO
+        <where>
+            <if test="id != null">
+                ID = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="channelNo != null">
+                and CHANNEL_NO = #{channelNo,jdbcType=VARCHAR}
+            </if>
+            <if test="companyId != null">
+                and COMPANY_ID = #{companyId,jdbcType=VARCHAR}
+            </if>
+            <if test="amountLevelStart != null">
+                and AMOUNT_LEVEL_START = #{amountLevelStart,jdbcType=DECIMAL}
+            </if>
+            <if test="amountLevelEnd != null">
+                and AMOUNT_LEVEL_END = #{amountLevelEnd,jdbcType=DECIMAL}
+            </if>
+            <if test="maxFare != null">
+                and MAX_FARE = #{maxFare,jdbcType=DECIMAL}
+            </if>
+            <if test="minFare != null">
+                and MIN_FARE = #{minFare,jdbcType=DECIMAL}
+            </if>
+            <if test="fareRatio != null">
+                and FARE_RATIO = #{fareRatio,jdbcType=DECIMAL}
+            </if>
+            <if test="fixedFare != null">
+                and FIXED_FARE = #{fixedFare,jdbcType=DECIMAL}
+            </if>
+            <if test="relationBanks != null">
+                and RELATION_BANKS = #{relationBanks,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null">
+                and REMARK = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null">
+                and UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createAuthor != null">
+                and CREATE_AUTHOR = #{createAuthor,jdbcType=VARCHAR}
+            </if>
+            <if test="updateAuthor != null">
+                and UPDATE_AUTHOR = #{updateAuthor,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
     <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.ChannelFareInfo">
         insert into TB_CHANNEL_FARE_INFO
         <trim prefix="(" suffix=")" suffixOverrides=",">

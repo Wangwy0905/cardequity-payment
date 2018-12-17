@@ -1,6 +1,6 @@
 package com.youyu.cardequity.payment.dto;
 
-import com.youyu.common.dto.BaseDto;
+import com.youyu.cardequity.common.base.base.BasePageQuery;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel
-public class CompanyInfoDto extends BaseDto<String> {
+public class CompanyInfoDto extends BasePageQuery<String> {
 
     @ApiModelProperty(value = "公司Id")
     private String companyId;

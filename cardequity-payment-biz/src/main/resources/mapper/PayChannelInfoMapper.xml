@@ -11,7 +11,7 @@
         <result column="PAY_INTERFACE_TYPE" jdbcType="VARCHAR" property="payInterfaceType"/>
         <result column="PAY_MODE" jdbcType="VARCHAR" property="payMode"/>
         <result column="CHECK_LEVEL" jdbcType="VARCHAR" property="checkLevel"/>
-        <result column="CONTINUITY_FAIL_NUM" jdbcType="VARCHAR" property="continuityFailNum"/>
+        <result column="CONTINUITY_FAIL_NUM" jdbcType="INTEGER" property="continuityFailNum"/>
         <result column="CERTIFICATE_TYPES" jdbcType="VARCHAR" property="certificateTypes"/>
         <result column="STATE" jdbcType="VARCHAR" property="state"/>
         <result column="SIGN_ORDER" jdbcType="INTEGER" property="signOrder"/>
@@ -31,11 +31,235 @@
     </sql>
 
     <select id="getById" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from TB_PAY_CHANNEL_INFO
+        select <include refid="Base_Column_List"/> from TB_PAY_CHANNEL_INFO
         where CHANNEL_NO = #{channelNo,jdbcType=VARCHAR}
     </select>
+
+    <select id="getByEntity" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from TB_PAY_CHANNEL_INFO
+        <where>
+            <if test="id != null">
+                CHANNEL_NO = #{channelNo,jdbcType=VARCHAR}
+            </if>
+            <if test="channelName != null">
+                and CHANNEL_NAME = #{channelName,jdbcType=VARCHAR}
+            </if>
+            <if test="payOrgNo != null">
+                and PAY_ORG_NO = #{payOrgNo,jdbcType=VARCHAR}
+            </if>
+            <if test="payInterfaceType != null">
+                and PAY_INTERFACE_TYPE = #{payInterfaceType,jdbcType=VARCHAR}
+            </if>
+            <if test="payMode != null">
+                and PAY_MODE = #{payMode,jdbcType=VARCHAR}
+            </if>
+            <if test="checkLevel != null">
+                and CHECK_LEVEL = #{checkLevel,jdbcType=VARCHAR}
+            </if>
+            <if test="continuityFailNum != null">
+                and CONTINUITY_FAIL_NUM = #{continuityFailNum,jdbcType=INTEGER}
+            </if>
+            <if test="certificateTypes != null">
+                and CERTIFICATE_TYPES = #{certificateTypes,jdbcType=VARCHAR}
+            </if>
+            <if test="state != null">
+                and STATE = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="signOrder != null">
+                and SIGN_ORDER = #{signOrder,jdbcType=INTEGER}
+            </if>
+            <if test="remark != null">
+                and REMARK = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="payLogFactory != null">
+                and PAY_LOG_FACTORY = #{payLogFactory,jdbcType=VARCHAR}
+            </if>
+            <if test="payLogStrategy != null">
+                and PAY_LOG_STRATEGY = #{payLogStrategy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null">
+                and UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createAuthor != null">
+                and CREATE_AUTHOR = #{createAuthor,jdbcType=VARCHAR}
+            </if>
+            <if test="updateAuthor != null">
+                and UPDATE_AUTHOR = #{updateAuthor,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo">
+        insert into TB_PAY_CHANNEL_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="channelNo != null">
+                CHANNEL_NO,
+            </if>
+            <if test="channelName != null">
+                CHANNEL_NAME,
+            </if>
+            <if test="payOrgNo != null">
+                PAY_ORG_NO,
+            </if>
+            <if test="payInterfaceType != null">
+                PAY_INTERFACE_TYPE,
+            </if>
+            <if test="payMode != null">
+                PAY_MODE,
+            </if>
+            <if test="checkLevel != null">
+                CHECK_LEVEL,
+            </if>
+            <if test="continuityFailNum != null">
+                CONTINUITY_FAIL_NUM,
+            </if>
+            <if test="certificateTypes != null">
+                CERTIFICATE_TYPES,
+            </if>
+            <if test="state != null">
+                STATE,
+            </if>
+            <if test="signOrder != null">
+                SIGN_ORDER,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="payLogFactory != null">
+                PAY_LOG_FACTORY,
+            </if>
+            <if test="payLogStrategy != null">
+                PAY_LOG_STRATEGY,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="createAuthor != null">
+                CREATE_AUTHOR,
+            </if>
+            <if test="updateAuthor != null">
+                UPDATE_AUTHOR,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="channelNo != null">
+                #{channelNo,jdbcType=VARCHAR},
+            </if>
+            <if test="channelName != null">
+                #{channelName,jdbcType=VARCHAR},
+            </if>
+            <if test="payOrgNo != null">
+                #{payOrgNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payInterfaceType != null">
+                #{payInterfaceType,jdbcType=VARCHAR},
+            </if>
+            <if test="payMode != null">
+                #{payMode,jdbcType=VARCHAR},
+            </if>
+            <if test="checkLevel != null">
+                #{checkLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="continuityFailNum != null">
+                #{continuityFailNum,jdbcType=INTEGER},
+            </if>
+            <if test="certificateTypes != null">
+                #{certificateTypes,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="signOrder != null">
+                #{signOrder,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="payLogFactory != null">
+                #{payLogFactory,jdbcType=VARCHAR},
+            </if>
+            <if test="payLogStrategy != null">
+                #{payLogStrategy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createAuthor != null">
+                #{createAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAuthor != null">
+                #{updateAuthor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from TB_PAY_CHANNEL_INFO where CHANNEL_NO = #{channelNo,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo">
+        update TB_PAY_CHANNEL_INFO
+        <set>
+            <if test="channelName != null">
+                CHANNEL_NAME = #{channelName,jdbcType=VARCHAR},
+            </if>
+            <if test="payOrgNo != null">
+                PAY_ORG_NO = #{payOrgNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payInterfaceType != null">
+                PAY_INTERFACE_TYPE = #{payInterfaceType,jdbcType=VARCHAR},
+            </if>
+            <if test="payMode != null">
+                PAY_MODE = #{payMode,jdbcType=VARCHAR},
+            </if>
+            <if test="checkLevel != null">
+                CHECK_LEVEL = #{checkLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="continuityFailNum != null">
+                CONTINUITY_FAIL_NUM = #{continuityFailNum,jdbcType=INTEGER},
+            </if>
+            <if test="certificateTypes != null">
+                CERTIFICATE_TYPES = #{certificateTypes,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                STATE = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="signOrder != null">
+                SIGN_ORDER = #{signOrder,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="payLogFactory != null">
+                PAY_LOG_FACTORY = #{payLogFactory,jdbcType=VARCHAR},
+            </if>
+            <if test="payLogStrategy != null">
+                PAY_LOG_STRATEGY = #{payLogStrategy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createAuthor != null">
+                CREATE_AUTHOR = #{createAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAuthor != null">
+                UPDATE_AUTHOR = #{updateAuthor,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where CHANNEL_NO = #{channelNo,jdbcType=VARCHAR}
+    </update>
 
 
 </mapper>

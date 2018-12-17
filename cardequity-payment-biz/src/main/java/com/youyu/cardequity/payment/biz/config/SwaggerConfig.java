@@ -2,7 +2,6 @@ package com.youyu.cardequity.payment.biz.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -20,7 +19,7 @@ import static springfox.documentation.spi.DocumentationType.SWAGGER_2;
  */
 @Configuration
 @EnableSwagger2
-@Profile({"dev", "test"})
+//@Profile({"dev", "test"})
 public class SwaggerConfig {
 
     @Bean

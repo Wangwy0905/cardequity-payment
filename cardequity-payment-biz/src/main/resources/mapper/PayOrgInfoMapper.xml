@@ -14,6 +14,37 @@
         <result column=" UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
     </resultMap>
 
+    <sql id="Base_Column_List">
+        PAY_ORG_NO, PAY_ORG_NAME, REMARK, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+    </sql>
+
+    <select id="getByEntity" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayOrgInfo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from TB_PAY_ORG_INFO
+        <where>
+            <if test="id != null">
+                PAY_ORG_NO = #{payOrgNo,jdbcType=VARCHAR}
+            </if>
+            <if test="payOrgName != null">
+                and PAY_ORG_NAME = #{payOrgName,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null">
+                and REMARK = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null">
+                and UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createAuthor != null">
+                and CREATE_AUTHOR = #{createAuthor,jdbcType=VARCHAR}
+            </if>
+            <if test="updateAuthor != null">
+                and UPDATE_AUTHOR = #{updateAuthor,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
     <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayOrgInfo">
         insert into TB_PAY_ORG_INFO
         <trim prefix="(" suffix=")" suffixOverrides=",">

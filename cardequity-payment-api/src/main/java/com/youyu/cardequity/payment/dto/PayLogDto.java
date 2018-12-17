@@ -1,6 +1,6 @@
 package com.youyu.cardequity.payment.dto;
 
-import com.youyu.common.dto.BaseDto;
+import com.youyu.cardequity.common.base.base.BasePageQuery;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -16,7 +16,7 @@ import java.time.LocalDate;
  */
 @Data
 @ApiModel
-public class PayLogDto extends BaseDto<String> {
+public class PayLogDto extends BasePageQuery<String> {
 
     private static final long serialVersionUID = 1340491747252445259L;
 
