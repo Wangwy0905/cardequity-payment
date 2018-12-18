@@ -1,10 +1,13 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
-import com.youyu.cardequity.payment.biz.component.factory.PayLogFactory;
-import com.youyu.cardequity.payment.biz.component.strategy.PayLogStrategy;
+import com.youyu.cardequity.payment.biz.component.factory.paylog.PayLogFactory;
+import com.youyu.cardequity.payment.biz.component.factory.paytraderefund.PayTradeRefundFactory;
+import com.youyu.cardequity.payment.biz.component.strategy.paylog.PayLogStrategy;
+import com.youyu.cardequity.payment.biz.component.strategy.paytraderefund.PayTradeRefundStrategy;
 import com.youyu.cardequity.payment.biz.enums.PayChannelStateEnum;
 import com.youyu.cardequity.payment.dto.PayChannelInfoDto;
 import com.youyu.cardequity.payment.dto.PayLogDto;
+import com.youyu.cardequity.payment.dto.TradeRefundApplyDto;
 import com.youyu.common.entity.BaseEntity;
 import com.youyu.common.exception.BizException;
 import lombok.Getter;
@@ -99,7 +102,7 @@ public class PayChannelInfo extends BaseEntity<String> {
     private String remark;
 
     /**
-     * 工厂策略
+     * 支付工厂
      */
     @Column(name = "PAY_LOG_FACTORY")
     private PayLogFactory payLogFactory;
@@ -109,6 +112,18 @@ public class PayChannelInfo extends BaseEntity<String> {
      */
     @Column(name = "PAY_LOG_STRATEGY")
     private PayLogStrategy payLogStrategy;
+
+    /**
+     * 退款工厂
+     */
+    @Column(name = "PAY_TRADE_REFUND_FACTORY")
+    private PayTradeRefundFactory payTradeRefundFactory;
+
+    /**
+     * 退款策略
+     */
+    @Column(name = "PAY_TRADE_REFUND_STRATEGY")
+    private PayTradeRefundStrategy payTradeRefundStrategy;
 
     public PayChannelInfo() {
     }
@@ -131,12 +146,18 @@ public class PayChannelInfo extends BaseEntity<String> {
 
     public PayLog createPayLog(PayLogDto payLogDto) {
         checkState();
-        return payLogFactory.create(payLogDto);
+        return payLogFactory.createPayLog(payLogDto);
     }
 
     public <T> T doPay(PayLog payLog) {
         checkState();
         return payLogStrategy.executePay(payLog);
+    }
+
+    public PayTradeRefund createPayTradeRefundAndRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
+        checkState();
+        PayTradeRefund payTradeRefund = payTradeRefundFactory.createPayTradeRefund(tradeRefundApplyDto, payLog);
+        return payTradeRefundStrategy.executePayTradeRefund(payTradeRefund);
     }
 
     private void checkState() {
@@ -157,7 +178,6 @@ public class PayChannelInfo extends BaseEntity<String> {
     }
 
     public String getPayLogFactoryNumber() {
-
         return getNumber(payLogFactory);
     }
 

@@ -58,7 +58,7 @@ public interface PayLogMapper {
     int insertSelective(PayLog payLog);
 
     /**
-     * 根据订单单号查询
+     * 根据订单单号查询和路由标志
      *
      * @param appSheetSerialNo
      * @param routeVoIdFlag

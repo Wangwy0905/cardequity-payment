@@ -1,4 +1,4 @@
-package com.youyu.cardequity.payment.biz.component.factory;
+package com.youyu.cardequity.payment.biz.component.factory.paylog;
 
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class PayLogFactory4Alipay extends PayLogFactory {
 
     @Override
-    public PayLog create(PayLogDto payLogDto) {
+    public PayLog createPayLog(PayLogDto payLogDto) {
         return new PayLog4Alipay(payLogDto);
     }
 }

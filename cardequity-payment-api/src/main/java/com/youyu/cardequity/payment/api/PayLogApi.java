@@ -1,7 +1,7 @@
 package com.youyu.cardequity.payment.api;
 
-import com.youyu.cardequity.payment.dto.AlipayPrepayment4PayLogDto;
 import com.youyu.cardequity.payment.dto.PayLogDto;
+import com.youyu.cardequity.payment.dto.AlipayPrepayment4PayLogDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
 import com.youyu.common.api.Result;

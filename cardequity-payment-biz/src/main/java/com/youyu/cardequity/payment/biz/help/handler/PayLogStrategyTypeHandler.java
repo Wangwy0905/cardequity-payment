@@ -1,7 +1,7 @@
 package com.youyu.cardequity.payment.biz.help.handler;
 
 import com.youyu.cardequity.common.orm.mybatis.handler.BaseString2StatusStrategyTypeHandler;
-import com.youyu.cardequity.payment.biz.component.strategy.PayLogStrategy;
+import com.youyu.cardequity.payment.biz.component.strategy.paylog.PayLogStrategy;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;

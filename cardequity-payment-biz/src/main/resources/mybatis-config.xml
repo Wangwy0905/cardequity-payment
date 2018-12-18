@@ -58,10 +58,10 @@
 
     <typeHandlers>
         <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogFactoryTypeHandler"
-                     javaType="com.youyu.cardequity.payment.biz.component.factory.PayLogFactory"/>
+                     javaType="com.youyu.cardequity.payment.biz.component.factory.paylog.PayLogFactory"/>
 
         <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogStrategyTypeHandler"
-                     javaType="com.youyu.cardequity.payment.biz.component.strategy.PayLogStrategy"/>
+                     javaType="com.youyu.cardequity.payment.biz.component.strategy.paylog.PayLogStrategy"/>
 
         <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogStatusTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.status.PayLogState"/>

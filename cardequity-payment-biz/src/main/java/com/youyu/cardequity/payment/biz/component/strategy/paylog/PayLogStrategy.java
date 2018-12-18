@@ -1,4 +1,4 @@
-package com.youyu.cardequity.payment.biz.component.strategy;
+package com.youyu.cardequity.payment.biz.component.strategy.paylog;
 
 
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;

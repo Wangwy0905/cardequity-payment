@@ -1,4 +1,4 @@
-package com.youyu.cardequity.payment.biz.component.strategy;
+package com.youyu.cardequity.payment.biz.component.strategy.paylog;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
@@ -44,7 +44,7 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
             String syncResponseBody = alipayTradeAppPayResponse.getBody();
             return payLog4Alipay.prepaymentSucc(syncResponseBody);
         } catch (AlipayApiException ex) {
-            log.error("调用支付宝预支付的支付编号[{}]和异常信息:[{}]", payLog4Alipay.getAppSheetSerialNo(), getFullStackTrace(ex));
+            log.error("调用支付宝预支付的支付编号:[{}]和异常信息:[{}]", payLog4Alipay.getId(), getFullStackTrace(ex));
             return payLog4Alipay.prepaymentFail("调用支付宝预支付信息异常!");
         }
     }

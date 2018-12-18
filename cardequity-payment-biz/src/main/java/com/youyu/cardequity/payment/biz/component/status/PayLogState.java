@@ -69,4 +69,8 @@ public abstract class PayLogState {
     public boolean canRepetitionPay() {
         return true;
     }
+
+    public boolean createPayTradeRefund() {
+        return false;
+    }
 }

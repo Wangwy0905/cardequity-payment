@@ -34,4 +34,9 @@ public class PayLogState4PaymentSucc extends PayLogState {
     public boolean canRepetitionPay() {
         return false;
     }
+
+    @Override
+    public boolean createPayTradeRefund() {
+        return true;
+    }
 }
