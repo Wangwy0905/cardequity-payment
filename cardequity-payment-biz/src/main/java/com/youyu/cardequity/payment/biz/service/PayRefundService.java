@@ -15,6 +15,6 @@ public interface PayRefundService {
      *
      * @param tradeRefundApplyDto
      */
-    void payTradeRefund(TradeRefundApplyDto tradeRefundApplyDto);
+    void tradeRefund(TradeRefundApplyDto tradeRefundApplyDto);
 
 }

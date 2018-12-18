@@ -34,10 +34,10 @@ public enum PaymentResultCodeEnum implements CardequityIBaseResultCode {
     ORDER_ITEM_MAIN_TYPE_CANNOT_EMPTY("0005", "订单商品主类型不能为空,且只能是0:虚拟类商品或者1:实物类商品!"),
     PAYMENT_CHANNEL_STATE_NUMERATION_ABNORMAL("0006", "未查询到支付渠道状态code:{0}所对应的支付渠道状态枚举!"),
     PAYMENT_CHANNEL_STATUS_IS_ABNORMAL("0007", "支付渠道:{0}的支付状态:{1}不能进行支付操作!"),
-    ALIPAY_TRANSACTION_CLOSED_EXCEPTION("0008", "订单号:{0}对应的支付宝交易关闭异常!"),
-    ALIPAY_TRANSACTIONS_CLOSED_FAIL("0009", "订单号:{0}对应的支付宝交易关闭失败!"),
-    PAYMENT_SUCCESS_ORDER_CANNOT_CLOSED("0010", "支付成功的订单号:{0}不能关闭!"),
-    PAYMENT_SUCCESS_ORDER_CANNOT_REPETITION_PAY("0011", "支付成功的订单号:{0}不能再次支付!"),
+    ALIPAY_TRANSACTION_CLOSED_EXCEPTION("0008", "订单对应的支付宝交易关闭异常!"),
+    ALIPAY_TRANSACTIONS_CLOSED_FAIL("0009", "订单对应的交易关闭失败!"),
+    PAYMENT_SUCCESS_ORDER_CANNOT_CLOSED("0010", "支付成功的订单不能关闭!"),
+    PAYMENT_SUCCESS_ORDER_CANNOT_REPETITION_PAY("0011", "支付成功的订单号不能再次支付!"),
     REFUND_ORDER_NO_PAYMENT_ABNORMAL("0012", "退款原支付订单支付信息异常!"),
     SUCCESS_ORDER_PAYMENT_CAN_REFUND("0013", "支付成功的订单才可以退款!");
 

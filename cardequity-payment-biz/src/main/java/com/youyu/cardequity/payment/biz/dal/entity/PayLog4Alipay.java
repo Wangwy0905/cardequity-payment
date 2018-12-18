@@ -3,9 +3,13 @@ package com.youyu.cardequity.payment.biz.dal.entity;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.response.AlipayTradeCloseResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
-import com.youyu.cardequity.common.base.util.StringUtil;
-import com.youyu.cardequity.payment.dto.AlipayPrepayment4PayLogDto;
+import com.youyu.cardequity.common.base.util.MoneyUtil;
+import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayAsyncMessage;
+import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipaySyncMessage;
+import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayTradeClose;
+import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4TimeAlipayTradeQuery;
 import com.youyu.cardequity.payment.dto.PayLogDto;
+import com.youyu.cardequity.payment.dto.TradeCloseDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageResponseDto;
 import com.youyu.common.exception.BizException;
@@ -20,11 +24,11 @@ import java.util.Map;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.alipay.api.internal.util.AlipaySignature.rsaCheckV1;
-import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter.copyProperties;
+import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.CommonUtils.matches;
-import static com.youyu.cardequity.common.base.util.MoneyUtil.*;
-import static com.youyu.cardequity.common.base.util.StringUtil.checkParameterGtLength;
-import static com.youyu.cardequity.common.base.util.StringUtil.containParamByArray;
+import static com.youyu.cardequity.common.base.util.MoneyUtil.betweenLeftRight;
+import static com.youyu.cardequity.common.base.util.MoneyUtil.string2BigDecimal;
+import static com.youyu.cardequity.common.base.util.StringUtil.*;
 import static com.youyu.cardequity.payment.biz.help.constant.Constant.*;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.*;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
@@ -86,14 +90,23 @@ public class PayLog4Alipay extends PayLog {
         this.alipayGoodsType = payLogDto.getGoodsType();
     }
 
-    public AlipayPrepayment4PayLogDto prepaymentSucc(String syncResponseBody) {
-        setPrepaymentProperties(syncResponseBody);
-        return copyProperties(this, AlipayPrepayment4PayLogDto.class);
+    public void alipaySyncMessage(AlipaySyncMessageDto alipaySyncMessageDto) {
+        getBeanByClass(PayLogCommond4AlipaySyncMessage.class).executeCmd(this, alipaySyncMessageDto);
     }
 
-    public AlipayPrepayment4PayLogDto prepaymentFail(String syncResponseBody) {
-        setPrepaymentProperties(syncResponseBody);
-        return null;
+    public String alipayAsyncMessage(Map<String, String> params2Map) {
+        getBeanByClass(PayLogCommond4AlipayAsyncMessage.class).executeCmd(this, params2Map);
+        return alipayOurResponse;
+    }
+
+    public void prepaymentSucc(String syncResponseBody) {
+        this.respInfo = syncResponseBody;
+        this.state = state.paymenting();
+    }
+
+    public void prepaymentFail(String syncResponseBody) {
+        this.remark = syncResponseBody;
+        this.state = state.paymenting();
     }
 
     public void analysisAlipaySycnMessage(AlipaySyncMessageDto alipaySyncMessageDto, String sellerId, String appId) {
@@ -111,23 +124,46 @@ public class PayLog4Alipay extends PayLog {
         this.state = state.paymentFail();*/
     }
 
-    public String analysisAlipayAsyncMessage(Map<String, String> params2Map, String sellerId, String appId, String alipayPublicKey) {
-        setProperties(params2Map);
+    public void analysisAlipayAsyncMessage(Map<String, String> params2Map, String sellerId, String appId, String alipayPublicKey) {
+        this.alipayAsyncMessage = toJSONString(params2Map);
+        this.thirdSerialNo = params2Map.get(ALIPAY_TRADE_NO);
+        this.alipayTradeStatus = params2Map.get(ALIPAY_TRADE_STATUS);
+        this.state = matches(alipayTradeStatus, ALIPAY_TRADE_FINISHED, ALIPAY_TRADE_SUCCESS) ? state.paymentSucc() : state.paymentFail();
         this.alipayOurResponse = getAlipayOurResponse(params2Map, sellerId, appId, alipayPublicKey);
-        return alipayOurResponse;
     }
 
     public void analysisAlipayTradeClose(AlipayTradeCloseResponse alipayTradeCloseResponse) {
         this.alipayTradeCloseMessage = toJSONString(alipayTradeCloseResponse);
+        this.tradeCloseFlag = alipayTradeCloseResponse.isSuccess();
     }
 
-    public void analysisAlipayTradeQueryResponse(AlipayTradeQueryResponse alipayTradeQueryResponse) {
+    public boolean analysisAlipayTradeQueryResponse(AlipayTradeQueryResponse alipayTradeQueryResponse) {
         this.alipayTradeQueryMessage = toJSONString(alipayTradeQueryResponse);
+        boolean tradeQueryFlag = alipayTradeQueryResponse.isSuccess();
+        if (tradeQueryFlag) {
+            this.alipayTradeStatus = alipayTradeQueryResponse.getTradeStatus();
+            this.state = matches(alipayTradeStatus, ALIPAY_TRADE_FINISHED, ALIPAY_TRADE_SUCCESS) ? state.paymentSucc() : state.paymentFail();
+        }
+        return tradeQueryFlag;
     }
 
-    public void parseTradeStatus(AlipayTradeQueryResponse alipayTradeQueryResponse) {
-        this.alipayTradeStatus = alipayTradeQueryResponse.getTradeStatus();
-        this.state = matches(alipayTradeStatus, ALIPAY_TRADE_FINISHED, ALIPAY_TRADE_SUCCESS) ? state.paymentSucc() : state.paymentFail();
+    @Override
+    public boolean tradeClose(TradeCloseDto tradeCloseDto) {
+        if (!canPayTradeClose()) {
+            throw new BizException(PAYMENT_SUCCESS_ORDER_CANNOT_CLOSED);
+        }
+
+        getBeanByClass(PayLogCommond4AlipayTradeClose.class).executeCmd(this, tradeCloseDto);
+        return tradeCloseFlag;
+    }
+
+    @Override
+    public void tradeQuery() {
+        if (!canPayTradeQuery() || eq(alipayOurResponse, ALIPAY_ASYNC_RESPONSE_SUCC)) {
+            return;
+        }
+
+        getBeanByClass(PayLogCommond4TimeAlipayTradeQuery.class).executeCmd(this, null);
     }
 
     private void checkParameters(PayLogDto payLogDto) {
@@ -175,29 +211,17 @@ public class PayLog4Alipay extends PayLog {
         }
     }
 
-    private void setPrepaymentProperties(String syncResponseBody) {
-        this.respInfo = syncResponseBody;
-        this.state = state.paymenting();
-    }
-
-    private void setProperties(Map<String, String> params2Map) {
-        this.alipayAsyncMessage = toJSONString(params2Map);
-        this.thirdSerialNo = params2Map.get(ALIPAY_TRADE_NO);
-        this.alipayTradeStatus = params2Map.get(ALIPAY_TRADE_STATUS);
-        this.state = matches(alipayTradeStatus, ALIPAY_TRADE_FINISHED, ALIPAY_TRADE_SUCCESS) ? state.paymentSucc() : state.paymentFail();
-    }
-
     private boolean isCorrectAsyncMessage(Map<String, String> params2Map, String sellerId, String appId) {
         String responseTotalAmount = params2Map.get(ALIPAY_TOTAL_AMOUNT);
-        if (!eq(string2BigDecimal(responseTotalAmount), occurBalance)) {
+        if (!MoneyUtil.eq(string2BigDecimal(responseTotalAmount), occurBalance)) {
             return false;
         }
         String responseSellerId = params2Map.get(ALIPAY_SELLER_ID);
-        if (!StringUtil.eq(responseSellerId, sellerId)) {
+        if (!eq(responseSellerId, sellerId)) {
             return false;
         }
         String responseAppId = params2Map.get(ALIPAY_APP_ID);
-        if (!StringUtil.eq(responseAppId, appId)) {
+        if (!eq(responseAppId, appId)) {
             return false;
         }
 
@@ -205,13 +229,13 @@ public class PayLog4Alipay extends PayLog {
     }
 
     private boolean isCorrectSyncMessage(AlipaySyncMessageResponseDto alipayTradeAppPayResponse, String sellerId, String appId) {
-        if (!eq(this.occurBalance, string2BigDecimal(alipayTradeAppPayResponse.getTotalAmount()))) {
+        if (!MoneyUtil.eq(this.occurBalance, string2BigDecimal(alipayTradeAppPayResponse.getTotalAmount()))) {
             return false;
         }
-        if (!StringUtil.eq(sellerId, alipayTradeAppPayResponse.getSellerId())) {
+        if (!eq(sellerId, alipayTradeAppPayResponse.getSellerId())) {
             return false;
         }
-        if (!StringUtil.eq(appId, alipayTradeAppPayResponse.getAppId())) {
+        if (!eq(appId, alipayTradeAppPayResponse.getAppId())) {
             return false;
         }
 

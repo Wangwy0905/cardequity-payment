@@ -1,9 +1,11 @@
 package com.youyu.cardequity.payment.biz.component.command;
 
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
+import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,23 +24,29 @@ public class PayLogCommond4AlipaySyncMessage extends PayLogCommond {
     @Value("${alipay.appId:}")
     private String appId;
 
+    @Autowired
+    private PayLogMapper payLogMapper;
+
     /**
      * @param payLog
      * @param t      支付宝同步参数:AlipaySyncMessageDto
      * @param <T>
-     * @param <R>
      * @return
      */
     @Override
-    public <T, R> R executeCmd(PayLog payLog, T t) {
+    public <T> void executeCmd(PayLog payLog, T t) {
         AlipaySyncMessageDto alipaySyncMessageDto = (AlipaySyncMessageDto) t;
-//      verifySignatur(alipaySyncMessageDto);
+        verifySignatur(alipaySyncMessageDto);
         PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLog;
         payLog4Alipay.analysisAlipaySycnMessage(alipaySyncMessageDto, sellerId, appId);
-        return null;
+        payLogMapper.updateAlipaySyncMessage(payLog4Alipay);
     }
 
+    /**
+     * 验证签名,暂时不验证(支付宝提示忽略)
+     *
+     * @param alipaySyncMessageDto
+     */
     private void verifySignatur(AlipaySyncMessageDto alipaySyncMessageDto) {
-        // TODO: 2018/12/12  验证签名,暂时不验证(支付宝提示忽略)
     }
 }

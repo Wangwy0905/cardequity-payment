@@ -1,9 +1,9 @@
 package com.youyu.cardequity.payment.api;
 
 import com.youyu.cardequity.payment.dto.PayLogDto;
-import com.youyu.cardequity.payment.dto.AlipayPrepayment4PayLogDto;
+import com.youyu.cardequity.payment.dto.PayLogResponseDto;
+import com.youyu.cardequity.payment.dto.TradeCloseDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
-import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
 import com.youyu.common.api.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,14 +26,14 @@ import javax.servlet.http.HttpServletRequest;
 public interface PayLogApi {
 
     /**
-     * 支付宝预支付接口
+     * 支付接口
      *
      * @param payLogDto
      * @return
      */
-    @ApiOperation(value = "支付宝预支付")
-    @PostMapping(value = "/alipay")
-    Result<AlipayPrepayment4PayLogDto> alipay(@RequestBody PayLogDto payLogDto);
+    @ApiOperation(value = "支付")
+    @PostMapping(value = "/pay")
+    Result<PayLogResponseDto> pay(@RequestBody PayLogDto payLogDto);
 
     /**
      * 支付宝同步通知结果
@@ -56,22 +56,22 @@ public interface PayLogApi {
     String alipayAsyncMessage(HttpServletRequest httpServletRequest);
 
     /**
-     * 支付宝统一收单交易关闭接口
+     * 交易关闭接口
      *
-     * @param alipayTradeCloseDto
+     * @param tradeCloseDto
      * @return
      */
-    @ApiOperation(value = "支付宝统一收单交易关闭接口")
-    @PostMapping(value = "/alipayTradeClose")
-    Result alipayTradeClose(@RequestBody AlipayTradeCloseDto alipayTradeCloseDto);
+    @ApiOperation(value = "交易关闭接口")
+    @PostMapping(value = "/tradeClose")
+    Result tradeClose(@RequestBody TradeCloseDto tradeCloseDto);
 
     /**
-     * 定时任务调用:支付宝统一收单线下交易查询接口,主要查询阈值内未收到支付异步通知
+     * 定时任务调用:交易查询接口,主要查询阈值内未收到支付异步通知
      *
      * @return
      */
-    @ApiOperation(value = "定时任务调用:支付宝统一收单线下交易查询接口")
-    @PostMapping(value = "/timeAlipayTradeQuery")
-    Result timeAlipayTradeQuery();
+    @ApiOperation(value = "定时任务调用:交易查询接口")
+    @PostMapping(value = "/timeTradeQuery")
+    Result timeTradeQuery();
 
 }

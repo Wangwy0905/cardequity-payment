@@ -20,8 +20,8 @@ import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
  */
 @Getter
 @Setter
-@Table(name = "TB_PAY_TRADE_REFUND")
-public class PayTradeRefund extends BaseEntity<String> {
+@Table(name = "TB_PAY_REFUND")
+public class PayRefund extends BaseEntity<String> {
 
     /**
      * 主键
@@ -78,10 +78,10 @@ public class PayTradeRefund extends BaseEntity<String> {
     @Column(name = "状态")
     protected String status;
 
-    public PayTradeRefund() {
+    public PayRefund() {
     }
 
-    public PayTradeRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
+    public PayRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
         this.id = uuid4NoRail();
         this.payLogId = payLog.getId();
         this.appSheetSerialNo = tradeRefundApplyDto.getAppSheetSerialNo();

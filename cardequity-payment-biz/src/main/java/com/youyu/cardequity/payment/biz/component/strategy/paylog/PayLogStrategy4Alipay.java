@@ -9,7 +9,6 @@ import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
 import com.youyu.cardequity.payment.biz.component.properties.AlipayProperties;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
-import com.youyu.cardequity.payment.dto.AlipayPrepayment4PayLogDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,16 +35,16 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
     private AlipayClient alipayClient;
 
     @Override
-    public AlipayPrepayment4PayLogDto executePay(PayLog payLog) {
+    public void executePay(PayLog payLog) {
         PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLog;
         AlipayTradeAppPayRequest alipayTradeAppPayRequest = getAlipayTradeAppPayRequest(payLog4Alipay);
         try {
             AlipayTradeAppPayResponse alipayTradeAppPayResponse = alipayClient.sdkExecute(alipayTradeAppPayRequest);
             String syncResponseBody = alipayTradeAppPayResponse.getBody();
-            return payLog4Alipay.prepaymentSucc(syncResponseBody);
+            payLog4Alipay.prepaymentSucc(syncResponseBody);
         } catch (AlipayApiException ex) {
             log.error("调用支付宝预支付的支付编号:[{}]和异常信息:[{}]", payLog4Alipay.getId(), getFullStackTrace(ex));
-            return payLog4Alipay.prepaymentFail("调用支付宝预支付信息异常!");
+            payLog4Alipay.prepaymentFail("调用支付宝预支付信息异常!");
         }
     }
 

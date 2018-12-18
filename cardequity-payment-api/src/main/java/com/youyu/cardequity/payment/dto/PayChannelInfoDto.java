@@ -49,10 +49,16 @@ public class PayChannelInfoDto extends BasePageQuery<String> {
     private String remark;
 
     @ApiModelProperty(value = "支付工厂:1:支付宝")
-    private String payLogFactoryNumber;
+    private String payLogFactoryNo;
 
     @ApiModelProperty(value = "支付策略:1:支付宝")
-    private String payStrategyNumber;
+    private String payLogStrategyNo;
+
+    @ApiModelProperty(value = "退款工厂:1:支付宝")
+    private String payTradeRefundFactoryNo;
+
+    @ApiModelProperty(value = "退款策略:1:支付宝")
+    private String payTradeRefundStrategyNo;
 
     @Override
     public String getId() {

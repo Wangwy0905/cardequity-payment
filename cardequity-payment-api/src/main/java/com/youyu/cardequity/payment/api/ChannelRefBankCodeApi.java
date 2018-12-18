@@ -16,4 +16,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "cardequity-payment")
 @RequestMapping(path = "/channelRefBankCode")
 public interface ChannelRefBankCodeApi extends BaseApi<ChannelRefBankCodeDto> {
+
 }

@@ -50,6 +50,12 @@ public interface PayLogMapper {
     void updateAlipayTradeClose(PayLog payLog);
 
     /**
+     * 支付宝交易查询相关信息:主要更新查询消息状态和交易状态
+     * @param payLog
+     */
+    void updateAlipayTradeQuery(PayLog payLog);
+
+    /**
      * 插入
      *
      * @param payLog
@@ -71,11 +77,9 @@ public interface PayLogMapper {
      *
      * @param alipayAsyncNotifyThresholdStart 时间阈值开始:[当前时间-alipayAsyncNotifyThresholdStart分钟]
      * @param alipayAsyncNotifyThresholdEnd   时间阈值结束:[当前时间-alipayAsyncNotifyThresholdEnd分钟]
-     * @param alipayPayType                   支付类型
-     * @param alipayAsyncResponseSucc         异步通知响应不等于:!=success
      * @return
      */
-    List<PayLog> getByTimeAlipayTradeQuery(@Param("alipayAsyncNotifyThresholdStart") Integer alipayAsyncNotifyThresholdStart, @Param("alipayAsyncNotifyThresholdEnd") Integer alipayAsyncNotifyThresholdEnd, @Param("alipayPayType") String alipayPayType, @Param("alipayAsyncResponseSucc") String alipayAsyncResponseSucc);
+    List<PayLog> getByTimeTradeQuery(@Param("alipayAsyncNotifyThresholdStart") Integer alipayAsyncNotifyThresholdStart, @Param("alipayAsyncNotifyThresholdEnd") Integer alipayAsyncNotifyThresholdEnd);
 
     /**
      * 根据单号更新支付路由信息

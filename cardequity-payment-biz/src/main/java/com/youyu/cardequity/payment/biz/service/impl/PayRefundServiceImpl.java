@@ -3,7 +3,7 @@ package com.youyu.cardequity.payment.biz.service.impl;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.dao.PayRefundMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
-import com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund;
+import com.youyu.cardequity.payment.biz.dal.entity.PayRefund;
 import com.youyu.cardequity.payment.biz.service.PayRefundService;
 import com.youyu.cardequity.payment.dto.TradeRefundApplyDto;
 import com.youyu.common.exception.BizException;
@@ -29,9 +29,9 @@ public class PayRefundServiceImpl implements PayRefundService {
     private PayRefundMapper payRefundMapper;
 
     @Override
-    public void payTradeRefund(TradeRefundApplyDto tradeRefundApplyDto) {
+    public void tradeRefund(TradeRefundApplyDto tradeRefundApplyDto) {
         PayLog payLog = getPayLog(tradeRefundApplyDto);
-        PayTradeRefund payRefund = payLog.createPayTradeRefund(tradeRefundApplyDto);
+        PayRefund payRefund = payLog.createPayRefund(tradeRefundApplyDto);
     }
 
     private PayLog getPayLog(TradeRefundApplyDto tradeRefundApplyDto) {

@@ -2,8 +2,8 @@ package com.youyu.cardequity.payment.biz.component.factory.paytraderefund;
 
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
-import com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund;
-import com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund4Alipay;
+import com.youyu.cardequity.payment.biz.dal.entity.PayRefund;
+import com.youyu.cardequity.payment.biz.dal.entity.PayRefund4Alipay;
 import com.youyu.cardequity.payment.dto.TradeRefundApplyDto;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class PayTradeRefundFactory4Alipay extends PayTradeRefundFactory {
 
     @Override
-    public PayTradeRefund createPayTradeRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
-        return new PayTradeRefund4Alipay(tradeRefundApplyDto, payLog);
+    public PayRefund createPayRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
+        return new PayRefund4Alipay(tradeRefundApplyDto, payLog);
     }
 }

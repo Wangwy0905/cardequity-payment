@@ -1,10 +1,10 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
-import com.youyu.cardequity.payment.biz.component.command.PayLogCommond;
 import com.youyu.cardequity.payment.biz.component.status.PayLogState;
 import com.youyu.cardequity.payment.biz.component.status.PayLogState4NonPayment;
 import com.youyu.cardequity.payment.biz.dal.dao.PayChannelInfoMapper;
 import com.youyu.cardequity.payment.dto.PayLogDto;
+import com.youyu.cardequity.payment.dto.TradeCloseDto;
 import com.youyu.cardequity.payment.dto.TradeRefundApplyDto;
 import com.youyu.common.entity.BaseEntity;
 import com.youyu.common.exception.BizException;
@@ -172,6 +172,12 @@ public class PayLog extends BaseEntity<String> {
     @Column(name = "TYPE")
     protected String type;
 
+    /**
+     * true:关闭成功
+     */
+    @Column(name = "TRADE_CLOSE_FLAG")
+    protected Boolean tradeCloseFlag;
+
     public PayLog() {
 
     }
@@ -190,35 +196,26 @@ public class PayLog extends BaseEntity<String> {
         this.state = getBeanByClass(PayLogState4NonPayment.class);
         this.payChannelNo = payLogDto.getPayChannelNo();
         this.routeVoIdFlag = "0";
+        this.tradeCloseFlag = false;
     }
 
-    public <T> T pay() {
-        PayChannelInfoMapper payChannelInfoMapper = getBeanByClass(PayChannelInfoMapper.class);
-        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payChannelNo);
-        return payChannelInfo.doPay(this);
+    public boolean tradeClose(TradeCloseDto tradeCloseDto) {
+        throw new RuntimeException("该交易不支持关闭!");
     }
 
-    /**
-     * @param payLogCommond
-     * @param t             针对不同的命令支持不同的参数转化
-     * @param <T>
-     * @param <R>
-     * @return
-     */
-    public <T, R> R doCommand(PayLogCommond payLogCommond, T t) {
-        R response = payLogCommond.executeCmd(this, t);
-        return response;
+    public void tradeQuery() {
+        throw new RuntimeException("该交易不支持查询!");
     }
 
-    public PayTradeRefund createPayTradeRefund(TradeRefundApplyDto tradeRefundApplyDto) {
-        if (!state.createPayTradeRefund()) {
+    public PayRefund createPayRefund(TradeRefundApplyDto tradeRefundApplyDto) {
+        if (!state.createPayRefund()) {
             throw new BizException(SUCCESS_ORDER_PAYMENT_CAN_REFUND);
         }
 
         PayChannelInfoMapper payChannelInfoMapper = getBeanByClass(PayChannelInfoMapper.class);
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payChannelNo);
 
-        return payChannelInfo.createPayTradeRefundAndRefund(tradeRefundApplyDto, this);
+        return payChannelInfo.createPayRefundAndRefund(tradeRefundApplyDto, this);
     }
 
     public boolean canPayTradeQuery() {

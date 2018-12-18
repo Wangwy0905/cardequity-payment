@@ -15,8 +15,7 @@ public abstract class PayLogStrategy {
      * 支付策略
      *
      * @param payLog
-     * @param <T>
      * @return
      */
-    public abstract <T> T executePay(PayLog payLog);
+    public abstract void executePay(PayLog payLog);
 }

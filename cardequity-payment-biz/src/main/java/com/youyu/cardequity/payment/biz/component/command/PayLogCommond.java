@@ -16,8 +16,7 @@ public abstract class PayLogCommond {
      * @param payLog
      * @param t
      * @param <T>
-     * @param <R>
      * @return
      */
-    public abstract <T, R> R executeCmd(PayLog payLog, T t);
+    public abstract <T> void executeCmd(PayLog payLog, T t);
 }

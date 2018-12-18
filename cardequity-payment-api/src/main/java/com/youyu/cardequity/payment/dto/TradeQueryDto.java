@@ -1,4 +1,4 @@
-package com.youyu.cardequity.payment.dto.alipay;
+package com.youyu.cardequity.payment.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,11 +10,11 @@ import java.io.Serializable;
  * @author panqingqing
  * @version v1.0
  * @date 2018年12月8日 下午10:00:00
- * @work 支付宝交易查询参数
+ * @work 交易查询参数
  */
 @Data
 @ApiModel
-public class AlipayTradeQueryDto implements Serializable {
+public class TradeQueryDto implements Serializable {
 
     private static final long serialVersionUID = 1778704493766074533L;
 

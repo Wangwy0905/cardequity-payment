@@ -70,7 +70,7 @@ public abstract class PayLogState {
         return true;
     }
 
-    public boolean createPayTradeRefund() {
+    public boolean createPayRefund() {
         return false;
     }
 }

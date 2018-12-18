@@ -1,11 +1,10 @@
 package com.youyu.cardequity.payment.biz.service;
 
-import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.dto.PayLogDto;
+import com.youyu.cardequity.payment.dto.PayLogResponseDto;
+import com.youyu.cardequity.payment.dto.TradeCloseDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
-import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
 import com.youyu.common.api.Result;
-import com.youyu.common.dto.BaseDto;
 
 import java.util.Map;
 
@@ -22,27 +21,9 @@ public interface PayLogService {
      * payChannelNo为空则走三方支付路由,快捷支付,后续考虑
      *
      * @param payLogDto
-     * @param payLogService
-     * @param <T>
      * @return
      */
-    <T extends BaseDto> T alipay(PayLogDto payLogDto, PayLogService payLogService);
-
-    /**
-     * 保存支付数据
-     *
-     * @param payLog
-     */
-    void save(PayLog payLog);
-
-    /**
-     * 执行支付
-     *
-     * @param id
-     * @param <T>
-     * @return
-     */
-    <T extends BaseDto> T doPay(String id);
+    PayLogResponseDto pay(PayLogDto payLogDto);
 
     /**
      * 支付宝同步消息通知
@@ -60,16 +41,16 @@ public interface PayLogService {
     String alipayAsyncMessage(Map<String, String> params2Map);
 
     /**
-     * 支付宝交易关闭
+     * 交易关闭
      *
-     * @param alipayTradeCloseDto
+     * @param tradeCloseDto
      * @return
      */
-    Result alipayTradeClose(AlipayTradeCloseDto alipayTradeCloseDto);
+    Result tradeClose(TradeCloseDto tradeCloseDto);
 
     /**
-     * 定时任务查询支付宝交易
+     * 定时任务查询交易
      */
-    void timeAlipayTradeQuery();
+    void timeTradeQuery();
 
 }

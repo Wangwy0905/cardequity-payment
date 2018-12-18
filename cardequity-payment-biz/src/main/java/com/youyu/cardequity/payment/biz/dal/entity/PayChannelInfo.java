@@ -140,24 +140,24 @@ public class PayChannelInfo extends BaseEntity<String> {
         this.state = payChannelInfoDto.getState();
         this.signOrder = payChannelInfoDto.getSignOrder();
         this.remark = payChannelInfoDto.getRemark();
-        this.payLogFactory = (PayLogFactory) getBeanByName(PayLogFactory.class.getSimpleName() + payChannelInfoDto.getPayLogFactoryNumber());
-        this.payLogStrategy = (PayLogStrategy) getBeanByName(PayLogStrategy.class.getSimpleName() + payChannelInfoDto.getPayStrategyNumber());
+        this.payLogFactory = (PayLogFactory) getBeanByName(PayLogFactory.class.getSimpleName() + payChannelInfoDto.getPayLogFactoryNo());
+        this.payLogStrategy = (PayLogStrategy) getBeanByName(PayLogStrategy.class.getSimpleName() + payChannelInfoDto.getPayLogStrategyNo());
+        this.payTradeRefundFactory = (PayTradeRefundFactory) getBeanByName(PayTradeRefundFactory.class.getSimpleName() + payChannelInfoDto.getPayLogFactoryNo());
+        this.payTradeRefundStrategy = (PayTradeRefundStrategy) getBeanByName(PayTradeRefundStrategy.class.getSimpleName() + payChannelInfoDto.getPayLogFactoryNo());
     }
 
-    public PayLog createPayLog(PayLogDto payLogDto) {
+    public PayLog createPayLogAndPay(PayLogDto payLogDto) {
         checkState();
-        return payLogFactory.createPayLog(payLogDto);
+        PayLog payLog = payLogFactory.createPayLog(payLogDto);
+        payLogStrategy.executePay(payLog);
+        return payLog;
     }
 
-    public <T> T doPay(PayLog payLog) {
+    public PayRefund createPayRefundAndRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
         checkState();
-        return payLogStrategy.executePay(payLog);
-    }
-
-    public PayTradeRefund createPayTradeRefundAndRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
-        checkState();
-        PayTradeRefund payTradeRefund = payTradeRefundFactory.createPayTradeRefund(tradeRefundApplyDto, payLog);
-        return payTradeRefundStrategy.executePayTradeRefund(payTradeRefund);
+        PayRefund payRefund = payTradeRefundFactory.createPayRefund(tradeRefundApplyDto, payLog);
+        payTradeRefundStrategy.executePayTradeRefund(payRefund);
+        return payRefund;
     }
 
     private void checkState() {
@@ -177,11 +177,19 @@ public class PayChannelInfo extends BaseEntity<String> {
         this.channelNo = id;
     }
 
-    public String getPayLogFactoryNumber() {
+    public String getPayLogFactoryNo() {
         return getNumber(payLogFactory);
     }
 
-    public String getPayStrategyNumber() {
+    public String getPayStrategyNo() {
         return getNumber(payLogStrategy);
+    }
+
+    public String getPayTradeRefundFactoryNo() {
+        return getNumber(payTradeRefundFactory);
+    }
+
+    public String getPayTradeRefundStrategyNo() {
+        return getNumber(payTradeRefundStrategy);
     }
 }

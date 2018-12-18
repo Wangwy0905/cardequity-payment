@@ -36,7 +36,7 @@ public class PayLogState4PaymentSucc extends PayLogState {
     }
 
     @Override
-    public boolean createPayTradeRefund() {
+    public boolean createPayRefund() {
         return true;
     }
 }

@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Table(name = "TB_PAY_TRADE_REFUND")
-public class PayTradeRefund4Alipay extends PayTradeRefund {
+public class PayRefund4Alipay extends PayRefund {
 
     /**
      * 支付宝支付宝交易号
@@ -30,10 +30,10 @@ public class PayTradeRefund4Alipay extends PayTradeRefund {
     @Column(name = "ALIPAY_REFUND_RESPONSE")
     private String alipayRefundResponse;
 
-    public PayTradeRefund4Alipay() {
+    public PayRefund4Alipay() {
     }
 
-    public PayTradeRefund4Alipay(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
+    public PayRefund4Alipay(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
         super(tradeRefundApplyDto, payLog);
         this.alipayTradeNo = payLog.getThirdSerialNo();
         this.type = "1";// TODO: 2018/12/18

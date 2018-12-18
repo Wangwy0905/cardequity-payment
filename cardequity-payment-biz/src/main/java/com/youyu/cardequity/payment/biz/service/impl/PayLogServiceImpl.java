@@ -1,24 +1,19 @@
 package com.youyu.cardequity.payment.biz.service.impl;
 
 import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayAsyncMessage;
-import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipaySyncMessage;
-import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayTradeClose;
-import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4TimeAlipayTradeQuery;
 import com.youyu.cardequity.payment.biz.component.properties.AlipayProperties;
 import com.youyu.cardequity.payment.biz.dal.dao.PayChannelInfoMapper;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
-import com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum;
+import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
 import com.youyu.cardequity.payment.biz.service.PayLogService;
-import com.youyu.cardequity.payment.dto.AlipayPrepayment4PayLogDto;
 import com.youyu.cardequity.payment.dto.PayLogDto;
+import com.youyu.cardequity.payment.dto.PayLogResponseDto;
+import com.youyu.cardequity.payment.dto.TradeCloseDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageResultDto;
-import com.youyu.cardequity.payment.dto.alipay.AlipayTradeCloseDto;
 import com.youyu.common.api.Result;
-import com.youyu.common.dto.BaseDto;
-import com.youyu.common.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +24,14 @@ import java.util.Map;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
-import static com.youyu.cardequity.payment.biz.help.constant.Constant.*;
-import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.PAYMENT_SUCCESS_ORDER_CANNOT_REPETITION_PAY;
+import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter.copyProperties;
+import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
+import static com.youyu.cardequity.payment.biz.help.constant.Constant.ALIPAY_ASYNC_RESPONSE_FAIL;
+import static com.youyu.cardequity.payment.biz.help.constant.Constant.ALIPAY_OUT_TRADE_NO;
+import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_TRANSACTIONS_CLOSED_FAIL;
+import static com.youyu.common.api.Result.fail;
+import static com.youyu.common.api.Result.ok;
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
@@ -55,36 +54,14 @@ public class PayLogServiceImpl implements PayLogService {
     private AlipayProperties alipayProperties;
 
     @Override
-    public <T extends BaseDto> T alipay(PayLogDto payLogDto, PayLogService payLogService) {
+    @Transactional
+    public PayLogResponseDto pay(PayLogDto payLogDto) {
         String payChannelNo = payLogDto.getPayChannelNo();
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payChannelNo);
-        PayLog payLog = payChannelInfo.createPayLog(payLogDto);
-        payLogService.save(payLog);
-        return payLogService.doPay(payLog.getId());
-    }
+        PayLog payLog = payChannelInfo.createPayLogAndPay(payLogDto);
 
-    @Override
-    @Transactional
-    public void save(PayLog payLog) {
-        String appSheetSerialNo = payLog.getAppSheetSerialNo();
-        PayLog existPayLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(appSheetSerialNo, RouteVoIdFlagEnum.NORMAL.getCode());
-        if (nonNull(existPayLog)) {
-            if (!existPayLog.canRepetitionPay()) {
-                throw new BizException(PAYMENT_SUCCESS_ORDER_CANNOT_REPETITION_PAY.getCode(), PAYMENT_SUCCESS_ORDER_CANNOT_REPETITION_PAY.getFormatDesc(payLog.getAppSheetSerialNo()));
-            }
-            payLogMapper.updateByAppSheetSerialNoRouteVoIdFlag(appSheetSerialNo, RouteVoIdFlagEnum.FAIL.getCode());
-        }
         payLogMapper.insertSelective(payLog);
-    }
-
-    @Override
-    @Transactional
-    public <T extends BaseDto> T doPay(String id) {
-        PayLog payLog = payLogMapper.getById(id);
-
-        AlipayPrepayment4PayLogDto alipayPrepayment4PayLogDto = payLog.pay();
-        payLogMapper.updateAlipayPrepayment(payLog);
-        return (T) alipayPrepayment4PayLogDto;
+        return copyProperties(payLog, PayLogResponseDto.class);
     }
 
     @Override
@@ -96,9 +73,8 @@ public class PayLogServiceImpl implements PayLogService {
         }
 
         String alipayOutTradeNo = getAlipayOutTradeNo(alipaySyncMessageDto);
-        PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(alipayOutTradeNo, RouteVoIdFlagEnum.NORMAL.getCode());
-        payLog.doCommand(getBeanByClass(PayLogCommond4AlipaySyncMessage.class), alipaySyncMessageDto);
-        payLogMapper.updateAlipaySyncMessage(payLog);
+        PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(alipayOutTradeNo, NORMAL.getCode());
+        payLog4Alipay.alipaySyncMessage(alipaySyncMessageDto);
     }
 
     @Override
@@ -108,30 +84,29 @@ public class PayLogServiceImpl implements PayLogService {
         }
 
         String outTradeNo = params2Map.get(ALIPAY_OUT_TRADE_NO);
-        PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(outTradeNo, RouteVoIdFlagEnum.NORMAL.getCode());
-        if (isNull(payLog)) {
+        PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(outTradeNo, NORMAL.getCode());
+        if (isNull(payLog4Alipay)) {
             return ALIPAY_ASYNC_RESPONSE_FAIL;
         }
 
-        String ourResponse2Alipay = payLog.doCommand(getBeanByClass(PayLogCommond4AlipayAsyncMessage.class), params2Map);
-        payLogMapper.updateAlipayAsyncMessage(payLog);
+        String ourResponse2Alipay = payLog4Alipay.alipayAsyncMessage(params2Map);
         return ourResponse2Alipay;
     }
 
     @Override
-    public Result alipayTradeClose(AlipayTradeCloseDto alipayTradeCloseDto) {
-        String appSheetSerialNo = alipayTradeCloseDto.getAppSheetSerialNo();
-        PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(appSheetSerialNo, RouteVoIdFlagEnum.NORMAL.getCode());
-        Result result = payLog.doCommand(getBeanByClass(PayLogCommond4AlipayTradeClose.class), alipayTradeCloseDto);
-        payLogMapper.updateAlipayTradeClose(payLog);
-        return result;
+    public Result tradeClose(TradeCloseDto tradeCloseDto) {
+        String appSheetSerialNo = tradeCloseDto.getAppSheetSerialNo();
+        PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(appSheetSerialNo, NORMAL.getCode());
+
+        boolean tradeCloseFlag = payLog.tradeClose(tradeCloseDto);
+        return tradeCloseFlag ? ok() : fail(ALIPAY_TRANSACTIONS_CLOSED_FAIL);
     }
 
     @Override
-    public void timeAlipayTradeQuery() {
-        List<PayLog> payLogs = payLogMapper.getByTimeAlipayTradeQuery(alipayProperties.getAsyncNotifyThresholdStart(), alipayProperties.getAsyncNotifyThresholdEnd(), ALIPAY_PAY_TYPE, ALIPAY_ASYNC_RESPONSE_SUCC);
+    public void timeTradeQuery() {
+        List<PayLog> payLogs = payLogMapper.getByTimeTradeQuery(alipayProperties.getAsyncNotifyThresholdStart(), alipayProperties.getAsyncNotifyThresholdEnd());
         for (PayLog payLog : payLogs) {
-            payLog.doCommand(getBeanByClass(PayLogCommond4TimeAlipayTradeQuery.class), null);
+            payLog.tradeQuery();
         }
     }
 

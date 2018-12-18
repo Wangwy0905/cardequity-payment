@@ -23,8 +23,8 @@ public class PayRefundController implements PayRefundApi {
     private PayRefundService payRefundService;
 
     @Override
-    public Result payTradeRefund(@RequestBody TradeRefundApplyDto tradeRefundApplyDto) {
-        payRefundService.payTradeRefund(tradeRefundApplyDto);
+    public Result tradeRefund(@RequestBody TradeRefundApplyDto tradeRefundApplyDto) {
+        payRefundService.tradeRefund(tradeRefundApplyDto);
         return null;
     }
 }

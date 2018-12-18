@@ -27,6 +27,7 @@
         <result column="RESP_CODE" jdbcType="VARCHAR" property="respCode"/>
         <result column="RESP_INFO" jdbcType="VARCHAR" property="respInfo"/>
         <result column="ROUTE_VO_ID_FLAG" jdbcType="VARCHAR" property="routeVoIdFlag"/>
+        <result column="TRADE_CLOSE_FLAG" javaType="BOOLEAN" property="tradeCloseFlag"/>
 
         <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
         <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
@@ -51,7 +52,7 @@
     <sql id="Base_Column_List">
     ID, INIT_DATE, TRANS_ACTION_DATE, APP_SHEET_SERIAL_NO, BUSIN_CODE, BATCH_NO, CLIENT_ID, TRANS_ACCOUNT_ID, CLIENT_NAME,
     BANK_CODE, BANK_CARD_NO, STATE, OCCUR_BALANCE, PAY_CHANNEL_NO, CERTIFICATE_TYPE, CERTIFICATE_NO, REMARK, PAY_SERIAL_NO,
-    THIRD_SERIAL_NO, RESP_CODE, RESP_INFO, ROUTE_VO_ID_FLAG, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME, TYPE
+    THIRD_SERIAL_NO, RESP_CODE, RESP_INFO, ROUTE_VO_ID_FLAG, TRADE_CLOSE_FLAG, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME, TYPE
     </sql>
 
     <sql id="Base_Column_List_ALIPAY">
@@ -130,6 +131,9 @@
             </if>
             <if test="routeVoIdFlag != null">
                 ROUTE_VO_ID_FLAG,
+            </if>
+            <if test="tradeCloseFlag != null">
+                TRADE_CLOSE_FLAG,
             </if>
             <if test="createAuthor != null">
                 CREATE_AUTHOR,
@@ -238,6 +242,9 @@
             <if test="routeVoIdFlag != null">
                 #{routeVoIdFlag,jdbcType=VARCHAR},
             </if>
+            <if test="tradeCloseFlag != null">
+                #{tradeCloseFlag,jdbcType=BOOLEAN},
+            </if>
             <if test="createAuthor != null">
                 #{createAuthor,jdbcType=VARCHAR},
             </if>
@@ -305,8 +312,7 @@
         update TB_PAY_LOG
         <set>
             <if test="state != null">
-                STATE =
-                #{state,jdbcType=VARCHAR},
+                STATE = #{state,jdbcType=VARCHAR},
             </if>
             <if test="alipayAsyncMessage != null">
                 ALIPAY_ASYNC_MESSAGE = #{alipayAsyncMessage,jdbcType=VARCHAR},
@@ -329,6 +335,25 @@
             <if test="alipayTradeCloseMessage != null">
                 ALIPAY_TRADE_CLOSE_MESSAGE = #{alipayTradeCloseMessage,jdbcType=VARCHAR},
             </if>
+            <if test="tradeCloseFlag != null">
+                TRADE_CLOSE_FLAG = #{tradeCloseFlag,jdbcType=BOOLEAN},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateAlipayTradeQuery" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
+        update TB_PAY_LOG
+        <set>
+            <if test="alipayTradeQueryMessage != null">
+                ALIPAY_TRADE_QUERY_MESSAGE = #{alipayTradeQueryMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayTradeStatus != null">
+                ALIPAY_TRADE_STATUS = #{alipayTradeStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                STATE = #{state,jdbcType=VARCHAR},
+            </if>
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>
@@ -338,11 +363,9 @@
         and ROUTE_VO_ID_FLAG = #{routeVoIdFlag,jdbcType=VARCHAR}
     </select>
 
-    <select id="getByTimeAlipayTradeQuery" resultMap="BaseResultMap">
+    <select id="getByTimeTradeQuery" resultMap="BaseResultMap">
         select * from TB_PAY_LOG
-        where TYPE = #{alipayPayType,jdbcType=VARCHAR}
-        and ALIPAY_OUR_RESPONSE != #{alipayAsyncResponseSucc,jdbcType=VARCHAR}
-        and CREATE_TIME between CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdStart,jdbcType=INTEGER} MINUTE
+        where CREATE_TIME between CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdStart,jdbcType=INTEGER} MINUTE
         AND CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdEnd,jdbcType=INTEGER} MINUTE
     </select>
 
