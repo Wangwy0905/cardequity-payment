@@ -2,12 +2,9 @@ package com.youyu.cardequity.payment.biz.dal.entity;
 
 import com.youyu.cardequity.payment.biz.component.status.PayLogState;
 import com.youyu.cardequity.payment.biz.component.status.PayLogState4NonPayment;
-import com.youyu.cardequity.payment.biz.dal.dao.PayChannelInfoMapper;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.TradeCloseDto;
-import com.youyu.cardequity.payment.dto.TradeRefundApplyDto;
 import com.youyu.common.entity.BaseEntity;
-import com.youyu.common.exception.BizException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +16,6 @@ import java.time.LocalDate;
 
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
-import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.SUCCESS_ORDER_PAYMENT_CAN_REFUND;
 
 /**
  * @author panqingqing
@@ -207,17 +203,6 @@ public class PayLog extends BaseEntity<String> {
         throw new RuntimeException("该交易不支持查询!");
     }
 
-    public PayRefund createPayRefund(TradeRefundApplyDto tradeRefundApplyDto) {
-        if (!state.createPayRefund()) {
-            throw new BizException(SUCCESS_ORDER_PAYMENT_CAN_REFUND);
-        }
-
-        PayChannelInfoMapper payChannelInfoMapper = getBeanByClass(PayChannelInfoMapper.class);
-        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payChannelNo);
-
-        return payChannelInfo.createPayRefundAndRefund(tradeRefundApplyDto, this);
-    }
-
     public boolean canPayTradeQuery() {
         return state.canPayTradeQuery();
     }
@@ -228,6 +213,10 @@ public class PayLog extends BaseEntity<String> {
 
     public boolean canRepetitionPay() {
         return state.canRepetitionPay();
+    }
+
+    public boolean createPayRefund() {
+        return state.createPayRefund();
     }
 
     @Override

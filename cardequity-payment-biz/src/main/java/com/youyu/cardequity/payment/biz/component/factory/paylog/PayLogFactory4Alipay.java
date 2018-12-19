@@ -29,11 +29,11 @@ public class PayLogFactory4Alipay extends PayLogFactory {
 
     @Override
     public PayLog createPayLog(PayLogDto payLogDto) {
-        checkExistPayLog(payLogDto);
+        checkPayLog(payLogDto);
         return new PayLog4Alipay(payLogDto);
     }
 
-    private void checkExistPayLog(PayLogDto payLogDto) {
+    private void checkPayLog(PayLogDto payLogDto) {
         String appSheetSerialNo = payLogDto.getAppSheetSerialNo();
         PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(appSheetSerialNo, NORMAL.getCode());
         if (isNull(payLog)) {

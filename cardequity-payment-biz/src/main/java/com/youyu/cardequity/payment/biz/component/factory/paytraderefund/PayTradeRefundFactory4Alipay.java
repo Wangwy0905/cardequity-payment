@@ -5,7 +5,10 @@ import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayRefund;
 import com.youyu.cardequity.payment.biz.dal.entity.PayRefund4Alipay;
 import com.youyu.cardequity.payment.dto.TradeRefundApplyDto;
+import com.youyu.common.exception.BizException;
 import org.springframework.stereotype.Component;
+
+import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.SUCCESS_ORDER_PAYMENT_CAN_REFUND;
 
 /**
  * @author panqingqing
@@ -19,6 +22,15 @@ public class PayTradeRefundFactory4Alipay extends PayTradeRefundFactory {
 
     @Override
     public PayRefund createPayRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
+        check(payLog);
         return new PayRefund4Alipay(tradeRefundApplyDto, payLog);
+    }
+
+    private void check(PayLog payLog) {
+        // TODO: 2018/12/18
+
+        if (!payLog.createPayRefund()) {
+            throw new BizException(SUCCESS_ORDER_PAYMENT_CAN_REFUND);
+        }
     }
 }

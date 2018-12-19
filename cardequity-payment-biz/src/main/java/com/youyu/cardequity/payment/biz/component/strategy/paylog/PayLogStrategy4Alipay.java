@@ -7,6 +7,7 @@ import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
 import com.youyu.cardequity.payment.biz.component.properties.AlipayProperties;
+import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,9 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
     @Autowired
     private AlipayClient alipayClient;
 
+    @Autowired
+    private PayLogMapper payLogMapper;
+
     @Override
     public void executePay(PayLog payLog) {
         PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLog;
@@ -46,6 +50,8 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
             log.error("调用支付宝预支付的支付编号:[{}]和异常信息:[{}]", payLog4Alipay.getId(), getFullStackTrace(ex));
             payLog4Alipay.prepaymentFail("调用支付宝预支付信息异常!");
         }
+
+        payLogMapper.insertSelective(payLog);
     }
 
     private AlipayTradeAppPayRequest getAlipayTradeAppPayRequest(PayLog4Alipay payLog4Alipay) {

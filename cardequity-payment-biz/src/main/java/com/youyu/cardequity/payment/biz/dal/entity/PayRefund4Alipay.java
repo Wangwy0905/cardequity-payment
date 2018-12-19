@@ -7,6 +7,8 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Table;
 
+import static com.youyu.cardequity.payment.biz.help.constant.Constant.RETURN_TYPE_ALIPAY;
+
 /**
  * @author panqingqing
  * @version v1.0
@@ -36,6 +38,6 @@ public class PayRefund4Alipay extends PayRefund {
     public PayRefund4Alipay(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
         super(tradeRefundApplyDto, payLog);
         this.alipayTradeNo = payLog.getThirdSerialNo();
-        this.type = "1";// TODO: 2018/12/18
+        this.type = RETURN_TYPE_ALIPAY;
     }
 }

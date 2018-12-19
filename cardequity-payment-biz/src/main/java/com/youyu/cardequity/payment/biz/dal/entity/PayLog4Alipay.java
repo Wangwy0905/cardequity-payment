@@ -84,7 +84,7 @@ public class PayLog4Alipay extends PayLog {
     public PayLog4Alipay(PayLogDto payLogDto) {
         super(payLogDto);
         checkParameters(payLogDto);
-        this.type = ALIPAY_PAY_TYPE;
+        this.type = PAY_TYPE_ALIPAY;
         this.alipaySubject = payLogDto.getSubject();
         this.alipayTimeoutExpress = payLogDto.getTimeoutExpress();
         this.alipayGoodsType = payLogDto.getGoodsType();

@@ -65,5 +65,10 @@ public final class Constant {
     /**
      * 支付类型
      */
-    public static final String ALIPAY_PAY_TYPE = "1";
+    public static final String PAY_TYPE_ALIPAY = "1";
+
+    /**
+     * 退款类型
+     */
+    public static final String RETURN_TYPE_ALIPAY = "1";
 }

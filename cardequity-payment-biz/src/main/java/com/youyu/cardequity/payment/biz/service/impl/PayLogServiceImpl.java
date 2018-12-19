@@ -1,6 +1,5 @@
 package com.youyu.cardequity.payment.biz.service.impl;
 
-import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayAsyncMessage;
 import com.youyu.cardequity.payment.biz.component.properties.AlipayProperties;
 import com.youyu.cardequity.payment.biz.dal.dao.PayChannelInfoMapper;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
-import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter.copyProperties;
 import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
 import static com.youyu.cardequity.payment.biz.help.constant.Constant.ALIPAY_ASYNC_RESPONSE_FAIL;
@@ -60,11 +58,11 @@ public class PayLogServiceImpl implements PayLogService {
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payChannelNo);
         PayLog payLog = payChannelInfo.createPayLogAndPay(payLogDto);
 
-        payLogMapper.insertSelective(payLog);
         return copyProperties(payLog, PayLogResponseDto.class);
     }
 
     @Override
+    @Transactional
     public void alipaySyncMessage(AlipaySyncMessageDto alipaySyncMessageDto) {
         log.info("支付宝同步通知参数信息如下:[{}]", toJSONString(alipaySyncMessageDto));
         AlipaySyncMessageResultDto alipaySyncMessageResultDto = alipaySyncMessageDto.getAlipaySyncMessageResultDto();

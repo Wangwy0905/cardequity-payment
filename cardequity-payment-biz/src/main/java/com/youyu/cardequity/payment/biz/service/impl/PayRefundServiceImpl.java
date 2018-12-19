@@ -1,7 +1,9 @@
 package com.youyu.cardequity.payment.biz.service.impl;
 
+import com.youyu.cardequity.payment.biz.dal.dao.PayChannelInfoMapper;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.dao.PayRefundMapper;
+import com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayRefund;
 import com.youyu.cardequity.payment.biz.service.PayRefundService;
@@ -27,11 +29,16 @@ public class PayRefundServiceImpl implements PayRefundService {
     private PayLogMapper payLogMapper;
     @Autowired
     private PayRefundMapper payRefundMapper;
+    @Autowired
+    private PayChannelInfoMapper payChannelInfoMapper;
 
     @Override
     public void tradeRefund(TradeRefundApplyDto tradeRefundApplyDto) {
         PayLog payLog = getPayLog(tradeRefundApplyDto);
-        PayRefund payRefund = payLog.createPayRefund(tradeRefundApplyDto);
+        String payChannelNo = payLog.getPayChannelNo();
+        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payChannelNo);
+
+        PayRefund payRefund = payChannelInfo.createPayRefundAndRefund(tradeRefundApplyDto, payLog);
     }
 
     private PayLog getPayLog(TradeRefundApplyDto tradeRefundApplyDto) {
