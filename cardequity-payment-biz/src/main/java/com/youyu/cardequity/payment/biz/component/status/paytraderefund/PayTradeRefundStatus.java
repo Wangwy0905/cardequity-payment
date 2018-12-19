@@ -47,4 +47,8 @@ public abstract class PayTradeRefundStatus {
     public Boolean refundFlag() {
         return false;
     }
+
+    public boolean isRefundSucc() {
+        return false;
+    }
 }

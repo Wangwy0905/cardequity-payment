@@ -115,6 +115,6 @@ public class PayTradeRefund extends BaseEntity<String> {
     }
 
     public boolean isRefundSucc() {
-        return false;
+        return status.isRefundSucc();
     }
 }

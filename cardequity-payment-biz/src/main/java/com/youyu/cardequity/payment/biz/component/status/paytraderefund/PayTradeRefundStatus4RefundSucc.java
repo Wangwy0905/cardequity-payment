@@ -30,4 +30,9 @@ public class PayTradeRefundStatus4RefundSucc extends PayTradeRefundStatus {
     public Boolean refundFlag() {
         return true;
     }
+
+    @Override
+    public boolean isRefundSucc() {
+        return true;
+    }
 }
