@@ -7,23 +7,23 @@
     <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.ChannelRefBankCode">
         <id column="ID" jdbcType="VARCHAR" property="id"/>
         <result column="CHANNEL_NO" jdbcType="VARCHAR" property="channelNo"/>
-        <result column=" BANK_CODE" jdbcType="VARCHAR" property="bankCode"/>
-        <result column=" PAY_INTERFACE_TYPE" jdbcType="VARCHAR" property="payInterfaceType"/>
-        <result column=" PAY_MODE" jdbcType="VARCHAR" property="payMode"/>
-        <result column=" PER_DAY_UP" jdbcType="DECIMAL" property="perDayUp"/>
-        <result column=" PER_DAY_AND_PERSON_UP" jdbcType="DECIMAL" property="perDayAndPersonUp"/>
-        <result column=" MAX_AMOUNT" jdbcType="DECIMAL" property="maxAmount"/>
-        <result column=" CONTINUITY_FAIL_NUM" jdbcType="INTEGER" property="continuityFailNum"/>
-        <result column=" MSG_SEND_FLAG" jdbcType="VARCHAR" property="msgSendFlag"/>
-        <result column=" STATE" jdbcType="VARCHAR" property="state"/>
-        <result column=" REMARK" jdbcType="VARCHAR" property="remark"/>
-        <result column=" DATE_FLAG" jdbcType="VARCHAR" property="dateFlag"/>
-        <result column=" WEIGHT_VALUE" jdbcType="INTEGER" property="weightValue"/>
-        <result column=" CHANNEL_BANK_CODE" jdbcType="VARCHAR" property="channelBankCode"/>
-        <result column=" UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column=" CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column=" CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
-        <result column=" UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+        <result column="BANK_CODE" jdbcType="VARCHAR" property="bankCode"/>
+        <result column="PAY_INTERFACE_TYPE" jdbcType="VARCHAR" property="payInterfaceType"/>
+        <result column="PAY_MODE" jdbcType="VARCHAR" property="payMode"/>
+        <result column="PER_DAY_UP" jdbcType="DECIMAL" property="perDayUp"/>
+        <result column="PER_DAY_AND_PERSON_UP" jdbcType="DECIMAL" property="perDayAndPersonUp"/>
+        <result column="MAX_AMOUNT" jdbcType="DECIMAL" property="maxAmount"/>
+        <result column="CONTINUITY_FAIL_NUM" jdbcType="INTEGER" property="continuityFailNum"/>
+        <result column="MSG_SEND_FLAG" jdbcType="VARCHAR" property="msgSendFlag"/>
+        <result column="STATE" jdbcType="VARCHAR" property="state"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="DATE_FLAG" jdbcType="VARCHAR" property="dateFlag"/>
+        <result column="WEIGHT_VALUE" jdbcType="INTEGER" property="weightValue"/>
+        <result column="CHANNEL_BANK_CODE" jdbcType="VARCHAR" property="channelBankCode"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
     </resultMap>
 
     <sql id="Base_Column_List">

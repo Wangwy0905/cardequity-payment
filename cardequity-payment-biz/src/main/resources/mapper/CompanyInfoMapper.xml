@@ -7,11 +7,11 @@
     <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.CompanyInfo">
         <id column="COMPANY_ID" jdbcType="VARCHAR" property="companyId"/>
         <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName"/>
-        <result column=" REMARK" jdbcType="VARCHAR" property="remark"/>
-        <result column=" UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column=" CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column=" CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
-        <result column=" UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
     </resultMap>
 
     <sql id="Base_Column_List">

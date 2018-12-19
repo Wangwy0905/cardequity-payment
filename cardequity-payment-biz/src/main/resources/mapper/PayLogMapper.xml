@@ -290,11 +290,13 @@
         update TB_PAY_LOG
         <set>
             <if test="state != null">
-                STATE =
-                #{state,jdbcType=VARCHAR},
+                STATE = #{state,jdbcType=VARCHAR},
             </if>
             <if test="respInfo != null">
                 RESP_INFO = #{respInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
             </if>
         </set>
         where ID = #{id,jdbcType=VARCHAR}

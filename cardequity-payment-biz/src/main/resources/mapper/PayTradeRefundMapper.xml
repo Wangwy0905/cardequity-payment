@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyu.cardequity.payment.biz.dal.dao.PayTradeRefundMapper">
+
+    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="PAY_LOG_ID" jdbcType="VARCHAR" property="payLogId"/>
+        <result column="APP_SHEET_SERIAL_NO" jdbcType="VARCHAR" property="appSheetSerialNo"/>
+        <result column="REFUND_APPLY_AMOUNT" jdbcType="DECIMAL" property="refundApplyAmount"/>
+        <result column="REFUND_AMOUNT" jdbcType="DECIMAL" property="refundAmount"/>
+        <result column="REFUND_NO" jdbcType="VARCHAR" property="refundNo"/>
+        <result column="REFUND_REASON" jdbcType="VARCHAR" property="refundReason"/>
+        <result column="TYPE" jdbcType="VARCHAR" property="type"/>
+        <result column="STATUS" jdbcType="VARCHAR" property="status"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+
+        <discriminator javaType="java.lang.String" column="TYPE">
+            <case value="1" resultType="com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund4Alipay">
+                <result column="ALIPAY_TRADE_NO" jdbcType="VARCHAR" property="alipayTradeNo"/>
+                <result column="ALIPAY_REFUND_RESPONSE" jdbcType="VARCHAR" property="alipayRefundResponse"/>
+            </case>
+        </discriminator>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, PAY_LOG_ID, APP_SHEET_SERIAL_NO, REFUND_APPLY_AMOUNT, REFUND_AMOUNT, REFUND_NO, REFUND_REASON, TYPE, STATUS, REMARK, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+    </sql>
+
+    <sql id="Base_Column_List_ALIPAY">
+        ALIPAY_TRADE_NO, ALIPAY_REFUND_RESPONSE
+    </sql>
+
+    <select id="getByAppSheetSerialNoRefundNo" resultMap="BaseResultMap">
+        select * from TB_PAY_TRADE_REFUND
+        where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR} and REFUND_NO = #{refundNo,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateByAlipayRefund" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund">
+        update TB_PAY_TRADE_REFUND
+        <set>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayRefundResponse != null">
+                ALIPAY_REFUND_RESPONSE = #{alipayRefundResponse,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="refundAmount != null">
+                REFUND_AMOUNT = #{refundAmount,jdbcType=DECIMAL}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund">
+        insert into TB_PAY_TRADE_REFUND
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="payLogId != null">
+                PAY_LOG_ID,
+            </if>
+            <if test="appSheetSerialNo != null">
+                APP_SHEET_SERIAL_NO,
+            </if>
+            <if test="refundApplyAmount != null">
+                REFUND_APPLY_AMOUNT,
+            </if>
+            <if test="refundAmount != null">
+                REFUND_AMOUNT,
+            </if>
+            <if test="refundNo != null">
+                REFUND_NO,
+            </if>
+            <if test="refundReason != null">
+                REFUND_REASON,
+            </if>
+            <if test="type != null">
+                TYPE,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="alipayTradeNo != null">
+                ALIPAY_TRADE_NO,
+            </if>
+            <if test="alipayRefundResponse != null">
+                ALIPAY_REFUND_RESPONSE,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="createAuthor != null">
+                CREATE_AUTHOR,
+            </if>
+            <if test="updateAuthor != null">
+                UPDATE_AUTHOR,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="payLogId != null">
+                #{payLogId,jdbcType=VARCHAR},
+            </if>
+            <if test="appSheetSerialNo != null">
+                #{appSheetSerialNo,jdbcType=VARCHAR},
+            </if>
+            <if test="refundApplyAmount != null">
+                #{refundApplyAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="refundAmount != null">
+                #{refundAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="refundNo != null">
+                #{refundNo,jdbcType=VARCHAR},
+            </if>
+            <if test="refundReason != null">
+                #{refundReason,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayTradeNo != null">
+                #{alipayTradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayRefundResponse != null">
+                #{alipayRefundResponse,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createAuthor != null">
+                #{createAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAuthor != null">
+                #{updateAuthor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

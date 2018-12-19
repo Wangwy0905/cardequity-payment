@@ -7,19 +7,19 @@
     <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.ChannelFareInfo">
         <id column="ID" jdbcType="VARCHAR" property="id"/>
         <result column="CHANNEL_NO" jdbcType="VARCHAR" property="channelNo"/>
-        <result column=" COMPANY_ID" jdbcType="VARCHAR" property="companyId"/>
-        <result column=" AMOUNT_LEVEL_START" jdbcType="DECIMAL" property="amountLevelStart"/>
-        <result column=" AMOUNT_LEVEL_END" jdbcType="DECIMAL" property="amountLevelEnd"/>
-        <result column=" MAX_FARE" jdbcType="DECIMAL" property="maxFare"/>
-        <result column=" MIN_FARE" jdbcType="DECIMAL" property="minFare"/>
-        <result column=" FARE_RATIO" jdbcType="DECIMAL" property="fareRatio"/>
-        <result column=" FIXED_FARE" jdbcType="DECIMAL" property="fixedFare"/>
-        <result column=" RELATION_BANKS" jdbcType="VARCHAR" property="relationBanks"/>
-        <result column=" REMARK" jdbcType="VARCHAR" property="remark"/>
-        <result column=" UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column=" CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column=" CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
-        <result column=" UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+        <result column="COMPANY_ID" jdbcType="VARCHAR" property="companyId"/>
+        <result column="AMOUNT_LEVEL_START" jdbcType="DECIMAL" property="amountLevelStart"/>
+        <result column="AMOUNT_LEVEL_END" jdbcType="DECIMAL" property="amountLevelEnd"/>
+        <result column="MAX_FARE" jdbcType="DECIMAL" property="maxFare"/>
+        <result column="MIN_FARE" jdbcType="DECIMAL" property="minFare"/>
+        <result column="FARE_RATIO" jdbcType="DECIMAL" property="fareRatio"/>
+        <result column="FIXED_FARE" jdbcType="DECIMAL" property="fixedFare"/>
+        <result column="RELATION_BANKS" jdbcType="VARCHAR" property="relationBanks"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
     </resultMap>
 
     <sql id="Base_Column_List">
