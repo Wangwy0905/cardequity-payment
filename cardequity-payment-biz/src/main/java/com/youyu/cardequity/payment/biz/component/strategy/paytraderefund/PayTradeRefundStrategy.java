@@ -1,6 +1,6 @@
 package com.youyu.cardequity.payment.biz.component.strategy.paytraderefund;
 
-import com.youyu.cardequity.payment.biz.dal.entity.PayRefund;
+import com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund;
 
 /**
  * @author panqingqing
@@ -16,5 +16,5 @@ public abstract class PayTradeRefundStrategy {
      * @param payTradeRefund
      * @return
      */
-    public abstract void executePayTradeRefund(PayRefund payTradeRefund);
+    public abstract void executePayTradeRefund(PayTradeRefund payTradeRefund);
 }

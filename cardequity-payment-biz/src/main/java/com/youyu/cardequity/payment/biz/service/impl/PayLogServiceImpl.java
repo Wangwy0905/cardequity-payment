@@ -10,9 +10,9 @@ import com.youyu.cardequity.payment.biz.service.PayLogService;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.PayLogResponseDto;
 import com.youyu.cardequity.payment.dto.TradeCloseDto;
+import com.youyu.cardequity.payment.dto.TradeCloseResponseDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageResultDto;
-import com.youyu.common.api.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +26,6 @@ import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter
 import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
 import static com.youyu.cardequity.payment.biz.help.constant.Constant.ALIPAY_ASYNC_RESPONSE_FAIL;
 import static com.youyu.cardequity.payment.biz.help.constant.Constant.ALIPAY_OUT_TRADE_NO;
-import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_TRANSACTIONS_CLOSED_FAIL;
-import static com.youyu.common.api.Result.fail;
-import static com.youyu.common.api.Result.ok;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -92,12 +89,12 @@ public class PayLogServiceImpl implements PayLogService {
     }
 
     @Override
-    public Result tradeClose(TradeCloseDto tradeCloseDto) {
+    public TradeCloseResponseDto tradeClose(TradeCloseDto tradeCloseDto) {
         String appSheetSerialNo = tradeCloseDto.getAppSheetSerialNo();
         PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(appSheetSerialNo, NORMAL.getCode());
 
-        boolean tradeCloseFlag = payLog.tradeClose(tradeCloseDto);
-        return tradeCloseFlag ? ok() : fail(ALIPAY_TRANSACTIONS_CLOSED_FAIL);
+        payLog.tradeClose(tradeCloseDto);
+        return copyProperties(payLog, TradeCloseResponseDto.class);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.youyu.cardequity.payment.biz.component.factory.paytraderefund;
 
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
-import com.youyu.cardequity.payment.biz.dal.entity.PayRefund;
-import com.youyu.cardequity.payment.dto.TradeRefundApplyDto;
+import com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund;
+import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
 
 /**
  * @author panqingqing
@@ -19,5 +19,5 @@ public abstract class PayTradeRefundFactory {
      * @param payLog
      * @return
      */
-    public abstract PayRefund createPayRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog);
+    public abstract PayTradeRefund createPayRefund(PayTradeRefundDto tradeRefundApplyDto, PayLog payLog);
 }

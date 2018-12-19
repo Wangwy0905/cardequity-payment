@@ -1,4 +1,4 @@
-package com.youyu.cardequity.payment.biz.component.status;
+package com.youyu.cardequity.payment.biz.component.status.paylog;
 
 /**
  * @author panqingqing
@@ -6,14 +6,14 @@ package com.youyu.cardequity.payment.biz.component.status;
  * @date 2018年12月10日 下午10:00:00
  * @work 支付状态
  */
-public abstract class PayLogState {
+public abstract class PayLogStatus {
 
     /**
      * 未支付
      *
      * @return
      */
-    public PayLogState nonPayment() {
+    public PayLogStatus nonPayment() {
         throw new RuntimeException("支付状态[" + this + "]不可以转化为未支付状态操作!");
     }
 
@@ -22,7 +22,7 @@ public abstract class PayLogState {
      *
      * @return
      */
-    public PayLogState paymentQueuing() {
+    public PayLogStatus paymentQueuing() {
         throw new RuntimeException("支付状态[" + this + "]不可以转化为支付排队中状态操作!");
     }
 
@@ -31,7 +31,7 @@ public abstract class PayLogState {
      *
      * @return
      */
-    public PayLogState paymenting() {
+    public PayLogStatus paymenting() {
         throw new RuntimeException("支付状态[" + this + "]不可以转化为支付中状态操作!");
     }
 
@@ -40,7 +40,7 @@ public abstract class PayLogState {
      *
      * @return
      */
-    public PayLogState paymentSucc() {
+    public PayLogStatus paymentSucc() {
         throw new RuntimeException("支付状态[" + this + "]不可以转化为支付成功状态操作!");
     }
 
@@ -49,7 +49,7 @@ public abstract class PayLogState {
      *
      * @return
      */
-    public PayLogState paymentFail() {
+    public PayLogStatus paymentFail() {
         throw new RuntimeException("支付状态[" + this + "]不可以转化为支付失败状态操作!");
     }
 

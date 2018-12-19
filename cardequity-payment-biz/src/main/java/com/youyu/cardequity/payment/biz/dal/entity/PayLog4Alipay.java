@@ -4,12 +4,13 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.response.AlipayTradeCloseResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.youyu.cardequity.common.base.util.MoneyUtil;
-import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayAsyncMessage;
-import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipaySyncMessage;
-import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4AlipayTradeClose;
-import com.youyu.cardequity.payment.biz.component.command.PayLogCommond4TimeAlipayTradeQuery;
+import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4AlipayAsyncMessage;
+import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4AlipaySyncMessage;
+import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4AlipayTradeClose;
+import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4TimeAlipayTradeQuery;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.TradeCloseDto;
+import com.youyu.cardequity.payment.dto.TradeCloseResponseDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageResponseDto;
 import com.youyu.common.exception.BizException;
@@ -99,12 +100,12 @@ public class PayLog4Alipay extends PayLog {
         return alipayOurResponse;
     }
 
-    public void prepaymentSucc(String syncResponseBody) {
+    public void callPrepaymentSucc(String syncResponseBody) {
         this.respInfo = syncResponseBody;
         this.state = state.paymenting();
     }
 
-    public void prepaymentFail(String syncResponseBody) {
+    public void callPrepaymentFail(String syncResponseBody) {
         this.remark = syncResponseBody;
         this.state = state.paymenting();
     }
@@ -148,13 +149,12 @@ public class PayLog4Alipay extends PayLog {
     }
 
     @Override
-    public boolean tradeClose(TradeCloseDto tradeCloseDto) {
+    public void tradeClose(TradeCloseDto tradeCloseDto) {
         if (!canPayTradeClose()) {
             throw new BizException(PAYMENT_SUCCESS_ORDER_CANNOT_CLOSED);
         }
 
         getBeanByClass(PayLogCommond4AlipayTradeClose.class).executeCmd(this, tradeCloseDto);
-        return tradeCloseFlag;
     }
 
     @Override

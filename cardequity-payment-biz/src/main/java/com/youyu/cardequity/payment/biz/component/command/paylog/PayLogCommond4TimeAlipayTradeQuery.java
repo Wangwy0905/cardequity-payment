@@ -1,4 +1,4 @@
-package com.youyu.cardequity.payment.biz.component.command;
+package com.youyu.cardequity.payment.biz.component.command.paylog;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;

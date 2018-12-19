@@ -1,4 +1,4 @@
-package com.youyu.cardequity.payment.biz.component.command;
+package com.youyu.cardequity.payment.biz.component.command.paylog;
 
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;

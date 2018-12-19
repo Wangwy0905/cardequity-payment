@@ -3,8 +3,8 @@ package com.youyu.cardequity.payment.biz.service;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.PayLogResponseDto;
 import com.youyu.cardequity.payment.dto.TradeCloseDto;
+import com.youyu.cardequity.payment.dto.TradeCloseResponseDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
-import com.youyu.common.api.Result;
 
 import java.util.Map;
 
@@ -46,7 +46,7 @@ public interface PayLogService {
      * @param tradeCloseDto
      * @return
      */
-    Result tradeClose(TradeCloseDto tradeCloseDto);
+    TradeCloseResponseDto tradeClose(TradeCloseDto tradeCloseDto);
 
     /**
      * 定时任务查询交易

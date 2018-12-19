@@ -1,6 +1,7 @@
 package com.youyu.cardequity.payment.api;
 
-import com.youyu.cardequity.payment.dto.TradeRefundApplyDto;
+import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
+import com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto;
 import com.youyu.common.api.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Api(tags = "退款管理Api")
 @FeignClient(name = "cardequity-payment")
 @RequestMapping(path = "/payRefund")
-public interface PayRefundApi {
+public interface PayTradeRefundApi {
 
     /**
      * 退款接口
@@ -28,5 +29,5 @@ public interface PayRefundApi {
      */
     @ApiOperation(value = "退款接口")
     @PostMapping(value = "/tradeRefund")
-    Result tradeRefund(@RequestBody TradeRefundApplyDto tradeRefundApplyDto);
+    Result<PayTradeRefundResponseDto> tradeRefund(@RequestBody PayTradeRefundDto tradeRefundApplyDto);
 }

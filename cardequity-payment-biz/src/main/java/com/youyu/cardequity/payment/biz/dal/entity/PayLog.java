@@ -1,9 +1,10 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
-import com.youyu.cardequity.payment.biz.component.status.PayLogState;
-import com.youyu.cardequity.payment.biz.component.status.PayLogState4NonPayment;
+import com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus;
+import com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus4NonPayment;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.TradeCloseDto;
+import com.youyu.cardequity.payment.dto.TradeCloseResponseDto;
 import com.youyu.common.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -100,7 +101,7 @@ public class PayLog extends BaseEntity<String> {
      * 支付状态:字典100005
      */
     @Column(name = "STATE")
-    protected PayLogState state;
+    protected PayLogStatus state;
 
     /**
      * 发生金额:
@@ -189,13 +190,13 @@ public class PayLog extends BaseEntity<String> {
         this.certificateType = payLogDto.getCertificateType();
         this.certificateNo = payLogDto.getCertificateNo();
         this.remark = payLogDto.getRemark();
-        this.state = getBeanByClass(PayLogState4NonPayment.class);
+        this.state = getBeanByClass(PayLogStatus4NonPayment.class);
         this.payChannelNo = payLogDto.getPayChannelNo();
         this.routeVoIdFlag = "0";
         this.tradeCloseFlag = false;
     }
 
-    public boolean tradeClose(TradeCloseDto tradeCloseDto) {
+    public void tradeClose(TradeCloseDto tradeCloseDto) {
         throw new RuntimeException("该交易不支持关闭!");
     }
 

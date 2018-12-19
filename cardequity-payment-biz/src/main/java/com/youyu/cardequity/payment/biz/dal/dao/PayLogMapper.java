@@ -1,6 +1,7 @@
 package com.youyu.cardequity.payment.biz.dal.dao;
 
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
+import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -51,6 +52,7 @@ public interface PayLogMapper {
 
     /**
      * 支付宝交易查询相关信息:主要更新查询消息状态和交易状态
+     *
      * @param payLog
      */
     void updateAlipayTradeQuery(PayLog payLog);

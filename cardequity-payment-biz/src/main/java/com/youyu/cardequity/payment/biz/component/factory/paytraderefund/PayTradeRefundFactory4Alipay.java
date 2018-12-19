@@ -1,14 +1,20 @@
 package com.youyu.cardequity.payment.biz.component.factory.paytraderefund;
 
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
+import com.youyu.cardequity.payment.biz.dal.dao.PayTradeRefundMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
-import com.youyu.cardequity.payment.biz.dal.entity.PayRefund;
-import com.youyu.cardequity.payment.biz.dal.entity.PayRefund4Alipay;
-import com.youyu.cardequity.payment.dto.TradeRefundApplyDto;
+import com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund;
+import com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund4Alipay;
+import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
 import com.youyu.common.exception.BizException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.SUCCESS_ORDER_PAYMENT_CAN_REFUND;
+import java.math.BigDecimal;
+
+import static com.youyu.cardequity.common.base.util.MoneyUtil.gt;
+import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.*;
+import static java.util.Objects.isNull;
 
 /**
  * @author panqingqing
@@ -20,17 +26,41 @@ import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.SUCCESS_O
 @Component
 public class PayTradeRefundFactory4Alipay extends PayTradeRefundFactory {
 
+    @Autowired
+    private PayTradeRefundMapper payTradeRefundMapper;
+
     @Override
-    public PayRefund createPayRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
-        check(payLog);
-        return new PayRefund4Alipay(tradeRefundApplyDto, payLog);
+    public PayTradeRefund createPayRefund(PayTradeRefundDto tradeRefundApplyDto, PayLog payLog) {
+        PayTradeRefund existPayTradeRefund = checkExistPayTradeRefund(tradeRefundApplyDto, payLog);
+        if (isNull(existPayTradeRefund)) {
+            PayTradeRefund4Alipay payTradeRefund4Alipay = new PayTradeRefund4Alipay(tradeRefundApplyDto, payLog);
+            payTradeRefundMapper.insertSelective(payTradeRefund4Alipay);
+
+            return payTradeRefund4Alipay;
+        }
+        return existPayTradeRefund;
     }
 
-    private void check(PayLog payLog) {
-        // TODO: 2018/12/18
-
+    private PayTradeRefund checkExistPayTradeRefund(PayTradeRefundDto tradeRefundApplyDto, PayLog payLog) {
         if (!payLog.createPayRefund()) {
             throw new BizException(SUCCESS_ORDER_PAYMENT_CAN_REFUND);
         }
+
+        BigDecimal refundAmount = tradeRefundApplyDto.getRefundAmount();
+        BigDecimal occurBalance = payLog.getOccurBalance();
+        if (gt(refundAmount, occurBalance)) {
+            throw new BizException(REFUND_AMOUNT_CANNOT_GREATER_PAYMENT_AMOUNT);
+        }
+
+        PayTradeRefund payTradeRefund = payTradeRefundMapper.getByAppSheetSerialNoRefundNo(tradeRefundApplyDto.getAppSheetSerialNo(), tradeRefundApplyDto.getRefundNo());
+        if (isNull(payTradeRefund)) {
+            return null;
+        }
+
+        if (payTradeRefund.isRefundSucc()) {
+            throw new BizException(REFUND_SUCC_CANNOT_REFUNDED);
+        }
+
+        return payTradeRefund;
     }
 }

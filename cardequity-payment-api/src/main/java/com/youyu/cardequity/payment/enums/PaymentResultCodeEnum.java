@@ -35,11 +35,12 @@ public enum PaymentResultCodeEnum implements CardequityIBaseResultCode {
     PAYMENT_CHANNEL_STATE_NUMERATION_ABNORMAL("0006", "未查询到支付渠道状态code:{0}所对应的支付渠道状态枚举!"),
     PAYMENT_CHANNEL_STATUS_IS_ABNORMAL("0007", "支付渠道:{0}的支付状态:{1}不能进行支付操作!"),
     ALIPAY_TRANSACTION_CLOSED_EXCEPTION("0008", "订单对应的支付宝交易关闭异常!"),
-    ALIPAY_TRANSACTIONS_CLOSED_FAIL("0009", "订单对应的交易关闭失败!"),
-    PAYMENT_SUCCESS_ORDER_CANNOT_CLOSED("0010", "支付成功的订单不能关闭!"),
-    PAYMENT_SUCCESS_ORDER_CANNOT_REPETITION_PAY("0011", "支付成功的订单号不能再次支付!"),
-    REFUND_ORDER_NO_PAYMENT_ABNORMAL("0012", "退款原支付订单支付信息异常!"),
-    SUCCESS_ORDER_PAYMENT_CAN_REFUND("0013", "支付成功的订单才可以退款!");
+    PAYMENT_SUCCESS_ORDER_CANNOT_CLOSED("0009", "支付成功的订单不能关闭!"),
+    PAYMENT_SUCCESS_ORDER_CANNOT_REPETITION_PAY("0010", "支付成功的订单号不能再次支付!"),
+    REFUND_ORDER_NO_PAYMENT_ABNORMAL("0011", "退款原支付订单支付信息异常!"),
+    SUCCESS_ORDER_PAYMENT_CAN_REFUND("0012", "支付成功的订单才可以退款!"),
+    REFUND_AMOUNT_CANNOT_GREATER_PAYMENT_AMOUNT("0013", "退款金额不能大于支付金额!"),
+    REFUND_SUCC_CANNOT_REFUNDED("0014","退款成功的订单不能再次退款!");
 
     private String code;
 

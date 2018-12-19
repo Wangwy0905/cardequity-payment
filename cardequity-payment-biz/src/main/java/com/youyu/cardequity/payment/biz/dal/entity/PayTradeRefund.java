@@ -1,6 +1,8 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
-import com.youyu.cardequity.payment.dto.TradeRefundApplyDto;
+import com.youyu.cardequity.payment.biz.component.status.paytraderefund.PayTradeRefundStatus;
+import com.youyu.cardequity.payment.biz.component.status.paytraderefund.PayTradeRefundStatus4NonRefund;
+import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
 import com.youyu.common.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
+import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 
 /**
@@ -20,8 +23,8 @@ import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
  */
 @Getter
 @Setter
-@Table(name = "TB_PAY_REFUND")
-public class PayRefund extends BaseEntity<String> {
+@Table(name = "TB_PAY_TRADE_REFUND")
+public class PayTradeRefund extends BaseEntity<String> {
 
     /**
      * 主键
@@ -75,20 +78,26 @@ public class PayRefund extends BaseEntity<String> {
     /**
      * 退款状态
      */
-    @Column(name = "状态")
-    protected String status;
+    @Column(name = "STATUS")
+    protected PayTradeRefundStatus status;
 
-    public PayRefund() {
+    /**
+     * 描述
+     */
+    @Column(name = "REMARK")
+    protected String remark;
+
+    public PayTradeRefund() {
     }
 
-    public PayRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
+    public PayTradeRefund(PayTradeRefundDto tradeRefundApplyDto, PayLog payLog) {
         this.id = uuid4NoRail();
         this.payLogId = payLog.getId();
         this.appSheetSerialNo = tradeRefundApplyDto.getAppSheetSerialNo();
         this.refundApplyAmount = tradeRefundApplyDto.getRefundAmount();
         this.refundNo = tradeRefundApplyDto.getRefundNo();
         this.refundReason = tradeRefundApplyDto.getRefundReason();
-//        this.status = null todo
+        this.status = getBeanByClass(PayTradeRefundStatus4NonRefund.class);
     }
 
     @Override
@@ -99,5 +108,13 @@ public class PayRefund extends BaseEntity<String> {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void callRefund() {
+        this.status = status.refunding();
+    }
+
+    public boolean isRefundSucc() {
+        return false;
     }
 }

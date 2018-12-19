@@ -15,7 +15,7 @@ import java.math.BigDecimal;
  */
 @Data
 @ApiModel
-public class TradeRefundApplyDto implements Serializable {
+public class PayTradeRefundDto implements Serializable {
 
     private static final long serialVersionUID = 1599386415577897472L;
 

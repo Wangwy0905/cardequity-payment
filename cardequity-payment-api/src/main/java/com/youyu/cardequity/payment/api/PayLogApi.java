@@ -3,6 +3,7 @@ package com.youyu.cardequity.payment.api;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.PayLogResponseDto;
 import com.youyu.cardequity.payment.dto.TradeCloseDto;
+import com.youyu.cardequity.payment.dto.TradeCloseResponseDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.common.api.Result;
 import io.swagger.annotations.Api;
@@ -63,7 +64,7 @@ public interface PayLogApi {
      */
     @ApiOperation(value = "交易关闭接口")
     @PostMapping(value = "/tradeClose")
-    Result tradeClose(@RequestBody TradeCloseDto tradeCloseDto);
+    Result<TradeCloseResponseDto> tradeClose(@RequestBody TradeCloseDto tradeCloseDto);
 
     /**
      * 定时任务调用:交易查询接口,主要查询阈值内未收到支付异步通知

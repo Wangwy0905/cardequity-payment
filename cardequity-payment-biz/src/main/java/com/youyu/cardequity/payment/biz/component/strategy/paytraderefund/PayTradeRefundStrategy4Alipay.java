@@ -7,8 +7,9 @@ import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
 import com.youyu.cardequity.payment.biz.component.properties.AlipayProperties;
-import com.youyu.cardequity.payment.biz.dal.entity.PayRefund;
-import com.youyu.cardequity.payment.biz.dal.entity.PayRefund4Alipay;
+import com.youyu.cardequity.payment.biz.dal.dao.PayTradeRefundMapper;
+import com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund;
+import com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund4Alipay;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,26 +33,34 @@ public class PayTradeRefundStrategy4Alipay extends PayTradeRefundStrategy {
     @Autowired
     private AlipayClient alipayClient;
 
+    @Autowired
+    private PayTradeRefundMapper payTradeRefundMapper;
+
     @Override
-    public void executePayTradeRefund(PayRefund payTradeRefund) {
-        PayRefund4Alipay payTradeRefund4Alipay = (PayRefund4Alipay) payTradeRefund;
+    public void executePayTradeRefund(PayTradeRefund payTradeRefund) {
+        PayTradeRefund4Alipay payTradeRefund4Alipay = (PayTradeRefund4Alipay) payTradeRefund;
         AlipayTradeRefundRequest alipayTradeRefundRequest = getAlipayTradeRefundRequest(payTradeRefund4Alipay);
+        payTradeRefund.callRefund();
+
         try {
             AlipayTradeRefundResponse alipayTradeRefundResponse = alipayClient.execute(alipayTradeRefundRequest);
-            // TODO: 2018/12/18  
+            payTradeRefund4Alipay.callRefundSucc(alipayTradeRefundResponse);
         } catch (AlipayApiException e) {
             log.error("调用支付宝退款编号:[{}]和异常信息:[{}]", payTradeRefund4Alipay.getId(), getFullStackTrace(e));
+            payTradeRefund4Alipay.callRefundFail("支付宝退款调用失败!");
         }
+
+        payTradeRefundMapper.updateByAlipayRefund(payTradeRefund4Alipay);
     }
 
-    private AlipayTradeRefundRequest getAlipayTradeRefundRequest(PayRefund4Alipay payTradeRefund4Alipay) {
+    private AlipayTradeRefundRequest getAlipayTradeRefundRequest(PayTradeRefund4Alipay payTradeRefund4Alipay) {
         AlipayTradeRefundRequest alipayTradeRefundRequest = new AlipayTradeRefundRequest();
         AlipayTradeRefundModel alipayTradeRefundModel = getAlipayTradeRefundModel(payTradeRefund4Alipay);
         alipayTradeRefundRequest.setBizModel(alipayTradeRefundModel);
         return alipayTradeRefundRequest;
     }
 
-    private AlipayTradeRefundModel getAlipayTradeRefundModel(PayRefund4Alipay payTradeRefund4Alipay) {
+    private AlipayTradeRefundModel getAlipayTradeRefundModel(PayTradeRefund4Alipay payTradeRefund4Alipay) {
         AlipayTradeRefundModel alipayTradeRefundModel = new AlipayTradeRefundModel();
         alipayTradeRefundModel.setOutTradeNo(payTradeRefund4Alipay.getAppSheetSerialNo());
         alipayTradeRefundModel.setTradeNo(payTradeRefund4Alipay.getAlipayTradeNo());

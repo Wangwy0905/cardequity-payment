@@ -1,9 +1,11 @@
-package com.youyu.cardequity.payment.biz.component.status;
+package com.youyu.cardequity.payment.biz.component.status.paylog;
 
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
+import com.youyu.cardequity.payment.dto.PayLogResponseDto;
 import org.springframework.stereotype.Component;
 
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
+import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_SUCC;
 
 /**
  * @author panqingqing
@@ -11,18 +13,18 @@ import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass
  * @date 2018年12月10日 下午10:00:00
  * @work 支付状态:支付成功
  */
-@StatusAndStrategyNum(superClass = PayLogState.class, number = "3", describe = "支付成功")
+@StatusAndStrategyNum(superClass = PayLogStatus.class, number = STATUS_PAYMENT_SUCC, describe = "支付成功")
 @Component
-public class PayLogState4PaymentSucc extends PayLogState {
+public class PayLogStatus4PaymentSucc extends PayLogStatus {
 
     @Override
-    public PayLogState paymentSucc() {
-        return getBeanByClass(PayLogState4PaymentSucc.class);
+    public PayLogStatus paymentSucc() {
+        return getBeanByClass(PayLogStatus4PaymentSucc.class);
     }
 
     @Override
-    public PayLogState paymentFail() {
-        return getBeanByClass(PayLogState4PaymentFail.class);
+    public PayLogStatus paymentFail() {
+        return getBeanByClass(PayLogStatus4PaymentFail.class);
     }
 
     @Override

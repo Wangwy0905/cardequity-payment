@@ -45,13 +45,13 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
         try {
             AlipayTradeAppPayResponse alipayTradeAppPayResponse = alipayClient.sdkExecute(alipayTradeAppPayRequest);
             String syncResponseBody = alipayTradeAppPayResponse.getBody();
-            payLog4Alipay.prepaymentSucc(syncResponseBody);
+            payLog4Alipay.callPrepaymentSucc(syncResponseBody);
         } catch (AlipayApiException ex) {
             log.error("调用支付宝预支付的支付编号:[{}]和异常信息:[{}]", payLog4Alipay.getId(), getFullStackTrace(ex));
-            payLog4Alipay.prepaymentFail("调用支付宝预支付信息异常!");
+            payLog4Alipay.callPrepaymentFail("调用支付宝预支付信息异常!");
         }
 
-        payLogMapper.insertSelective(payLog);
+        payLogMapper.updateAlipayPrepayment(payLog4Alipay);
     }
 
     private AlipayTradeAppPayRequest getAlipayTradeAppPayRequest(PayLog4Alipay payLog4Alipay) {

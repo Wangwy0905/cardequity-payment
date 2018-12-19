@@ -7,7 +7,7 @@ import com.youyu.cardequity.payment.biz.component.strategy.paytraderefund.PayTra
 import com.youyu.cardequity.payment.biz.enums.PayChannelStateEnum;
 import com.youyu.cardequity.payment.dto.PayChannelInfoDto;
 import com.youyu.cardequity.payment.dto.PayLogDto;
-import com.youyu.cardequity.payment.dto.TradeRefundApplyDto;
+import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
 import com.youyu.common.entity.BaseEntity;
 import com.youyu.common.exception.BizException;
 import lombok.Getter;
@@ -153,9 +153,9 @@ public class PayChannelInfo extends BaseEntity<String> {
         return payLog;
     }
 
-    public PayRefund createPayRefundAndRefund(TradeRefundApplyDto tradeRefundApplyDto, PayLog payLog) {
+    public PayTradeRefund createPayRefundAndRefund(PayTradeRefundDto tradeRefundApplyDto, PayLog payLog) {
         checkState();
-        PayRefund payRefund = payTradeRefundFactory.createPayRefund(tradeRefundApplyDto, payLog);
+        PayTradeRefund payRefund = payTradeRefundFactory.createPayRefund(tradeRefundApplyDto, payLog);
         payTradeRefundStrategy.executePayTradeRefund(payRefund);
         return payRefund;
     }

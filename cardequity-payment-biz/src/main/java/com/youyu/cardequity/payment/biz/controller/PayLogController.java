@@ -5,6 +5,7 @@ import com.youyu.cardequity.payment.biz.service.PayLogService;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.PayLogResponseDto;
 import com.youyu.cardequity.payment.dto.TradeCloseDto;
+import com.youyu.cardequity.payment.dto.TradeCloseResponseDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.common.api.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +56,8 @@ public class PayLogController implements PayLogApi {
 
     @Override
     @PostMapping(value = "/tradeClose")
-    public Result tradeClose(@RequestBody TradeCloseDto tradeCloseDto) {
-        return payLogService.tradeClose(tradeCloseDto);
+    public Result<TradeCloseResponseDto> tradeClose(@RequestBody TradeCloseDto tradeCloseDto) {
+        return ok(payLogService.tradeClose(tradeCloseDto));
     }
 
     @Override

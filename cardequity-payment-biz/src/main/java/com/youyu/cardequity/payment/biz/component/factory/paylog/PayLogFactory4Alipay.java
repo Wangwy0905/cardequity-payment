@@ -30,7 +30,9 @@ public class PayLogFactory4Alipay extends PayLogFactory {
     @Override
     public PayLog createPayLog(PayLogDto payLogDto) {
         checkPayLog(payLogDto);
-        return new PayLog4Alipay(payLogDto);
+        PayLog4Alipay payLog4Alipay = new PayLog4Alipay(payLogDto);
+        payLogMapper.insertSelective(payLog4Alipay);
+        return payLog4Alipay;
     }
 
     private void checkPayLog(PayLogDto payLogDto) {

@@ -1,7 +1,7 @@
 package com.youyu.cardequity.payment.biz.help.handler;
 
 import com.youyu.cardequity.common.orm.mybatis.handler.BaseString2StatusStrategyTypeHandler;
-import com.youyu.cardequity.payment.biz.component.status.PayLogState;
+import com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
@@ -13,11 +13,11 @@ import org.apache.ibatis.type.MappedTypes;
  * @work 自定义类型
  */
 @MappedJdbcTypes({JdbcType.VARCHAR})
-@MappedTypes({PayLogState.class})
+@MappedTypes({PayLogStatus.class})
 public class PayLogStatusTypeHandler extends BaseString2StatusStrategyTypeHandler {
 
     @Override
     public String getClassSimpleName() {
-        return PayLogState.class.getSimpleName();
+        return PayLogStatus.class.getSimpleName();
     }
 }
