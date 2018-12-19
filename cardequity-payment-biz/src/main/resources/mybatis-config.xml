@@ -60,19 +60,19 @@
         <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogFactoryTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.factory.paylog.PayLogFactory"/>
 
-        <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogFactoryTypeHandler"
+        <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayTradeRefundFactoryTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.factory.paytraderefund.PayTradeRefundFactory"/>
 
         <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogStrategyTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.strategy.paylog.PayLogStrategy"/>
 
-        <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogStrategyTypeHandler"
+        <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayTradeRefundStrategyTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.strategy.paytraderefund.PayTradeRefundStrategy"/>
 
         <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogStatusTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus"/>
 
-        <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogStatusTypeHandler"
+        <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayTradeRefundStatusTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.status.paytraderefund.PayTradeRefundStatus"/>
 
     </typeHandlers>
