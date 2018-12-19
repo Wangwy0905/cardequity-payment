@@ -6,6 +6,7 @@ import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
 import com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto;
 import com.youyu.common.api.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ public class PayTradeRefundController implements PayTradeRefundApi {
     private PayTradeRefundService payRefundService;
 
     @Override
+    @PostMapping(value = "/tradeRefund")
     public Result<PayTradeRefundResponseDto> tradeRefund(@RequestBody PayTradeRefundDto tradeRefundApplyDto) {
         return ok(payRefundService.tradeRefund(tradeRefundApplyDto));
     }

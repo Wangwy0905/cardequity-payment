@@ -46,7 +46,7 @@ public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
         payLog4Alipay.analysisAlipayAsyncMessage(params2Map, sellerId, appId, alipayPublicKey);
 
         payLogMapper.updateAlipayAsyncMessage(payLog4Alipay);
-        if (eq(payLog4Alipay.getAlipayOurResponse(), ALIPAY_ASYNC_RESPONSE_SUCC)) {
+        if (payLog4Alipay.canSendMsg2Trade()) {
             // TODO: 2018/12/11 发送消息到交易系统,通知回调:把payLog4Alipay的支付状态发过去
         }
     }

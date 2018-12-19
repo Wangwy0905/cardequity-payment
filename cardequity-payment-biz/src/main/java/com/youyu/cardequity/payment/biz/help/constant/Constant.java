@@ -49,14 +49,6 @@ public final class Constant {
      */
     public static final String ALIPAY_TRADE_NO = "trade_no";
     /**
-     * 支付宝交易完成
-     */
-    public static final String ALIPAY_TRADE_FINISHED = "TRADE_FINISHED";
-    /**
-     * 支付宝支付成功
-     */
-    public static final String ALIPAY_TRADE_SUCCESS = "TRADE_SUCCESS";
-    /**
      * 支付宝销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
      */
     public static final String ALIPAY_PRODUCT_CODE = "QUICK_MSECURITY_PAY";

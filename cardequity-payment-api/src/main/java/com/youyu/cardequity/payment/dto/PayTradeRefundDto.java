@@ -1,5 +1,6 @@
 package com.youyu.cardequity.payment.dto;
 
+import com.youyu.common.dto.BaseDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
  */
 @Data
 @ApiModel
-public class PayTradeRefundDto implements Serializable {
+public class PayTradeRefundDto extends BaseDto<String> {
 
     private static final long serialVersionUID = 1599386415577897472L;
 

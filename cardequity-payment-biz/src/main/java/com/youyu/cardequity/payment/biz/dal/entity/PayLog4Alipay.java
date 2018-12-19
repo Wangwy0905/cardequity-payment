@@ -10,7 +10,6 @@ import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4A
 import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4TimeAlipayTradeQuery;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.TradeCloseDto;
-import com.youyu.cardequity.payment.dto.TradeCloseResponseDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageResponseDto;
 import com.youyu.common.exception.BizException;
@@ -30,6 +29,8 @@ import static com.youyu.cardequity.common.base.util.CommonUtils.matches;
 import static com.youyu.cardequity.common.base.util.MoneyUtil.betweenLeftRight;
 import static com.youyu.cardequity.common.base.util.MoneyUtil.string2BigDecimal;
 import static com.youyu.cardequity.common.base.util.StringUtil.*;
+import static com.youyu.cardequity.payment.biz.enums.AlipayTradeStatus.TRADE_FINISHED;
+import static com.youyu.cardequity.payment.biz.enums.AlipayTradeStatus.TRADE_SUCCESS;
 import static com.youyu.cardequity.payment.biz.help.constant.Constant.*;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.*;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
@@ -129,7 +130,7 @@ public class PayLog4Alipay extends PayLog {
         this.alipayAsyncMessage = toJSONString(params2Map);
         this.thirdSerialNo = params2Map.get(ALIPAY_TRADE_NO);
         this.alipayTradeStatus = params2Map.get(ALIPAY_TRADE_STATUS);
-        this.state = matches(alipayTradeStatus, ALIPAY_TRADE_FINISHED, ALIPAY_TRADE_SUCCESS) ? state.paymentSucc() : state.paymentFail();
+        this.state = matches(alipayTradeStatus, TRADE_SUCCESS.getCode(), TRADE_FINISHED.getCode()) ? state.paymentSucc() : state.paymentFail();
         this.alipayOurResponse = getAlipayOurResponse(params2Map, sellerId, appId, alipayPublicKey);
     }
 
@@ -143,9 +144,13 @@ public class PayLog4Alipay extends PayLog {
         boolean tradeQueryFlag = alipayTradeQueryResponse.isSuccess();
         if (tradeQueryFlag) {
             this.alipayTradeStatus = alipayTradeQueryResponse.getTradeStatus();
-            this.state = matches(alipayTradeStatus, ALIPAY_TRADE_FINISHED, ALIPAY_TRADE_SUCCESS) ? state.paymentSucc() : state.paymentFail();
+            this.state = matches(alipayTradeStatus, TRADE_SUCCESS.getCode(), TRADE_FINISHED.getCode()) ? state.paymentSucc() : state.paymentFail();
         }
         return tradeQueryFlag;
+    }
+
+    public boolean canSendMsg2Trade() {
+        return eq(alipayTradeStatus, TRADE_SUCCESS.getCode()) && eq(alipayOurResponse, ALIPAY_ASYNC_RESPONSE_SUCC);
     }
 
     @Override
