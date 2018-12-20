@@ -1,6 +1,8 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
+import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
+import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4AlipayTradeFastpayRefundQuery;
 import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,8 +11,10 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
+import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.MoneyUtil.string2BigDecimal;
 import static com.youyu.cardequity.payment.biz.help.constant.Constant.RETURN_TYPE_ALIPAY;
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
 /**
  * @author panqingqing
@@ -34,6 +38,12 @@ public class PayTradeRefund4Alipay extends PayTradeRefund {
      */
     @Column(name = "ALIPAY_REFUND_RESPONSE")
     private String alipayRefundResponse;
+
+    /**
+     * 支付宝查询退款响应信息
+     */
+    @Column(name = "ALIPAY_REFUND_QUERY_RESPONSE")
+    private String alipayRefundQueryResponse;
 
     public PayTradeRefund4Alipay() {
     }
@@ -59,6 +69,28 @@ public class PayTradeRefund4Alipay extends PayTradeRefund {
 
     public void callRefundFail(String remark) {
         this.status = status.refunding();
+        this.remark = remark;
+    }
+
+    @Override
+    public void getTradeRefund(PayLog payLog) {
+        getBeanByClass(PayLogCommond4AlipayTradeFastpayRefundQuery.class).executeCmd(payLog, this);
+    }
+
+    public void callRefundQuerySucc(AlipayTradeFastpayRefundQueryResponse alipayTradeFastpayRefundQueryResponse) {
+        boolean refundQueryFlag = alipayTradeFastpayRefundQueryResponse.isSuccess();
+        String refundAmount = alipayTradeFastpayRefundQueryResponse.getRefundAmount();
+        if (refundQueryFlag && isNoneBlank(refundAmount)) {
+            this.status = status.refundSucc();
+            this.alipayRefundQueryResponse = toJSONString(alipayTradeFastpayRefundQueryResponse);
+            this.refundAmount = string2BigDecimal(refundAmount);
+            return;
+        }
+
+        this.status = status.refundFail();
+    }
+
+    public void callRefundQueryFail(String remark) {
         this.remark = remark;
     }
 }

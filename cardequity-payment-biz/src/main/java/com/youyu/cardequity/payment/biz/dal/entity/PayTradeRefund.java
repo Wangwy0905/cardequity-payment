@@ -100,14 +100,8 @@ public class PayTradeRefund extends BaseEntity<String> {
         this.status = getBeanByClass(PayTradeRefundStatus4NonRefund.class);
     }
 
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
+    public void getTradeRefund(PayLog payLog) {
+        throw new RuntimeException("该交易不支持退款!");
     }
 
     public void callRefund() {
@@ -116,5 +110,15 @@ public class PayTradeRefund extends BaseEntity<String> {
 
     public boolean isRefundSucc() {
         return status.isRefundSucc();
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 }

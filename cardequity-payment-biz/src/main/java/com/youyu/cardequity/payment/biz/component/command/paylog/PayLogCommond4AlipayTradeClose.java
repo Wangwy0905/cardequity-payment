@@ -10,13 +10,10 @@ import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
 import com.youyu.cardequity.payment.dto.TradeCloseDto;
-import com.youyu.common.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_TRANSACTION_CLOSED_EXCEPTION;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
 /**
@@ -29,13 +26,6 @@ import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace
 @StatusAndStrategyNum(superClass = PayLogCommond.class, number = "3", describe = "支付宝交易关闭")
 @Component
 public class PayLogCommond4AlipayTradeClose extends PayLogCommond {
-
-    @Value("${alipay.sellerId:}")
-    private String sellerId;
-    @Value("${alipay.appId:}")
-    private String appId;
-    @Value("${alipay.alipayPublicKey:}")
-    private String alipayPublicKey;
 
     @Autowired
     private AlipayClient alipayClient;
@@ -57,12 +47,12 @@ public class PayLogCommond4AlipayTradeClose extends PayLogCommond {
         AlipayTradeCloseRequest alipayTradeCloseRequest = getAlipayTradeCloseRequest(payLog4Alipay, tradeCloseDto);
         try {
             AlipayTradeCloseResponse alipayTradeCloseResponse = alipayClient.execute(alipayTradeCloseRequest);
-            payLog4Alipay.analysisAlipayTradeClose(alipayTradeCloseResponse);
-            payLogMapper.updateAlipayTradeClose(payLog);
+            payLog4Alipay.callAlipayTradeCloseSucc(alipayTradeCloseResponse);
         } catch (AlipayApiException e) {
             log.error("调用支付宝关闭订单单号:[{}]对应的交易异常信息:[{}]", payLog.getAppSheetSerialNo(), getFullStackTrace(e));
-            throw new BizException(ALIPAY_TRANSACTION_CLOSED_EXCEPTION);
+            payLog4Alipay.callAlipayTradeCloseFail("调用支付宝交易关闭异常!");
         }
+        payLogMapper.updateAlipayTradeClose(payLog);
     }
 
     private AlipayTradeCloseRequest getAlipayTradeCloseRequest(PayLog4Alipay payLog4Alipay, TradeCloseDto tradeCloseDto) {

@@ -34,4 +34,20 @@ public interface PayTradeRefundMapper {
      * @param payTradeRefund4Alipay
      */
     void updateByAlipayRefund(PayTradeRefund4Alipay payTradeRefund4Alipay);
+
+    /**
+     * 根据主键查询
+     *
+     * @param id
+     * @return
+     */
+    PayTradeRefund getById(String id);
+
+    /**
+     * 更新退款查询
+     *
+     * @param payTradeRefund4Alipay
+     */
+    void updateByAlipayRefundQuery(PayTradeRefund4Alipay payTradeRefund4Alipay);
+
 }

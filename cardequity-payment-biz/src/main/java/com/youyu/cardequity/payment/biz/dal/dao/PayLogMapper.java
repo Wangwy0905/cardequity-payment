@@ -1,7 +1,7 @@
 package com.youyu.cardequity.payment.biz.dal.dao;
 
+import com.youyu.cardequity.common.base.annotation.SpringBean;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
-import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,6 +12,7 @@ import java.util.List;
  * @date 2018年12月10日 下午10:00:00
  * @work 支付日志Mapper
  */
+@SpringBean
 public interface PayLogMapper {
 
     /**

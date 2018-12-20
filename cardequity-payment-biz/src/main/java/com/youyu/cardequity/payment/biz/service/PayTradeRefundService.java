@@ -18,4 +18,12 @@ public interface PayTradeRefundService {
      */
     PayTradeRefundResponseDto tradeRefund(PayTradeRefundDto tradeRefundApplyDto);
 
+    /**
+     * 退款查询
+     *
+     * @param tradeRefundApplyDto
+     * @return
+     */
+    PayTradeRefundResponseDto getTradeRefund(PayTradeRefundDto tradeRefundApplyDto);
+
 }

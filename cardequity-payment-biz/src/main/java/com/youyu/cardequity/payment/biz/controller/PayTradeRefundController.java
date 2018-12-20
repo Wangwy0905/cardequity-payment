@@ -31,4 +31,9 @@ public class PayTradeRefundController implements PayTradeRefundApi {
     public Result<PayTradeRefundResponseDto> tradeRefund(@RequestBody PayTradeRefundDto tradeRefundApplyDto) {
         return ok(payRefundService.tradeRefund(tradeRefundApplyDto));
     }
+
+    @Override
+    public Result<PayTradeRefundResponseDto> getTradeRefund(@RequestBody PayTradeRefundDto tradeRefundApplyDto) {
+        return ok(payRefundService.getTradeRefund(tradeRefundApplyDto));
+    }
 }

@@ -30,4 +30,14 @@ public interface PayTradeRefundApi {
     @ApiOperation(value = "退款接口")
     @PostMapping(value = "/tradeRefund")
     Result<PayTradeRefundResponseDto> tradeRefund(@RequestBody PayTradeRefundDto tradeRefundApplyDto);
+
+    /**
+     * 退款查询接口
+     *
+     * @param tradeRefundApplyDto
+     * @return
+     */
+    @ApiOperation(value = "退款查询接口")
+    @PostMapping(value = "/getTradeRefund")
+    Result<PayTradeRefundResponseDto> getTradeRefund(@RequestBody PayTradeRefundDto tradeRefundApplyDto);
 }

@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -19,6 +18,9 @@ import java.math.BigDecimal;
 public class PayTradeRefundDto extends BaseDto<String> {
 
     private static final long serialVersionUID = 1599386415577897472L;
+
+    @ApiModelProperty(value = "退款单号")
+    private String id;
 
     @ApiModelProperty(value = "订单编号")
     private String appSheetSerialNo;

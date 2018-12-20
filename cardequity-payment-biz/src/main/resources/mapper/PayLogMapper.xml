@@ -340,6 +340,9 @@
             <if test="tradeCloseFlag != null">
                 TRADE_CLOSE_FLAG = #{tradeCloseFlag,jdbcType=BOOLEAN},
             </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR}
+            </if>
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>

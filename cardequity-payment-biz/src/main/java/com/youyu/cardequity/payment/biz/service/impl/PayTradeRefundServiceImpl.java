@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter.copyProperties;
 import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
+import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.REFUND_NO_NOT_EXIST;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.REFUND_ORDER_NO_PAYMENT_ABNORMAL;
 import static java.util.Objects.isNull;
 
@@ -30,7 +31,7 @@ public class PayTradeRefundServiceImpl implements PayTradeRefundService {
     @Autowired
     private PayLogMapper payLogMapper;
     @Autowired
-    private PayTradeRefundMapper payRefundMapper;
+    private PayTradeRefundMapper payTradeRefundMapper;
     @Autowired
     private PayChannelInfoMapper payChannelInfoMapper;
 
@@ -40,8 +41,17 @@ public class PayTradeRefundServiceImpl implements PayTradeRefundService {
         String payChannelNo = payLog.getPayChannelNo();
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payChannelNo);
 
-        PayTradeRefund payRefund = payChannelInfo.createPayRefundAndRefund(tradeRefundApplyDto, payLog);
-        return copyProperties(payRefund, PayTradeRefundResponseDto.class);
+        PayTradeRefund payTradeRefund = payChannelInfo.createPayRefundAndRefund(tradeRefundApplyDto, payLog);
+        return copyProperties(payTradeRefund, PayTradeRefundResponseDto.class);
+    }
+
+    @Override
+    public PayTradeRefundResponseDto getTradeRefund(PayTradeRefundDto tradeRefundApplyDto) {
+        PayTradeRefund payTradeRefund = getPayTradeRefund(tradeRefundApplyDto);
+        PayLog payLog = payLogMapper.getById(payTradeRefund.getPayLogId());
+
+        payTradeRefund.getTradeRefund(payLog);
+        return null;
     }
 
     private PayLog getPayLog(PayTradeRefundDto tradeRefundApplyDto) {
@@ -53,5 +63,14 @@ public class PayTradeRefundServiceImpl implements PayTradeRefundService {
         }
 
         return payLog;
+    }
+
+    private PayTradeRefund getPayTradeRefund(PayTradeRefundDto tradeRefundApplyDto) {
+        String id = tradeRefundApplyDto.getId();
+        PayTradeRefund payTradeRefund = payTradeRefundMapper.getById(id);
+        if (isNull(payTradeRefund)) {
+            throw new BizException(REFUND_NO_NOT_EXIST);
+        }
+        return payTradeRefund;
     }
 }

@@ -134,7 +134,7 @@ public class PayLog4Alipay extends PayLog {
         this.alipayOurResponse = getAlipayOurResponse(params2Map, sellerId, appId, alipayPublicKey);
     }
 
-    public void analysisAlipayTradeClose(AlipayTradeCloseResponse alipayTradeCloseResponse) {
+    public void callAlipayTradeCloseSucc(AlipayTradeCloseResponse alipayTradeCloseResponse) {
         this.alipayTradeCloseMessage = toJSONString(alipayTradeCloseResponse);
         this.tradeCloseFlag = alipayTradeCloseResponse.isSuccess();
     }
@@ -160,6 +160,11 @@ public class PayLog4Alipay extends PayLog {
         }
 
         getBeanByClass(PayLogCommond4AlipayTradeClose.class).executeCmd(this, tradeCloseDto);
+    }
+
+    public void callAlipayTradeCloseFail(String remark) {
+        this.remark = remark;
+        this.tradeCloseFlag = false;
     }
 
     @Override

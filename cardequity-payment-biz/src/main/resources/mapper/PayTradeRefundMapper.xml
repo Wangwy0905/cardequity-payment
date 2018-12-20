@@ -24,6 +24,7 @@
             <case value="1" resultType="com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund4Alipay">
                 <result column="ALIPAY_TRADE_NO" jdbcType="VARCHAR" property="alipayTradeNo"/>
                 <result column="ALIPAY_REFUND_RESPONSE" jdbcType="VARCHAR" property="alipayRefundResponse"/>
+                <result column="ALIPAY_REFUND_QUERY_RESPONSE" jdbcType="VARCHAR" property="alipayRefundQueryResponse"/>
             </case>
         </discriminator>
     </resultMap>
@@ -33,12 +34,17 @@
     </sql>
 
     <sql id="Base_Column_List_ALIPAY">
-        ALIPAY_TRADE_NO, ALIPAY_REFUND_RESPONSE
+        ALIPAY_TRADE_NO, ALIPAY_REFUND_RESPONSE, ALIPAY_REFUND_QUERY_RESPONSE
     </sql>
 
     <select id="getByAppSheetSerialNoRefundNo" resultMap="BaseResultMap">
         select * from TB_PAY_TRADE_REFUND
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR} and REFUND_NO = #{refundNo,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from TB_PAY_TRADE_REFUND
+        where ID = #{id,jdbcType=VARCHAR}
     </select>
 
     <update id="updateByAlipayRefund" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund">
@@ -49,6 +55,25 @@
             </if>
             <if test="alipayRefundResponse != null">
                 ALIPAY_REFUND_RESPONSE = #{alipayRefundResponse,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="refundAmount != null">
+                REFUND_AMOUNT = #{refundAmount,jdbcType=DECIMAL}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByAlipayRefundQuery" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund">
+        update TB_PAY_TRADE_REFUND
+        <set>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayRefundQueryResponse != null">
+                ALIPAY_REFUND_QUERY_RESPONSE = #{alipayRefundQueryResponse,jdbcType=VARCHAR},
             </if>
             <if test="remark != null">
                 REMARK = #{remark,jdbcType=VARCHAR},
@@ -99,6 +124,9 @@
             <if test="alipayRefundResponse != null">
                 ALIPAY_REFUND_RESPONSE,
             </if>
+            <if test="alipayRefundQueryResponse != null">
+                ALIPAY_REFUND_QUERY_RESPONSE,
+            </if>
             <if test="updateTime != null">
                 UPDATE_TIME,
             </if>
@@ -148,6 +176,9 @@
             </if>
             <if test="alipayRefundResponse != null">
                 #{alipayRefundResponse,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayRefundQueryResponse != null">
+                #{alipayRefundQueryResponse,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
