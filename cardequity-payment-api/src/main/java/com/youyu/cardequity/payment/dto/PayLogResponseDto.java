@@ -39,12 +39,11 @@ public class PayLogResponseDto extends BaseDto<String> {
     public static final String STATUS_PAYMENT_FAIL = "4";
 
     @ApiModelProperty(name = "支付状态")
-    private String state;
+    private String payState;
 
     @ApiModelProperty(name = "订单预支付标志(0:否,1:是)")
     private String prePayFlag;
 
     @ApiModelProperty(value = "支付机构返回结果")
     private String respInfo;
-
 }

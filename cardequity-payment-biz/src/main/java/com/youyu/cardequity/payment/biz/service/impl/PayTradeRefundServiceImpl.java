@@ -51,7 +51,7 @@ public class PayTradeRefundServiceImpl implements PayTradeRefundService {
         PayLog payLog = payLogMapper.getById(payTradeRefund.getPayLogId());
 
         payTradeRefund.getTradeRefund(payLog);
-        return null;
+        return copyProperties(payTradeRefund, PayTradeRefundResponseDto.class);
     }
 
     private PayLog getPayLog(PayTradeRefundDto tradeRefundApplyDto) {

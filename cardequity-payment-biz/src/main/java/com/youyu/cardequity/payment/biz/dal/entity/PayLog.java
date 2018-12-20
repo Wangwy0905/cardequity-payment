@@ -4,7 +4,6 @@ import com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus;
 import com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus4NonPayment;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.TradeCloseDto;
-import com.youyu.cardequity.payment.dto.TradeCloseResponseDto;
 import com.youyu.common.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
+import static com.youyu.cardequity.common.base.util.StatusAndStrategyNumUtil.getNumber;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 
 /**
@@ -228,5 +228,9 @@ public class PayLog extends BaseEntity<String> {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPayState() {
+        return getNumber(state);
     }
 }

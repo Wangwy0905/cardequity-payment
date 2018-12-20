@@ -78,9 +78,6 @@
             <if test="remark != null">
                 REMARK = #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="refundAmount != null">
-                REFUND_AMOUNT = #{refundAmount,jdbcType=DECIMAL}
-            </if>
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>

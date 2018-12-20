@@ -79,11 +79,10 @@ public class PayTradeRefund4Alipay extends PayTradeRefund {
 
     public void callRefundQuerySucc(AlipayTradeFastpayRefundQueryResponse alipayTradeFastpayRefundQueryResponse) {
         boolean refundQueryFlag = alipayTradeFastpayRefundQueryResponse.isSuccess();
-        String refundAmount = alipayTradeFastpayRefundQueryResponse.getRefundAmount();
-        if (refundQueryFlag && isNoneBlank(refundAmount)) {
+        String body = alipayTradeFastpayRefundQueryResponse.getBody();
+        if (refundQueryFlag && isNoneBlank(body)) {
             this.status = status.refundSucc();
             this.alipayRefundQueryResponse = toJSONString(alipayTradeFastpayRefundQueryResponse);
-            this.refundAmount = string2BigDecimal(refundAmount);
             return;
         }
 

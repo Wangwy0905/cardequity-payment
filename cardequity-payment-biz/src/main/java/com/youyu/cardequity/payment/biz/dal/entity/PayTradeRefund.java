@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
+import static com.youyu.cardequity.common.base.util.StatusAndStrategyNumUtil.getNumber;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 
 /**
@@ -120,5 +121,9 @@ public class PayTradeRefund extends BaseEntity<String> {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getRefundStatus() {
+        return getNumber(status);
     }
 }

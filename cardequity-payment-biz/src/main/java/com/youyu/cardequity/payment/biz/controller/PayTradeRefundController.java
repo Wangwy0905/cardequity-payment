@@ -33,6 +33,7 @@ public class PayTradeRefundController implements PayTradeRefundApi {
     }
 
     @Override
+    @PostMapping(value = "/getTradeRefund")
     public Result<PayTradeRefundResponseDto> getTradeRefund(@RequestBody PayTradeRefundDto tradeRefundApplyDto) {
         return ok(payRefundService.getTradeRefund(tradeRefundApplyDto));
     }
