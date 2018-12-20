@@ -10,9 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static com.youyu.cardequity.common.base.util.StringUtil.eq;
-import static com.youyu.cardequity.payment.biz.help.constant.Constant.ALIPAY_ASYNC_RESPONSE_SUCC;
-
 /**
  * @author panqingqing
  * @version v1.0
