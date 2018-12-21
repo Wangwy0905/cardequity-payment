@@ -286,6 +286,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateAlipayPrepayment" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
         update TB_PAY_LOG
         <set>
@@ -301,6 +302,7 @@
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>
+
     <update id="updateAlipaySyncMessage" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
         update TB_PAY_LOG
         <set>
@@ -310,6 +312,7 @@
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>
+
     <update id="updateAlipayAsyncMessage" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
         update TB_PAY_LOG
         <set>
@@ -331,6 +334,7 @@
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>
+
     <update id="updateAlipayTradeClose" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
         update TB_PAY_LOG
         <set>

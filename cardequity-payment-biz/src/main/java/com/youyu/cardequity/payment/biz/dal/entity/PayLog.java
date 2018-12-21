@@ -231,6 +231,10 @@ public class PayLog extends BaseEntity<String> {
     }
 
     public String getPayState() {
-        return getNumber(state);
+        return getNumber(this.state);
+    }
+
+    public String getPayLogId() {
+        return this.id;
     }
 }

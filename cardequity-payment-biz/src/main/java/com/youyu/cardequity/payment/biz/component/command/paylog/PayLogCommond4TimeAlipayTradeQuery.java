@@ -6,13 +6,18 @@ import com.alipay.api.domain.AlipayTradeQueryModel;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
+import com.youyu.cardequity.payment.biz.component.rabbitmq.RabbitmqSender;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
+import com.youyu.cardequity.payment.dto.PayLogAsyncMessageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.alibaba.fastjson.JSON.toJSONString;
+import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter.copyProperties;
+import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.ALIPAY_ASYNC_MESSAGE;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
 /**
@@ -32,6 +37,9 @@ public class PayLogCommond4TimeAlipayTradeQuery extends PayLogCommond {
     @Autowired
     private PayLogMapper payLogMapper;
 
+    @Autowired
+    private RabbitmqSender rabbitmqSender;
+
     /**
      * @param payLog
      * @param t      定时调用t:null
@@ -47,7 +55,11 @@ public class PayLogCommond4TimeAlipayTradeQuery extends PayLogCommond {
             boolean tradeQueryFlag = payLog4Alipay.analysisAlipayTradeQueryResponse(alipayTradeQueryResponse);
             if (tradeQueryFlag) {
                 payLogMapper.updateAlipayTradeQuery(payLog);
-                // TODO: 2018/12/11 发送消息到交易系统,通知回调:把payLog4Alipay的支付状态发过去
+
+                PayLogAsyncMessageDto payLogAsyncMessageDto = copyProperties(payLog4Alipay, PayLogAsyncMessageDto.class);
+                String message = toJSONString(payLogAsyncMessageDto);
+                log.info("定时任务主动查询支付宝支付未收到异步通知的支付结果通知交易系统支付流水号:[{}]和消息信息:[{}]", payLog4Alipay.getId(), message);
+                rabbitmqSender.sendMessage(message, ALIPAY_ASYNC_MESSAGE);
             }
         } catch (AlipayApiException e) {
             log.error("调用支付宝交易查询订单:[{}]对应的交易异常信息:[{}]", payLog.getAppSheetSerialNo(), getFullStackTrace(e));

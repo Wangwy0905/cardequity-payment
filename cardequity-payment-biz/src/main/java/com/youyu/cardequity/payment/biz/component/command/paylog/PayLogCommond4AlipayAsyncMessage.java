@@ -1,14 +1,21 @@
 package com.youyu.cardequity.payment.biz.component.command.paylog;
 
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
+import com.youyu.cardequity.payment.biz.component.rabbitmq.RabbitmqSender;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
+import com.youyu.cardequity.payment.dto.PayLogAsyncMessageDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+
+import static com.alibaba.fastjson.JSON.toJSONString;
+import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter.copyProperties;
+import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.ALIPAY_ASYNC_MESSAGE;
 
 /**
  * @author panqingqing
@@ -16,6 +23,7 @@ import java.util.Map;
  * @date 2018年12月6日 下午10:00:00
  * @work Alipay Pay异步支付命令
  */
+@Slf4j
 @StatusAndStrategyNum(superClass = PayLogCommond.class, number = "2", describe = "支付宝异步接收参数")
 @Component
 public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
@@ -29,6 +37,9 @@ public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
 
     @Autowired
     private PayLogMapper payLogMapper;
+
+    @Autowired
+    private RabbitmqSender rabbitmqSender;
 
     /**
      * @param payLog
@@ -44,7 +55,10 @@ public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
 
         payLogMapper.updateAlipayAsyncMessage(payLog4Alipay);
         if (payLog4Alipay.canSendMsg2Trade()) {
-            // TODO: 2018/12/11 发送消息到交易系统,通知回调:把payLog4Alipay的支付状态发过去
+            PayLogAsyncMessageDto payLogAsyncMessageDto = copyProperties(payLog4Alipay, PayLogAsyncMessageDto.class);
+            String message = toJSONString(payLogAsyncMessageDto);
+            log.info("异步通知交易系统支付宝支付对应的支付流水号:[{}]和消息信息:[{}]", payLog4Alipay.getId(), message);
+            rabbitmqSender.sendMessage(message, ALIPAY_ASYNC_MESSAGE);
         }
     }
 

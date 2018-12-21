@@ -178,18 +178,18 @@ public class PayChannelInfo extends BaseEntity<String> {
     }
 
     public String getPayLogFactoryNo() {
-        return getNumber(payLogFactory);
+        return getNumber(this.payLogFactory);
     }
 
     public String getPayStrategyNo() {
-        return getNumber(payLogStrategy);
+        return getNumber(this.payLogStrategy);
     }
 
     public String getPayTradeRefundFactoryNo() {
-        return getNumber(payTradeRefundFactory);
+        return getNumber(this.payTradeRefundFactory);
     }
 
     public String getPayTradeRefundStrategyNo() {
-        return getNumber(payTradeRefundStrategy);
+        return getNumber(this.payTradeRefundStrategy);
     }
 }

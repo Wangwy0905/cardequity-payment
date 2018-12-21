@@ -36,8 +36,7 @@ public class PayLogController implements PayLogApi {
     @Override
     @PostMapping(value = "/pay")
     public Result<PayLogResponseDto> pay(@RequestBody PayLogDto payLogDto) {
-        PayLogResponseDto alipayPrepayment4PayLogDto = payLogService.pay(payLogDto);
-        return ok(alipayPrepayment4PayLogDto);
+        return ok(payLogService.pay(payLogDto));
     }
 
     @Override
