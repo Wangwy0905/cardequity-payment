@@ -74,5 +74,4 @@ public interface PayLogApi {
     @ApiOperation(value = "定时任务调用:交易查询接口")
     @PostMapping(value = "/timeTradeQuery")
     Result timeTradeQuery();
-
 }

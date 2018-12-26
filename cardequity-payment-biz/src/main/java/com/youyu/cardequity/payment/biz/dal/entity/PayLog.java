@@ -220,6 +220,10 @@ public class PayLog extends BaseEntity<String> {
         return state.createPayRefund();
     }
 
+    public boolean isPaySucc() {
+        return state.isPaySucc();
+    }
+
     @Override
     public String getId() {
         return id;

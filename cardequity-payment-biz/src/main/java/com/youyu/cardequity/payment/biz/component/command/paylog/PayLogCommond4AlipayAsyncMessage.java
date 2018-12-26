@@ -16,6 +16,7 @@ import java.util.Map;
 import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter.copyProperties;
 import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.ALIPAY_ASYNC_MESSAGE;
+import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.FAIL;
 
 /**
  * @author panqingqing
@@ -52,8 +53,12 @@ public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
         Map<String, String> params2Map = (Map<String, String>) t;
         PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLog;
         payLog4Alipay.analysisAlipayAsyncMessage(params2Map, sellerId, appId, alipayPublicKey);
-
         payLogMapper.updateAlipayAsyncMessage(payLog4Alipay);
+
+        if (payLog4Alipay.isPaySucc()) {
+            payLogMapper.updateAppSheetSerialNo4OtherPayIdRouteVoIdFlag(payLog4Alipay.getAppSheetSerialNo(), payLog4Alipay.getId(), FAIL.getCode());
+        }
+
         if (payLog4Alipay.canSendMsg2Trade()) {
             PayLogAsyncMessageDto payLogAsyncMessageDto = copyProperties(payLog4Alipay, PayLogAsyncMessageDto.class);
             String message = toJSONString(payLogAsyncMessageDto);

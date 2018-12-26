@@ -331,6 +331,9 @@
             <if test="alipayOurResponse != null">
                 ALIPAY_OUR_RESPONSE = #{alipayOurResponse,jdbcType=VARCHAR},
             </if>
+            <if test="routeVoIdFlag != null">
+                ROUTE_VO_ID_FLAG = #{routeVoIdFlag,jdbcType=VARCHAR},
+            </if>
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>
@@ -382,6 +385,13 @@
         update TB_PAY_LOG
         set ROUTE_VO_ID_FLAG = #{routeVoIdFlag,jdbcType=VARCHAR}
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateAppSheetSerialNo4OtherPayIdRouteVoIdFlag">
+        update TB_PAY_LOG
+        set ROUTE_VO_ID_FLAG = #{routeVoIdFlag,jdbcType=VARCHAR}
+        where ID != #{id,jdbcType=VARCHAR}
+        and APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
     </update>
 
 </mapper>

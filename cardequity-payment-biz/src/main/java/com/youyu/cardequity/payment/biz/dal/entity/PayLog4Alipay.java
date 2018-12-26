@@ -31,6 +31,8 @@ import static com.youyu.cardequity.common.base.util.MoneyUtil.string2BigDecimal;
 import static com.youyu.cardequity.common.base.util.StringUtil.*;
 import static com.youyu.cardequity.payment.biz.enums.AlipayTradeStatus.TRADE_FINISHED;
 import static com.youyu.cardequity.payment.biz.enums.AlipayTradeStatus.TRADE_SUCCESS;
+import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.FAIL;
+import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
 import static com.youyu.cardequity.payment.biz.help.constant.Constant.*;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.*;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
@@ -130,8 +132,9 @@ public class PayLog4Alipay extends PayLog {
         this.alipayAsyncMessage = toJSONString(params2Map);
         this.thirdSerialNo = params2Map.get(ALIPAY_TRADE_NO);
         this.alipayTradeStatus = params2Map.get(ALIPAY_TRADE_STATUS);
-        this.state = matches(alipayTradeStatus, TRADE_SUCCESS.getCode(), TRADE_FINISHED.getCode()) ? state.paymentSucc() : state.paymentFail();
         this.alipayOurResponse = getAlipayOurResponse(params2Map, sellerId, appId, alipayPublicKey);
+        this.state = matches(alipayTradeStatus, TRADE_SUCCESS.getCode(), TRADE_FINISHED.getCode()) && eq(alipayOurResponse, ALIPAY_ASYNC_RESPONSE_SUCC) ? state.paymentSucc() : state.paymentFail();
+        this.routeVoIdFlag = state.isPaySucc() ? NORMAL.getCode() : FAIL.getCode();
     }
 
     public void callAlipayTradeCloseSucc(AlipayTradeCloseResponse alipayTradeCloseResponse) {
@@ -150,7 +153,8 @@ public class PayLog4Alipay extends PayLog {
     }
 
     public boolean canSendMsg2Trade() {
-        return eq(alipayTradeStatus, TRADE_SUCCESS.getCode()) && eq(alipayOurResponse, ALIPAY_ASYNC_RESPONSE_SUCC);
+        return eq(alipayTradeStatus, TRADE_SUCCESS.getCode()) &&
+                eq(alipayOurResponse, ALIPAY_ASYNC_RESPONSE_SUCC);
     }
 
     @Override

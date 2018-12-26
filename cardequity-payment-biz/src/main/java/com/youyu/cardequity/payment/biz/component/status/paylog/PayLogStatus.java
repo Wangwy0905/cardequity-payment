@@ -73,4 +73,8 @@ public abstract class PayLogStatus {
     public boolean createPayRefund() {
         return false;
     }
+
+    public boolean isPaySucc() {
+        return false;
+    }
 }

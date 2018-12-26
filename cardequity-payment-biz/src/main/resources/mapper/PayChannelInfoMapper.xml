@@ -20,6 +20,8 @@
         <result column="PAY_LOG_STRATEGY" jdbcType="VARCHAR" property="payLogStrategy"/>
         <result column="PAY_TRADE_REFUND_FACTORY" jdbcType="VARCHAR" property="payTradeRefundFactory"/>
         <result column="PAY_TRADE_REFUND_STRATEGY" jdbcType="VARCHAR" property="payTradeRefundStrategy"/>
+        <result column="PAY_CHECK_FILE_DEATAIL_FACTORY" jdbcType="VARCHAR" property="payCheckFileDeatailFactory"/>
+        <result column="PAY_CHECK_FILE_DEATAIL_STRATEGY" jdbcType="VARCHAR" property="payCheckFileDeatailStrategy"/>
 
         <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
         <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
@@ -29,7 +31,8 @@
 
     <sql id="Base_Column_List">
     CHANNEL_NO, CHANNEL_NAME, PAY_ORG_NO, PAY_INTERFACE_TYPE, PAY_MODE, CHECK_LEVEL, CONTINUITY_FAIL_NUM, CERTIFICATE_TYPES,
-    STATE, SIGN_ORDER, REMARK, PAY_LOG_FACTORY, PAY_LOG_STRATEGY, PAY_TRADE_REFUND_FACTORY, PAY_TRADE_REFUND_STRATEGY, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME
+    STATE, SIGN_ORDER, REMARK, PAY_LOG_FACTORY, PAY_LOG_STRATEGY, PAY_TRADE_REFUND_FACTORY, PAY_TRADE_REFUND_STRATEGY,
+    PAY_CHECK_FILE_DEATAIL_FACTORY, PAY_CHECK_FILE_DEATAIL_STRATEGY, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME
     </sql>
 
     <select id="getById" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -89,6 +92,12 @@
             </if>
             <if test="payTradeRefundStrategy != null">
                 and PAY_TRADE_REFUND_STRATEGY = #{payTradeRefundStrategy,jdbcType=VARCHAR}
+            </if>
+            <if test="payCheckFileDeatailFactory != null">
+                and PAY_CHECK_FILE_DEATAIL_FACTORY = #{payCheckFileDeatailFactory,jdbcType=VARCHAR}
+            </if>
+            <if test="payCheckFileDeatailStrategy != null">
+                and PAY_CHECK_FILE_DEATAIL_STRATEGY = #{payCheckFileDeatailStrategy,jdbcType=VARCHAR}
             </if>
             <if test="updateTime != null">
                 and UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
@@ -153,6 +162,12 @@
             <if test="payTradeRefundStrategy != null">
                 PAY_TRADE_REFUND_STRATEGY,
             </if>
+            <if test="payCheckFileDeatailFactory != null">
+                PAY_CHECK_FILE_DEATAIL_FACTORY,
+            </if>
+            <if test="payCheckFileDeatailStrategy != null">
+                PAY_CHECK_FILE_DEATAIL_STRATEGY,
+            </if>
             <if test="updateTime != null">
                 UPDATE_TIME,
             </if>
@@ -211,6 +226,12 @@
             </if>
             <if test="payTradeRefundStrategy != null">
                 #{payTradeRefundStrategy,jdbcType=VARCHAR},
+            </if>
+            <if test="payCheckFileDeatailFactory != null">
+                #{payCheckFileDeatailFactory,jdbcType=VARCHAR},
+            </if>
+            <if test="payCheckFileDeatailStrategy != null">
+                #{payCheckFileDeatailStrategy,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
@@ -275,6 +296,12 @@
             </if>
             <if test="payTradeRefundStrategy != null">
                 PAY_TRADE_REFUND_STRATEGY = #{payTradeRefundStrategy,jdbcType=VARCHAR},
+            </if>
+            <if test="payCheckFileDeatailFactory != null">
+                PAY_CHECK_FILE_DEATAIL_FACTORY = #{payCheckFileDeatailFactory,jdbcType=VARCHAR},
+            </if>
+            <if test="payCheckFileDeatailStrategy != null">
+                PAY_CHECK_FILE_DEATAIL_STRATEGY = #{payCheckFileDeatailStrategy,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},

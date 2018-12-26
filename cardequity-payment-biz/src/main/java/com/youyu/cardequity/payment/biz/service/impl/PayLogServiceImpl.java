@@ -7,10 +7,7 @@ import com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
 import com.youyu.cardequity.payment.biz.service.PayLogService;
-import com.youyu.cardequity.payment.dto.PayLogDto;
-import com.youyu.cardequity.payment.dto.PayLogResponseDto;
-import com.youyu.cardequity.payment.dto.TradeCloseDto;
-import com.youyu.cardequity.payment.dto.TradeCloseResponseDto;
+import com.youyu.cardequity.payment.dto.*;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageResultDto;
 import lombok.extern.slf4j.Slf4j;
@@ -73,6 +70,7 @@ public class PayLogServiceImpl implements PayLogService {
     }
 
     @Override
+    @Transactional
     public String alipayAsyncMessage(Map<String, String> params2Map) {
         if (isEmpty(params2Map)) {
             return ALIPAY_ASYNC_RESPONSE_FAIL;
@@ -89,6 +87,7 @@ public class PayLogServiceImpl implements PayLogService {
     }
 
     @Override
+    @Transactional
     public TradeCloseResponseDto tradeClose(TradeCloseDto tradeCloseDto) {
         String appSheetSerialNo = tradeCloseDto.getAppSheetSerialNo();
         PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(appSheetSerialNo, NORMAL.getCode());

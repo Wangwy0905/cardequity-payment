@@ -41,4 +41,9 @@ public class PayLogStatus4PaymentSucc extends PayLogStatus {
     public boolean createPayRefund() {
         return true;
     }
+
+    @Override
+    public boolean isPaySucc() {
+        return true;
+    }
 }

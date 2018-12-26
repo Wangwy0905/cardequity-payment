@@ -52,5 +52,4 @@ public interface PayLogService {
      * 定时任务查询交易
      */
     void timeTradeQuery();
-
 }

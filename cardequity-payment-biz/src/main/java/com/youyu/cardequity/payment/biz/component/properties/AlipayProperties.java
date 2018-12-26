@@ -43,4 +43,6 @@ public class AlipayProperties implements Serializable {
 
     private Integer asyncNotifyThresholdEnd = 10;
 
+    private String billFilePath;
+
 }

@@ -91,4 +91,13 @@ public interface PayLogMapper {
      * @param routeVoIdFlag
      */
     void updateByAppSheetSerialNoRouteVoIdFlag(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("routeVoIdFlag") String routeVoIdFlag);
+
+    /**
+     * 更新订单号相同,但支付单号不等于异步回调的支付单号的路由标志
+     *
+     * @param appSheetSerialNo
+     * @param id
+     * @param routeVoIdFlag
+     */
+    void updateAppSheetSerialNo4OtherPayIdRouteVoIdFlag(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("id") String id, @Param("routeVoIdFlag") String routeVoIdFlag);
 }

@@ -63,11 +63,17 @@
         <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayTradeRefundFactoryTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.factory.paytraderefund.PayTradeRefundFactory"/>
 
+        <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayCheckFileDeatailFactoryTypeHandler"
+                     javaType="com.youyu.cardequity.payment.biz.component.factory.paycheckfiledeatail.PayCheckFileDeatailFactory"/>
+
         <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogStrategyTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.strategy.paylog.PayLogStrategy"/>
 
         <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayTradeRefundStrategyTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.strategy.paytraderefund.PayTradeRefundStrategy"/>
+
+        <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayCheckFileDeatailStrategyTypeHandler"
+                     javaType="com.youyu.cardequity.payment.biz.component.strategy.paycheckfiledeatail.PayCheckFileDeatailStrategy"/>
 
         <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayLogStatusTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus"/>

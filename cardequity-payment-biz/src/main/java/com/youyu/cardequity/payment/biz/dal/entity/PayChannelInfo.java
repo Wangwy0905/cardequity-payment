@@ -1,11 +1,14 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
+import com.youyu.cardequity.payment.biz.component.factory.paycheckfiledeatail.PayCheckFileDeatailFactory;
 import com.youyu.cardequity.payment.biz.component.factory.paylog.PayLogFactory;
 import com.youyu.cardequity.payment.biz.component.factory.paytraderefund.PayTradeRefundFactory;
+import com.youyu.cardequity.payment.biz.component.strategy.paycheckfiledeatail.PayCheckFileDeatailStrategy;
 import com.youyu.cardequity.payment.biz.component.strategy.paylog.PayLogStrategy;
 import com.youyu.cardequity.payment.biz.component.strategy.paytraderefund.PayTradeRefundStrategy;
 import com.youyu.cardequity.payment.biz.enums.PayChannelStateEnum;
 import com.youyu.cardequity.payment.dto.PayChannelInfoDto;
+import com.youyu.cardequity.payment.dto.PayCheckFileDeatailDto;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
 import com.youyu.common.entity.BaseEntity;
@@ -125,6 +128,18 @@ public class PayChannelInfo extends BaseEntity<String> {
     @Column(name = "PAY_TRADE_REFUND_STRATEGY")
     private PayTradeRefundStrategy payTradeRefundStrategy;
 
+    /**
+     * 对账工厂
+     */
+    @Column(name = "PAY_CHECK_FILE_DEATAIL_FACTORY")
+    private PayCheckFileDeatailFactory payCheckFileDeatailFactory;
+
+    /**
+     * 对账策略
+     */
+    @Column(name = "PAY_CHECK_FILE_DEATAIL_STRATEGY")
+    private PayCheckFileDeatailStrategy payCheckFileDeatailStrategy;
+
     public PayChannelInfo() {
     }
 
@@ -144,6 +159,8 @@ public class PayChannelInfo extends BaseEntity<String> {
         this.payLogStrategy = (PayLogStrategy) getBeanByName(PayLogStrategy.class.getSimpleName() + payChannelInfoDto.getPayLogStrategyNo());
         this.payTradeRefundFactory = (PayTradeRefundFactory) getBeanByName(PayTradeRefundFactory.class.getSimpleName() + payChannelInfoDto.getPayLogFactoryNo());
         this.payTradeRefundStrategy = (PayTradeRefundStrategy) getBeanByName(PayTradeRefundStrategy.class.getSimpleName() + payChannelInfoDto.getPayLogFactoryNo());
+        this.payCheckFileDeatailFactory = (PayCheckFileDeatailFactory) getBeanByName(PayCheckFileDeatailFactory.class.getSimpleName() + payChannelInfoDto.getPayCheckFileDeatailFactoryNo());
+        this.payCheckFileDeatailStrategy = (PayCheckFileDeatailStrategy) getBeanByName(PayCheckFileDeatailStrategy.class.getSimpleName() + payChannelInfoDto.getPayCheckFileDeatailStrategyNo());
     }
 
     public PayLog createPayLogAndPay(PayLogDto payLogDto) {
@@ -165,6 +182,11 @@ public class PayChannelInfo extends BaseEntity<String> {
         if (!payChannelStateEnum.canCreatePayLog()) {
             throw new BizException(PAYMENT_CHANNEL_STATUS_IS_ABNORMAL.getCode(), PAYMENT_CHANNEL_STATUS_IS_ABNORMAL.getFormatDesc(channelNo, state));
         }
+    }
+
+    public void downloadBill(PayCheckFileDeatailDto payCheckFileDeatailDto) {
+        checkState();
+        payCheckFileDeatailFactory.createPayCheckFileDeatail(payCheckFileDeatailDto);
     }
 
     @Override
@@ -191,5 +213,13 @@ public class PayChannelInfo extends BaseEntity<String> {
 
     public String getPayTradeRefundStrategyNo() {
         return getNumber(this.payTradeRefundStrategy);
+    }
+
+    public String getPayCheckFileDeatailFactoryNo() {
+        return getNumber(this.payCheckFileDeatailFactory);
+    }
+
+    public String getPayCheckFileDeatailStrategyNo() {
+        return getNumber(this.payCheckFileDeatailStrategy);
     }
 }
