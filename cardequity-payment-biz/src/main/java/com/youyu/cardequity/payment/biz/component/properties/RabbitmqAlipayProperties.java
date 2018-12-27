@@ -15,20 +15,20 @@ import org.springframework.stereotype.Component;
 @SpringBean
 @Setter
 @Getter
-@ConfigurationProperties(value = "rabbit.alipay")
+@ConfigurationProperties(value = "rabbit")
 @Component
 public class RabbitmqAlipayProperties {
 
     /**
      * 支付宝支付异步消息通知:Queue
      */
-    private String asyncMessageQueue = "rabbit_alipay_async_message_queue";
+    private String payAsyncMessageQueue = "rabbit_pay_async_message_queue";
     /**
      * 支付宝支付异步消息通知:Exchange
      */
-    private String asyncMessageExchange = "rabbit_alipay_async_message_exchange";
+    private String payAsyncMessageExchange = "rabbit_pay_async_message_exchange";
     /**
      * 支付宝支付异步消息通知:RoutingKey
      */
-    private String asyncMessageRoutingKey = "rabbit_alipay_async_message_routing_key";
+    private String payAsyncMessageRoutingKey = "rabbit_pay_async_message_routing_key";
 }

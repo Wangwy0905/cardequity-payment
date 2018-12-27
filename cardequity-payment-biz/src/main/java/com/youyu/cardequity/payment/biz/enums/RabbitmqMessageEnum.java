@@ -15,12 +15,12 @@ import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass
 @Getter
 public enum RabbitmqMessageEnum {
 
-    ALIPAY_ASYNC_MESSAGE("0", "支付宝异步支付消息") {
+    PAY_ASYNC_MESSAGE("0", "支付宝异步支付消息") {
         @Override
         public Tuple2<String, String> getExchangeRoutingKey() {
             RabbitmqAlipayProperties rabbitmqAlipayProperties = getBeanByClass(RabbitmqAlipayProperties.class);
-            String exchange = rabbitmqAlipayProperties.getAsyncMessageExchange();
-            String routingKey = rabbitmqAlipayProperties.getAsyncMessageRoutingKey();
+            String exchange = rabbitmqAlipayProperties.getPayAsyncMessageExchange();
+            String routingKey = rabbitmqAlipayProperties.getPayAsyncMessageRoutingKey();
             return new Tuple2<>(exchange, routingKey);
         }
     };

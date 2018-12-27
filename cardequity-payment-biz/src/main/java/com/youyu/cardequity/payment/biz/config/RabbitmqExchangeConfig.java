@@ -25,6 +25,6 @@ public class RabbitmqExchangeConfig {
      */
     @Bean("alipayAsyncMessageExchange")
     public DirectExchange alipayAsyncMessageExchange() {
-        return new DirectExchange(rabbitmqAlipayProperties.getAsyncMessageExchange(), true, false);
+        return new DirectExchange(rabbitmqAlipayProperties.getPayAsyncMessageExchange(), true, false);
     }
 }

@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter.copyProperties;
-import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.ALIPAY_ASYNC_MESSAGE;
+import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_ASYNC_MESSAGE;
 import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.FAIL;
 
 /**
@@ -63,7 +63,7 @@ public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
             PayLogAsyncMessageDto payLogAsyncMessageDto = copyProperties(payLog4Alipay, PayLogAsyncMessageDto.class);
             String message = toJSONString(payLogAsyncMessageDto);
             log.info("异步通知交易系统支付宝支付对应的支付流水号:[{}]和消息信息:[{}]", payLog4Alipay.getId(), message);
-            rabbitmqSender.sendMessage(message, ALIPAY_ASYNC_MESSAGE);
+            rabbitmqSender.sendMessage(message, PAY_ASYNC_MESSAGE);
         }
     }
 

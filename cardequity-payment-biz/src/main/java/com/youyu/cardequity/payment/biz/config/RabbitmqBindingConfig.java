@@ -38,6 +38,6 @@ public class RabbitmqBindingConfig {
      */
     @Bean
     public Binding alipayAsyncMessageBinding() {
-        return bind(alipayAsyncMessageQueue).to(alipayAsyncMessageExchange).with(rabbitmqAlipayProperties.getAsyncMessageRoutingKey());
+        return bind(alipayAsyncMessageQueue).to(alipayAsyncMessageExchange).with(rabbitmqAlipayProperties.getPayAsyncMessageRoutingKey());
     }
 }
