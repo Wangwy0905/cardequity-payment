@@ -14,7 +14,7 @@ import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
  * @author panqingqing
  * @version v1.0
  * @date 2018年12月6日 下午10:00:00
- * @work Ra
+ * @work Rabbitmq sender
  */
 @Slf4j
 @Component

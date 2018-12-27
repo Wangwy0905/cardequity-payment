@@ -19,7 +19,7 @@ public class RabbitmqExchangeConfig {
     private RabbitmqProperties rabbitmqProperties;
 
     /**
-     * 支付宝支付异步通知消息:Exchange
+     * 支付异步通知消息:Exchange
      *
      * @return
      */

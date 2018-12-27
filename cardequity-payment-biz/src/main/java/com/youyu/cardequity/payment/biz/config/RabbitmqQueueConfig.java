@@ -19,7 +19,7 @@ public class RabbitmqQueueConfig {
     private RabbitmqProperties rabbitmqProperties;
 
     /**
-     * 支付宝支付异步通知消息:Queue
+     * 支付异步通知消息:Queue
      *
      * @return
      */
@@ -28,5 +28,14 @@ public class RabbitmqQueueConfig {
         return new Queue(rabbitmqProperties.getPayAsyncMessageQueue(), true);
     }
 
+    /**
+     * 交易订单消息通知:Queue
+     *
+     * @return
+     */
+    @Bean("payAsyncMessageQueue")
+    public Queue tradeOrderMessageQueue() {
+        return new Queue(rabbitmqProperties.getTradeOrderMessageQueue(), true);
+    }
 
 }

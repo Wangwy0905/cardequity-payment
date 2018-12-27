@@ -32,7 +32,7 @@ public class RabbitmqBindingConfig {
     private DirectExchange payAsyncMessageExchange;
 
     /**
-     * 支付宝支付异步通知消息:Binding
+     * 支付异步通知消息:Binding
      *
      * @return
      */

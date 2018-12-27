@@ -25,4 +25,8 @@ public class PayCheckFileDeatailServiceImpl implements PayCheckFileDeatailServic
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(channelNo);
         payChannelInfo.downloadBill(payCheckFileDeatailDto);
     }
+
+    @Override
+    public void syncTradeOrderMessage(String json) {
+    }
 }

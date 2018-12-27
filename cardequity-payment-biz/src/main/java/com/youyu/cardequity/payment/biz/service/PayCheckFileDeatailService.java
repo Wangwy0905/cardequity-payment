@@ -15,4 +15,11 @@ public interface PayCheckFileDeatailService {
      * @param payCheckFileDeatailDto
      */
     void downloadBill(PayCheckFileDeatailDto payCheckFileDeatailDto);
+
+    /**
+     * 同步交易订单消息数据
+     *
+     * @param json
+     */
+    void syncTradeOrderMessage(String json);
 }
