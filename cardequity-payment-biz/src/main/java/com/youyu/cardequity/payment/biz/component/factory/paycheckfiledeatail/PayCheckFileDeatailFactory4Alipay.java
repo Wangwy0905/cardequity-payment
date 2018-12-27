@@ -28,8 +28,8 @@ import static com.youyu.cardequity.payment.biz.help.constant.AlipayConstant.ALIP
 import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.BUSIN_TYPE_REFUND;
 import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.BUSIN_TYPE_TRADE;
 import static com.youyu.cardequity.payment.biz.help.constant.SymbolConstant.*;
-import static com.youyu.cardequity.payment.biz.help.util.AlipayFileUtil.downloadBill;
-import static com.youyu.cardequity.payment.biz.help.util.FileUtil.parseCsv2DataList;
+import static com.youyu.cardequity.payment.biz.help.util.AlipayFileUtil.downloadAlipayBill;
+import static com.youyu.cardequity.payment.biz.help.util.AlipayFileUtil.parseAlipayCsv2DataList;
 import static com.youyu.cardequity.payment.biz.help.util.FileUtil.unZipFile;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_BILL_DOWNLOAD_FAILED;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_BILL_DOWNLOAD_URL_FAILED;
@@ -66,11 +66,11 @@ public class PayCheckFileDeatailFactory4Alipay extends PayCheckFileDeatailFactor
 
         String filePath = alipayProperties.getBillFilePath() + separator + payCheckFileDeatailDto.getBillDate() + separator;
         String fileNameZip = filePath + payCheckFileDeatailDto.getBillDate() + DOT + ZIP;
-        downloadBill(billDownloadUrl, fileNameZip);
+        downloadAlipayBill(billDownloadUrl, fileNameZip);
 
         unZipFile(fileNameZip, filePath, CHARSERT_GBK);
 
-        Tuple2<String, List<String>> dataTuple2 = parseCsv2DataList(filePath, ALIPAY_BILL_FILE_NAME);
+        Tuple2<String, List<String>> dataTuple2 = parseAlipayCsv2DataList(filePath, ALIPAY_BILL_FILE_NAME);
 
         batchDisposeDatas2PayCheckFileDeatails(dataTuple2, payCheckFileDeatailDto);
     }

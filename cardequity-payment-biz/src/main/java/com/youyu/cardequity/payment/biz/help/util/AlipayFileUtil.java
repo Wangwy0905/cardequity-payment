@@ -1,14 +1,21 @@
 package com.youyu.cardequity.payment.biz.help.util;
 
+import com.csvreader.CsvReader;
+import com.youyu.cardequity.common.base.tuple2.Tuple2;
+
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.apache.commons.lang3.StringUtils.substring;
+import static com.youyu.cardequity.common.base.util.CloseableUtil.close;
+import static com.youyu.cardequity.payment.biz.help.constant.AlipayConstant.ALIPAY_NAME;
+import static com.youyu.cardequity.payment.biz.help.constant.SymbolConstant.*;
+import static java.nio.charset.Charset.forName;
+import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * @author panqingqing
@@ -18,16 +25,14 @@ import static org.apache.commons.lang3.StringUtils.substring;
  */
 public class AlipayFileUtil {
 
-    // TODO: 2018/12/27
-
     /**
-     * 支付宝官方提供
+     * 支付宝官方提供:部分修改
      *
      * @param urlStr
      * @param fileName
      */
-    public static void downloadBill(String urlStr, String fileName) {
-        protectDir(fileName);
+    public static void downloadAlipayBill(String urlStr, String fileName) {
+        protectAlipayDir(fileName);
 
         HttpURLConnection httpUrlConnection = null;
         InputStream inputStream = null;
@@ -40,9 +45,10 @@ public class AlipayFileUtil {
             httpUrlConnection.setDoOutput(true);
             httpUrlConnection.setUseCaches(false);
             httpUrlConnection.setRequestMethod("GET");
-            httpUrlConnection.setRequestProperty("Charsert", "UTF-8");
+            httpUrlConnection.setRequestProperty("Charsert", CHARSERT_UTF_8);
             httpUrlConnection.connect();
             inputStream = httpUrlConnection.getInputStream();
+
             byte[] temp = new byte[1024];
             int b;
             fileOutputStream = new FileOutputStream(new File(fileName));
@@ -50,23 +56,13 @@ public class AlipayFileUtil {
                 fileOutputStream.write(temp, 0, b);
                 fileOutputStream.flush();
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
         } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-                if (fileOutputStream != null) {
-                    fileOutputStream.close();
-                }
-                if (httpUrlConnection != null) {
-                    httpUrlConnection.disconnect();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            close(fileOutputStream, inputStream);
+
+            if (httpUrlConnection != null) {
+                httpUrlConnection.disconnect();
             }
         }
     }
@@ -76,12 +72,48 @@ public class AlipayFileUtil {
      *
      * @param fileName
      */
-    public static void protectDir(String fileName) {
+    public static void protectAlipayDir(String fileName) {
+        if (isBlank(fileName)) {
+            throw new RuntimeException("文件名不能为空!");
+        }
+
         int lastIndex = fileName.lastIndexOf("/");
         String filePathDir = substring(fileName, 0, lastIndex);
+
         File file = new File(filePathDir);
         if (!file.exists()) {
             file.mkdirs();
+        }
+    }
+
+    /**
+     * 将Csv文件的数据按行读取需要的数据添加到二元组里面
+     *
+     * @param filePath
+     * @param suffix
+     * @return
+     */
+    public static Tuple2<String, List<String>> parseAlipayCsv2DataList(String filePath, String suffix) {
+        List<String> datas = new ArrayList<>();
+        File file = new File(filePath);
+        String fileName = file.list((dir, name) -> endsWith(name, suffix))[0];
+        String fileNamePath = filePath + fileName;
+        CsvReader csvReader = null;
+        try {
+            csvReader = new CsvReader(fileNamePath, COMMA.charAt(0), forName(CHARSERT_GBK));
+            csvReader.readHeaders();
+            while (csvReader.readRecord()) {
+                String record = csvReader.getRawRecord();
+                if (startsWith(record, POUND_SIGN) || startsWith(record, ALIPAY_NAME)) {
+                    continue;
+                }
+                datas.add(record);
+            }
+            return new Tuple2<>(fileName, datas);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            csvReader.close();
         }
     }
 }
