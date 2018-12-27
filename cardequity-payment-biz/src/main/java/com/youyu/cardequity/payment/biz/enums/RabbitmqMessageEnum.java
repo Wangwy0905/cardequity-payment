@@ -1,7 +1,7 @@
 package com.youyu.cardequity.payment.biz.enums;
 
 import com.youyu.cardequity.common.base.tuple2.Tuple2;
-import com.youyu.cardequity.payment.biz.component.properties.RabbitmqAlipayProperties;
+import com.youyu.cardequity.payment.biz.component.properties.RabbitmqProperties;
 import lombok.Getter;
 
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
@@ -18,7 +18,7 @@ public enum RabbitmqMessageEnum {
     PAY_ASYNC_MESSAGE("0", "支付宝异步支付消息") {
         @Override
         public Tuple2<String, String> getExchangeRoutingKey() {
-            RabbitmqAlipayProperties rabbitmqAlipayProperties = getBeanByClass(RabbitmqAlipayProperties.class);
+            RabbitmqProperties rabbitmqAlipayProperties = getBeanByClass(RabbitmqProperties.class);
             String exchange = rabbitmqAlipayProperties.getPayAsyncMessageExchange();
             String routingKey = rabbitmqAlipayProperties.getPayAsyncMessageRoutingKey();
             return new Tuple2<>(exchange, routingKey);

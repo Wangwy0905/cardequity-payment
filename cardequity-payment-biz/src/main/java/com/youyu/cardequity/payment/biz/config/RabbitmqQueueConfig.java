@@ -1,6 +1,6 @@
 package com.youyu.cardequity.payment.biz.config;
 
-import com.youyu.cardequity.payment.biz.component.properties.RabbitmqAlipayProperties;
+import com.youyu.cardequity.payment.biz.component.properties.RabbitmqProperties;
 import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitmqQueueConfig {
 
     @Autowired
-    private RabbitmqAlipayProperties rabbitmqAlipayProperties;
+    private RabbitmqProperties rabbitmqAlipayProperties;
 
     /**
      * 支付宝支付异步通知消息:Queue

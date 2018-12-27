@@ -1,6 +1,5 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
-import com.youyu.cardequity.common.base.util.DateUtil;
 import com.youyu.cardequity.payment.dto.PayCheckFileDeatailDto;
 import com.youyu.common.entity.BaseEntity;
 import lombok.Getter;
@@ -130,10 +129,6 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
         this.fileName = fileName;
         this.remark = datas[datas.length - 1];
 
-    }
-
-    public static void main(String[] args) {
-        System.out.println(DateUtil.string2Date("2018年12月27日", DateUtil.YYYY_MM_DD));
     }
 
     @Override

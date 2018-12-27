@@ -1,6 +1,6 @@
 package com.youyu.cardequity.payment.biz.config;
 
-import com.youyu.cardequity.payment.biz.component.properties.RabbitmqAlipayProperties;
+import com.youyu.cardequity.payment.biz.component.properties.RabbitmqProperties;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
@@ -21,7 +21,7 @@ import static org.springframework.amqp.core.BindingBuilder.bind;
 public class RabbitmqBindingConfig {
 
     @Autowired
-    private RabbitmqAlipayProperties rabbitmqAlipayProperties;
+    private RabbitmqProperties rabbitmqAlipayProperties;
 
     @Autowired
     @Qualifier("payAsyncMessageQueue")

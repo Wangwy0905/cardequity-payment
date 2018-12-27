@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @ConfigurationProperties(value = "rabbit")
 @Component
-public class RabbitmqAlipayProperties {
+public class RabbitmqProperties {
 
     /**
      * 支付宝支付异步消息通知:Queue
