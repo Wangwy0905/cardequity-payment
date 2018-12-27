@@ -9,7 +9,7 @@ import lombok.Getter;
  * @work 支付宝交易状态
  */
 @Getter
-public enum AlipayTradeStatus {
+public enum AlipayTradeStatusEnum {
 
     TRADE_FINISHED("TRADE_FINISHED", "交易完成:触发通知"),
     TRADE_SUCCESS("TRADE_SUCCESS", "支付成功:触发通知"),
@@ -20,7 +20,7 @@ public enum AlipayTradeStatus {
 
     private String msg;
 
-    AlipayTradeStatus(String code, String msg) {
+    AlipayTradeStatusEnum(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }
