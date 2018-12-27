@@ -27,7 +27,7 @@ public class FileUtil {
      * @param filePath 文件路径
      * @param charset  字符集
      */
-    public static void unZipFile(String fileName, String filePath, String charset) {
+    public static void unZip2File(String fileName, String filePath, String charset) {
         File zipFile = new File(fileName);
 
         ZipFile zip = null;
