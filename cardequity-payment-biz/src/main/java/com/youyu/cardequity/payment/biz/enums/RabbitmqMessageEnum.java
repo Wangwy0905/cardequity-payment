@@ -18,9 +18,9 @@ public enum RabbitmqMessageEnum {
     PAY_ASYNC_MESSAGE("0", "支付宝异步支付消息") {
         @Override
         public Tuple2<String, String> getExchangeRoutingKey() {
-            RabbitmqProperties rabbitmqAlipayProperties = getBeanByClass(RabbitmqProperties.class);
-            String exchange = rabbitmqAlipayProperties.getPayAsyncMessageExchange();
-            String routingKey = rabbitmqAlipayProperties.getPayAsyncMessageRoutingKey();
+            RabbitmqProperties rabbitmqProperties = getBeanByClass(RabbitmqProperties.class);
+            String exchange = rabbitmqProperties.getPayAsyncMessageExchange();
+            String routingKey = rabbitmqProperties.getPayAsyncMessageRoutingKey();
             return new Tuple2<>(exchange, routingKey);
         }
     };

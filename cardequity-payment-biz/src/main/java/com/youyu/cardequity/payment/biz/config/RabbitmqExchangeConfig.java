@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitmqExchangeConfig {
 
     @Autowired
-    private RabbitmqProperties rabbitmqAlipayProperties;
+    private RabbitmqProperties rabbitmqProperties;
 
     /**
      * 支付宝支付异步通知消息:Exchange
@@ -25,6 +25,6 @@ public class RabbitmqExchangeConfig {
      */
     @Bean("payAsyncMessageExchange")
     public DirectExchange payAsyncMessageExchange() {
-        return new DirectExchange(rabbitmqAlipayProperties.getPayAsyncMessageExchange(), true, false);
+        return new DirectExchange(rabbitmqProperties.getPayAsyncMessageExchange(), true, false);
     }
 }

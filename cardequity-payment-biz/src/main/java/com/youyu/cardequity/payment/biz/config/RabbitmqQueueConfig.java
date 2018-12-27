@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitmqQueueConfig {
 
     @Autowired
-    private RabbitmqProperties rabbitmqAlipayProperties;
+    private RabbitmqProperties rabbitmqProperties;
 
     /**
      * 支付宝支付异步通知消息:Queue
@@ -25,7 +25,7 @@ public class RabbitmqQueueConfig {
      */
     @Bean("payAsyncMessageQueue")
     public Queue payAsyncMessageQueue() {
-        return new Queue(rabbitmqAlipayProperties.getPayAsyncMessageQueue(), true);
+        return new Queue(rabbitmqProperties.getPayAsyncMessageQueue(), true);
     }
 
 

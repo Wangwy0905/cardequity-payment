@@ -21,7 +21,7 @@ import static org.springframework.amqp.core.BindingBuilder.bind;
 public class RabbitmqBindingConfig {
 
     @Autowired
-    private RabbitmqProperties rabbitmqAlipayProperties;
+    private RabbitmqProperties rabbitmqProperties;
 
     @Autowired
     @Qualifier("payAsyncMessageQueue")
@@ -38,6 +38,6 @@ public class RabbitmqBindingConfig {
      */
     @Bean
     public Binding alipayAsyncMessageBinding() {
-        return bind(payAsyncMessageQueue).to(payAsyncMessageExchange).with(rabbitmqAlipayProperties.getPayAsyncMessageRoutingKey());
+        return bind(payAsyncMessageQueue).to(payAsyncMessageExchange).with(rabbitmqProperties.getPayAsyncMessageRoutingKey());
     }
 }
