@@ -1,6 +1,6 @@
 package com.youyu.cardequity.payment.biz.config;
 
-import com.youyu.cardequity.payment.biz.service.PayCheckFileDeatailService;
+import com.youyu.cardequity.payment.biz.service.TradeOrderService;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
@@ -29,7 +29,7 @@ public class RabbitmqConsumerConfig {
     private Queue tradeOrderMessageQueue;
 
     @Autowired
-    private PayCheckFileDeatailService payCheckFileDeatailService;
+    private TradeOrderService tradeOrderService;
 
     /**
      * 消费:交易订单同步消息数据
@@ -47,7 +47,7 @@ public class RabbitmqConsumerConfig {
         simpleMessageListenerContainer.setMessageListener((ChannelAwareMessageListener) (message, channel) -> {
             byte[] body = message.getBody();
             try {
-                payCheckFileDeatailService.syncTradeOrderMessage(new String(body));
+                tradeOrderService.syncTradeOrderMessage(new String(body));
                 //确认消息成功消费,删除queue里面的消息
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             } catch (Exception e) {

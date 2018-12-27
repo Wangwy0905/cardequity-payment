@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyu.cardequity.payment.biz.dal.dao.TradeOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="APP_SHEET_SERIAL_NO" jdbcType="VARCHAR" property="appSheetSerialNo"/>
+        <result column="TRANS_ACCOUNT_ID" jdbcType="VARCHAR" property="transAccountId"/>
+        <result column="CLIENT_ID" jdbcType="VARCHAR" property="clientId"/>
+        <result column="CLIENT_NAME" jdbcType="VARCHAR" property="clientName"/>
+        <result column="PAY_CHANNEL_NO" jdbcType="VARCHAR" property="payChannelNo"/>
+        <result column="PAY_LOG_ID" jdbcType="VARCHAR" property="payLogId"/>
+        <result column="ORDER_AMOUNT" jdbcType="DECIMAL" property="orderAmount"/>
+        <result column="PAY_STATE" jdbcType="VARCHAR" property="payState"/>
+        <result column="PAY_REFUND_NO" jdbcType="VARCHAR" property="payRefundNo"/>
+        <result column="REFUND_AMOUNT" jdbcType="DECIMAL" property="refundAmount"/>
+        <result column="REFUND_STATUS" jdbcType="VARCHAR" property="refundStatus"/>
+
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, APP_SHEET_SERIAL_NO, TRANS_ACCOUNT_ID, CLIENT_ID, CLIENT_NAME, PAY_CHANNEL_NO, PAY_LOG_ID, ORDER_AMOUNT, PAY_STATE, PAY_REFUND_NO, REFUND_AMOUNT, REFUND_STATUS, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder">
+        insert into TB_TRADE_ORDER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="appSheetSerialNo != null">
+                APP_SHEET_SERIAL_NO,
+            </if>
+            <if test="transAccountId != null">
+                TRANS_ACCOUNT_ID,
+            </if>
+            <if test="clientId != null">
+                CLIENT_ID,
+            </if>
+            <if test="clientName != null">
+                CLIENT_NAME,
+            </if>
+            <if test="payChannelNo != null">
+                PAY_CHANNEL_NO,
+            </if>
+            <if test="payLogId != null">
+                PAY_LOG_ID,
+            </if>
+            <if test="orderAmount != null">
+                ORDER_AMOUNT,
+            </if>
+            <if test="payState != null">
+                PAY_STATE,
+            </if>
+            <if test="payRefundNo != null">
+                PAY_REFUND_NO,
+            </if>
+            <if test="refundAmount != null">
+                REFUND_AMOUNT,
+            </if>
+            <if test="refundStatus != null">
+                REFUND_STATUS,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="createAuthor != null">
+                CREATE_AUTHOR,
+            </if>
+            <if test="updateAuthor != null">
+                UPDATE_AUTHOR,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="appSheetSerialNo != null">
+                #{appSheetSerialNo,jdbcType=VARCHAR},
+            </if>
+            <if test="transAccountId != null">
+                #{transAccountId,jdbcType=VARCHAR},
+            </if>
+            <if test="clientId != null">
+                #{clientId,jdbcType=VARCHAR},
+            </if>
+            <if test="clientName != null">
+                #{clientName,jdbcType=VARCHAR},
+            </if>
+            <if test="payChannelNo != null">
+                #{payChannelNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payLogId != null">
+                #{payLogId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderAmount != null">
+                #{orderAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="payState != null">
+                #{payState,jdbcType=VARCHAR},
+            </if>
+            <if test="payRefundNo != null">
+                #{payRefundNo,jdbcType=VARCHAR},
+            </if>
+            <if test="refundAmount != null">
+                #{refundAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="refundStatus != null">
+                #{refundStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createAuthor != null">
+                #{createAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAuthor != null">
+                #{updateAuthor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

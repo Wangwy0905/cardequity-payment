@@ -34,8 +34,11 @@ public class TradeOrderDto extends BaseDto<String> {
     @ApiModelProperty(value = "支付渠道号")
     private String payChannelNo;
 
+    @ApiModelProperty(value = "支付编号")
+    private String payLogId;
+
     @ApiModelProperty(value = "订单金额")
-    private String orderAmount;
+    private BigDecimal orderAmount;
 
     @ApiModelProperty(value = "支付状态")
     private String payState;
