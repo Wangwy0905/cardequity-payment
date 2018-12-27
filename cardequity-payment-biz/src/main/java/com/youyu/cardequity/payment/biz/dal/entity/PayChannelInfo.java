@@ -195,8 +195,8 @@ public class PayChannelInfo extends BaseEntity<String> {
     }
 
     @Override
-    public void setId(String id) {
-        this.channelNo = id;
+    public void setId(String channelNo) {
+        this.channelNo = channelNo;
     }
 
     public String getPayLogFactoryNo() {

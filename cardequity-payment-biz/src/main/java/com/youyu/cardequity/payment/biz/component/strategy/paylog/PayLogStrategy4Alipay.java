@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.youyu.cardequity.payment.biz.help.constant.Constant.ALIPAY_PRODUCT_CODE;
+import static com.youyu.cardequity.payment.biz.help.constant.AlipayConstant.ALIPAY_PRODUCT_CODE;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 

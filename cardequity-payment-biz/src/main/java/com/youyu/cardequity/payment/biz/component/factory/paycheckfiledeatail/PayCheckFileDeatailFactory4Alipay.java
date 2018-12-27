@@ -5,28 +5,41 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.domain.AlipayDataDataserviceBillDownloadurlQueryModel;
 import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
-import com.csvreader.CsvReader;
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
+import com.youyu.cardequity.common.base.tuple2.Tuple2;
+import com.youyu.cardequity.common.spring.service.BatchService;
 import com.youyu.cardequity.payment.biz.component.properties.AlipayProperties;
+import com.youyu.cardequity.payment.biz.dal.dao.PayCheckFileDeatailMapper;
+import com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail;
 import com.youyu.cardequity.payment.dto.PayCheckFileDeatailDto;
 import com.youyu.common.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.util.DateUtil.*;
+import static com.youyu.cardequity.common.base.util.StringUtil.eq;
+import static com.youyu.cardequity.payment.biz.help.constant.AlipayConstant.ALIPAY_BILL_BUSIN_TYPE_TRADE;
+import static com.youyu.cardequity.payment.biz.help.constant.AlipayConstant.ALIPAY_BILL_FILE_NAME;
+import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.BUSIN_TYPE_REFUND;
+import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.BUSIN_TYPE_TRADE;
+import static com.youyu.cardequity.payment.biz.help.constant.SymbolConstant.*;
 import static com.youyu.cardequity.payment.biz.help.util.AlipayFileUtil.downloadBill;
+import static com.youyu.cardequity.payment.biz.help.util.FileUtil.parseCsv2DataList;
 import static com.youyu.cardequity.payment.biz.help.util.FileUtil.unZipFile;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_BILL_DOWNLOAD_FAILED;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_BILL_DOWNLOAD_URL_FAILED;
 import static java.io.File.separator;
-import static java.nio.charset.Charset.forName;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.split;
 import static org.apache.commons.lang3.time.DateUtils.addDays;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
  * @author panqingqing
@@ -44,43 +57,49 @@ public class PayCheckFileDeatailFactory4Alipay extends PayCheckFileDeatailFactor
     @Autowired
     private AlipayProperties alipayProperties;
 
+    @Autowired
+    private BatchService batchService;
+
     @Override
     public void createPayCheckFileDeatail(PayCheckFileDeatailDto payCheckFileDeatailDto) {
         String billDownloadUrl = getBillDownloadUrl(payCheckFileDeatailDto);
 
         String filePath = alipayProperties.getBillFilePath() + separator + payCheckFileDeatailDto.getBillDate() + separator;
-        String fileNameZip = filePath + payCheckFileDeatailDto.getBillDate() + ".zip";
+        String fileNameZip = filePath + payCheckFileDeatailDto.getBillDate() + DOT + ZIP;
         downloadBill(billDownloadUrl, fileNameZip);
 
-        unZipFile(fileNameZip, filePath, "GBK");
+        unZipFile(fileNameZip, filePath, CHARSERT_GBK);
 
-        parseCsv2PayCheckFileDeatails(filePath, "业务明细.csv");
+        Tuple2<String, List<String>> dataTuple2 = parseCsv2DataList(filePath, ALIPAY_BILL_FILE_NAME);
+
+        batchDisposeDatas2PayCheckFileDeatails(dataTuple2, payCheckFileDeatailDto);
     }
 
-    private void parseCsv2PayCheckFileDeatails(String filePath, String suffix) {
-        File file = new File(filePath);
-        String fileName = file.list((dir, name) -> endsWith(name, suffix))[0];
-        CsvReader csvReader = null;
-        try {
-            csvReader = new CsvReader(fileName, ',', forName("GBK"));
-            csvReader.readHeaders();
-            while (csvReader.readRecord()) {
-                String record = csvReader.getRawRecord();
-                if (startsWith(record, "#") || startsWith(record, "支付宝")) {
-                    continue;
-                }
-                
-            }
-        } catch (Exception e) {
-            // TODO: 2018/12/26
-            throw new BizException("");
-        } finally {
-            csvReader.close();
+    private void batchDisposeDatas2PayCheckFileDeatails(Tuple2<String, List<String>> dataTuple2, PayCheckFileDeatailDto payCheckFileDeatailDto) {
+        String fileName = dataTuple2.a;
+        List<String> datas = dataTuple2.b;
+
+        if (isEmpty(datas)) {
+            return;
         }
+
+        List<PayCheckFileDeatail> payCheckFileDeatails = new ArrayList<>();
+        for (String data : datas) {
+            String[] dataArray = split(data, COMMA);
+            String type = dataArray[2];
+            String businType = eq(type, ALIPAY_BILL_BUSIN_TYPE_TRADE) ? BUSIN_TYPE_TRADE : BUSIN_TYPE_REFUND;
+            payCheckFileDeatails.add(new PayCheckFileDeatail(dataArray, payCheckFileDeatailDto, fileName, businType));
+        }
+
+        List<String> tranceNos = payCheckFileDeatails.stream().map(payCheckFileDeatail -> payCheckFileDeatail.getTranceNo()).collect(toList());
+
+        batchService.batchDispose(tranceNos, PayCheckFileDeatailMapper.class, "deleteByTranceNo");
+        batchService.batchDispose(payCheckFileDeatails, PayCheckFileDeatailMapper.class, "insertSelective");
     }
 
     private String getBillDownloadUrl(PayCheckFileDeatailDto payCheckFileDeatailDto) {
         protectBillDate(payCheckFileDeatailDto);
+
         AlipayDataDataserviceBillDownloadurlQueryRequest alipayDataDataserviceBillDownloadurlQueryRequest = getAlipayDataDataserviceBillDownloadurlQueryRequest(payCheckFileDeatailDto);
         try {
             AlipayDataDataserviceBillDownloadurlQueryResponse alipayDataDataserviceBillDownloadurlQueryResponse = alipayClient.execute(alipayDataDataserviceBillDownloadurlQueryRequest);

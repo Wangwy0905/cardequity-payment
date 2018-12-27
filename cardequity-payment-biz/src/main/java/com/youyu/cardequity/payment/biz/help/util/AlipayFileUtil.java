@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static org.apache.commons.lang3.StringUtils.substring;
+
 /**
  * @author panqingqing
  * @version v1.0
@@ -16,13 +18,17 @@ import java.net.URL;
  */
 public class AlipayFileUtil {
 
+    // TODO: 2018/12/27
+
     /**
      * 支付宝官方提供
      *
      * @param urlStr
-     * @param filePath
+     * @param fileName
      */
-    public static void downloadBill(String urlStr, String filePath) {
+    public static void downloadBill(String urlStr, String fileName) {
+        protectDir(fileName);
+
         HttpURLConnection httpUrlConnection = null;
         InputStream inputStream = null;
         FileOutputStream fileOutputStream = null;
@@ -39,7 +45,7 @@ public class AlipayFileUtil {
             inputStream = httpUrlConnection.getInputStream();
             byte[] temp = new byte[1024];
             int b;
-            fileOutputStream = new FileOutputStream(new File(filePath));
+            fileOutputStream = new FileOutputStream(new File(fileName));
             while ((b = inputStream.read(temp)) != -1) {
                 fileOutputStream.write(temp, 0, b);
                 fileOutputStream.flush();
@@ -62,6 +68,20 @@ public class AlipayFileUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    /**
+     * 保护文件名对应目录的存在性
+     *
+     * @param fileName
+     */
+    public static void protectDir(String fileName) {
+        int lastIndex = fileName.lastIndexOf("/");
+        String filePathDir = substring(fileName, 0, lastIndex);
+        File file = new File(filePathDir);
+        if (!file.exists()) {
+            file.mkdirs();
         }
     }
 }

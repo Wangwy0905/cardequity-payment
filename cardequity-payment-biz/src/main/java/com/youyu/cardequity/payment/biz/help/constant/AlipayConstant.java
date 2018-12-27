@@ -4,10 +4,14 @@ package com.youyu.cardequity.payment.biz.help.constant;
  * @author panqingqing
  * @version v1.0
  * @date 2018年12月6日 下午10:00:00
- * @work 支付系统常量类
+ * @work Alipay支付常量类
  */
-public final class Constant {
+public final class AlipayConstant {
 
+    /**
+     * 支付宝支付名称:用于对账区分数据
+     */
+    public static final String ALIPAY_NAME = "支付宝";
     /**
      * 支付宝异步通知响应成功
      */
@@ -52,15 +56,27 @@ public final class Constant {
      * 支付宝销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
      */
     public static final String ALIPAY_PRODUCT_CODE = "QUICK_MSECURITY_PAY";
-
-
     /**
-     * 支付类型
+     * 支付宝对账文件名称
      */
-    public static final String PAY_TYPE_ALIPAY = "1";
-
+    public static final String ALIPAY_BILL_FILE_NAME = "业务明细.csv";
     /**
-     * 退款类型
+     * fund_change表示本次退款是否发生了资金变化
+     * 返回“Y”表示退款成功
      */
-    public static final String RETURN_TYPE_ALIPAY = "1";
+    public static final String ALIPAY_FUND_CHANGE_Y = "Y";
+    /**
+     * fund_change表示本次退款是否发生了资金变化
+     * 返回“N”则表示退款未成功
+     */
+    public static final String ALIPAY_FUND_CHANGE_N = "N";
+    /**
+     * 支付宝对账单业务类型:交易
+     */
+    public static final String ALIPAY_BILL_BUSIN_TYPE_TRADE = "交易";
+    /**
+     * 支付宝对账单业务类型:退款
+     */
+    public static final String ALIPAY_BILL_BUSIN_TYPE_REFUND = "退款";
+
 }

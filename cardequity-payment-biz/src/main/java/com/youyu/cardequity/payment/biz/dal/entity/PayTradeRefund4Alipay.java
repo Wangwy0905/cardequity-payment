@@ -13,7 +13,9 @@ import javax.persistence.Table;
 import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.MoneyUtil.string2BigDecimal;
-import static com.youyu.cardequity.payment.biz.help.constant.Constant.RETURN_TYPE_ALIPAY;
+import static com.youyu.cardequity.common.base.util.StringUtil.eq;
+import static com.youyu.cardequity.payment.biz.help.constant.AlipayConstant.ALIPAY_FUND_CHANGE_Y;
+import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.RETURN_TYPE_ALIPAY;
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
 /**
@@ -63,7 +65,7 @@ public class PayTradeRefund4Alipay extends PayTradeRefund {
             return;
         }
 
-        this.status = status.refundSucc();
+        this.status = eq(ALIPAY_FUND_CHANGE_Y, alipayTradeRefundResponse.getFundChange()) ? status.refundSucc() : status.refundFail();
         this.refundAmount = string2BigDecimal(alipayTradeRefundResponse.getRefundFee());
     }
 

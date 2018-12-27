@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyu.cardequity.payment.biz.dal.dao.PayCheckFileDeatailMapper">
+
+    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="TRANCE_NO" jdbcType="VARCHAR" property="tranceNo"/>
+        <result column="CHANNEL_NO" jdbcType="VARCHAR" property="channelNo"/>
+        <result column="CHECK_DATE" jdbcType="VARCHAR" property="checkDate"/>
+        <result column="FILE_ID" jdbcType="VARCHAR" property="fileId"/>
+        <result column="APP_DATE" jdbcType="VARCHAR" property="appDate"/>
+        <result column="APP_AMOUNT" jdbcType="DECIMAL" property="appAmount"/>
+        <result column="PAY_STATE" jdbcType="VARCHAR" property="payState"/>
+        <result column="BANK_CARD_NO" jdbcType="VARCHAR" property="bankCardNo"/>
+        <result column="APP_SEET_SERIAL_NO" jdbcType="VARCHAR" property="appSeetSerialNo"/>
+        <result column="BUSIN_TYPE" jdbcType="VARCHAR" property="businType"/>
+        <result column="FILE_NAME" jdbcType="VARCHAR" property="fileName"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, TRANCE_NO, CHANNEL_NO, CHECK_DATE, FILE_ID, APP_DATE, APP_AMOUNT, PAY_STATE, BANK_CARD_NO, APP_SEET_SERIAL_NO, BUSIN_TYPE, FILE_NAME, REMARK, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail">
+        insert into TB_PAY_CHECK_FILE_DEATAIL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="tranceNo != null">
+                TRANCE_NO,
+            </if>
+            <if test="channelNo != null">
+                CHANNEL_NO,
+            </if>
+            <if test="checkDate != null">
+                CHECK_DATE,
+            </if>
+            <if test="fileId != null">
+                FILE_ID,
+            </if>
+            <if test="appDate != null">
+                APP_DATE,
+            </if>
+            <if test="appAmount != null">
+                APP_AMOUNT,
+            </if>
+            <if test="payState != null">
+                PAY_STATE,
+            </if>
+            <if test="bankCardNo != null">
+                BANK_CARD_NO,
+            </if>
+            <if test="appSeetSerialNo != null">
+                APP_SEET_SERIAL_NO,
+            </if>
+            <if test="businType != null">
+                BUSIN_TYPE,
+            </if>
+            <if test="fileName != null">
+                FILE_NAME,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="createAuthor != null">
+                CREATE_AUTHOR,
+            </if>
+            <if test="updateAuthor != null">
+                UPDATE_AUTHOR,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="tranceNo != null">
+                #{tranceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="channelNo != null">
+                #{channelNo,jdbcType=VARCHAR},
+            </if>
+            <if test="checkDate != null">
+                #{checkDate,jdbcType=VARCHAR},
+            </if>
+            <if test="fileId != null">
+                #{fileId,jdbcType=VARCHAR},
+            </if>
+            <if test="appDate != null">
+                #{appDate,jdbcType=VARCHAR},
+            </if>
+            <if test="appAmount != null">
+                #{appAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="payState != null">
+                #{payState,jdbcType=VARCHAR},
+            </if>
+            <if test="bankCardNo != null">
+                #{bankCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="appSeetSerialNo != null">
+                #{appSeetSerialNo,jdbcType=VARCHAR},
+            </if>
+            <if test="businType != null">
+                #{businType,jdbcType=VARCHAR},
+            </if>
+            <if test="fileName != null">
+                #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createAuthor != null">
+                #{createAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAuthor != null">
+                #{updateAuthor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByTranceNo" parameterType="java.lang.String">
+        delete from TB_PAY_CHECK_FILE_DEATAIL where TRANCE_NO = #{tranceNo,jdbcType=VARCHAR}
+    </delete>
+
+</mapper>

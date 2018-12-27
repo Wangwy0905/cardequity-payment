@@ -33,7 +33,8 @@ import static com.youyu.cardequity.payment.biz.enums.AlipayTradeStatus.TRADE_FIN
 import static com.youyu.cardequity.payment.biz.enums.AlipayTradeStatus.TRADE_SUCCESS;
 import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.FAIL;
 import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
-import static com.youyu.cardequity.payment.biz.help.constant.Constant.*;
+import static com.youyu.cardequity.payment.biz.help.constant.AlipayConstant.*;
+import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.PAY_TYPE_ALIPAY;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.*;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.apache.commons.lang3.StringUtils.isBlank;
