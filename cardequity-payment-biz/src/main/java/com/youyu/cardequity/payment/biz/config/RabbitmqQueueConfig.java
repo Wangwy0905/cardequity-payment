@@ -23,8 +23,8 @@ public class RabbitmqQueueConfig {
      *
      * @return
      */
-    @Bean("alipayAsyncMessageQueue")
-    public Queue alipayAsyncMessageQueue() {
+    @Bean("payAsyncMessageQueue")
+    public Queue payAsyncMessageQueue() {
         return new Queue(rabbitmqAlipayProperties.getPayAsyncMessageQueue(), true);
     }
 

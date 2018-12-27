@@ -24,12 +24,12 @@ public class RabbitmqBindingConfig {
     private RabbitmqAlipayProperties rabbitmqAlipayProperties;
 
     @Autowired
-    @Qualifier("alipayAsyncMessageQueue")
-    private Queue alipayAsyncMessageQueue;
+    @Qualifier("payAsyncMessageQueue")
+    private Queue payAsyncMessageQueue;
 
     @Autowired
-    @Qualifier("alipayAsyncMessageExchange")
-    private DirectExchange alipayAsyncMessageExchange;
+    @Qualifier("payAsyncMessageExchange")
+    private DirectExchange payAsyncMessageExchange;
 
     /**
      * 支付宝支付异步通知消息:Binding
@@ -38,6 +38,6 @@ public class RabbitmqBindingConfig {
      */
     @Bean
     public Binding alipayAsyncMessageBinding() {
-        return bind(alipayAsyncMessageQueue).to(alipayAsyncMessageExchange).with(rabbitmqAlipayProperties.getPayAsyncMessageRoutingKey());
+        return bind(payAsyncMessageQueue).to(payAsyncMessageExchange).with(rabbitmqAlipayProperties.getPayAsyncMessageRoutingKey());
     }
 }
