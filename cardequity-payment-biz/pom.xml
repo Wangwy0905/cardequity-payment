@@ -39,6 +39,10 @@
         </dependency>
         <dependency>
             <groupId>com.youyu.platform</groupId>
+            <artifactId>common-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.youyu.platform</groupId>
             <artifactId>common-generator</artifactId>
             <version>${common-api.version}</version>
         </dependency>

@@ -18,6 +18,8 @@
         <result column="BUSIN_TYPE" jdbcType="VARCHAR" property="businType"/>
         <result column="FILE_NAME" jdbcType="VARCHAR" property="fileName"/>
         <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="ORDER_AMOUNT" javaType="DECIMAL" property="orderAmount" />
+        <result column="REFUND_BATCH_NO" javaType="VARCHAR" property="refundBatchNo" />
 
         <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
@@ -26,7 +28,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        ID, TRANCE_NO, CHANNEL_NO, CHECK_DATE, FILE_ID, APP_DATE, APP_AMOUNT, PAY_STATE, BANK_CARD_NO, APP_SEET_SERIAL_NO, BUSIN_TYPE, FILE_NAME, REMARK, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+        ID, TRANCE_NO, CHANNEL_NO, CHECK_DATE, FILE_ID, APP_DATE, APP_AMOUNT, PAY_STATE, BANK_CARD_NO, APP_SEET_SERIAL_NO, BUSIN_TYPE, FILE_NAME, REMARK,
+        ORDER_AMOUNT, REFUND_BATCH_NO, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
     </sql>
 
     <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail">
@@ -70,6 +73,12 @@
             </if>
             <if test="remark != null">
                 REMARK,
+            </if>
+            <if test="orderAmount != null">
+                ORDER_AMOUNT,
+            </if>
+            <if test="refundBatchNo != null">
+                REFUND_BATCH_NO,
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME,
@@ -123,6 +132,12 @@
             </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="orderAmount != null">
+                #{orderAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="refundBatchNo != null">
+                #{refundBatchNo,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},

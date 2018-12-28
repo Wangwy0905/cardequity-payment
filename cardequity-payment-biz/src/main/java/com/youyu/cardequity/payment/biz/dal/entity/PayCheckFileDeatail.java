@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 import static com.youyu.cardequity.common.base.util.MoneyUtil.string2BigDecimal;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_SUCC;
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
+import static org.apache.commons.lang3.StringUtils.replace;
 
 /**
  * @author panqingqing
@@ -104,6 +106,18 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
     @Column(name = "REMARK")
     private String remark;
 
+    /**
+     * 订单金额
+     */
+    @Column(name = "ORDER_AMOUNT")
+    private BigDecimal orderAmount;
+
+    /**
+     * 退款批次号
+     */
+    @Column(name = "REFUND_BATCH_NO")
+    private String refundBatchNo;
+
     public PayCheckFileDeatail() {
     }
 
@@ -120,7 +134,7 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
         this.id = uuid4NoRail();
         this.tranceNo = datas[0];
         this.channelNo = payCheckFileDeatailDto.getChannelNo();
-        this.checkDate = payCheckFileDeatailDto.getBillDate().replace("-", "");
+        this.checkDate = replace(payCheckFileDeatailDto.getBillDate(), "-", "");
         this.appDate = datas[4];
         this.appAmount = string2BigDecimal(datas[12]);
         this.payState = STATUS_PAYMENT_SUCC;
@@ -128,7 +142,11 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
         this.businType = businType;
         this.fileName = fileName;
         this.remark = datas[datas.length - 1];
-
+        this.orderAmount = string2BigDecimal(datas[11]);
+        String refundBatchNo = datas[22];
+        if (isNoneBlank(refundBatchNo)) {
+            this.refundBatchNo = refundBatchNo;
+        }
     }
 
     @Override
