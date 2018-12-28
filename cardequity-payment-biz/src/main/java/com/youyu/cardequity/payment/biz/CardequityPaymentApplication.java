@@ -2,8 +2,7 @@ package com.youyu.cardequity.payment.biz;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author panqingqing
@@ -11,8 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @date 2018年12月6日 下午10:00:00
  * @work 支付系统基础应用启动类
  */
-@SpringBootApplication
-@EnableDiscoveryClient
+@SpringCloudApplication
 @MapperScan("com.youyu.cardequity.payment.biz.dal.dao")
 public class CardequityPaymentApplication {
 
