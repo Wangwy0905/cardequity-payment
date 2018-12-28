@@ -25,7 +25,7 @@ public class RabbitmqConsumerConfig {
     private ConnectionFactory connectionFactory;
 
     @Autowired
-    @Qualifier("payAsyncMessageQueue")
+    @Qualifier("tradeOrderMessageQueue")
     private Queue tradeOrderMessageQueue;
 
     @Autowired

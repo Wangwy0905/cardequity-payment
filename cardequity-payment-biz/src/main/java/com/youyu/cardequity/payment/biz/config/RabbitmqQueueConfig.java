@@ -33,7 +33,7 @@ public class RabbitmqQueueConfig {
      *
      * @return
      */
-    @Bean("payAsyncMessageQueue")
+    @Bean("tradeOrderMessageQueue")
     public Queue tradeOrderMessageQueue() {
         return new Queue(rabbitmqProperties.getTradeOrderMessageQueue(), true);
     }
