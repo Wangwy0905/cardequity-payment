@@ -41,8 +41,8 @@ public class RabbitmqConsumerConfig {
         SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         simpleMessageListenerContainer.setQueues(tradeOrderMessageQueue);
         simpleMessageListenerContainer.setExposeListenerChannel(true);
-        simpleMessageListenerContainer.setMaxConcurrentConsumers(4);
-        simpleMessageListenerContainer.setConcurrentConsumers(16);
+        simpleMessageListenerContainer.setMaxConcurrentConsumers(16);
+        simpleMessageListenerContainer.setConcurrentConsumers(4);
         simpleMessageListenerContainer.setAcknowledgeMode(MANUAL);
         simpleMessageListenerContainer.setMessageListener((ChannelAwareMessageListener) (message, channel) -> {
             byte[] body = message.getBody();
