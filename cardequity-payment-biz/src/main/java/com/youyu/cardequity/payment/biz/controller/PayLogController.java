@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-import static com.youyu.cardequity.common.base.util.WebUtil.params2Map;
 import static com.youyu.common.api.Result.ok;
 
 /**
@@ -48,8 +46,7 @@ public class PayLogController implements PayLogApi {
 
     @Override
     @PostMapping(value = "/alipayAsyncMessage")
-    public String alipayAsyncMessage(HttpServletRequest httpServletRequest) {
-        Map<String, String> params2Map = params2Map(httpServletRequest);
+    public String alipayAsyncMessage(@RequestBody Map<String, String> params2Map) {
         return payLogService.alipayAsyncMessage(params2Map);
     }
 

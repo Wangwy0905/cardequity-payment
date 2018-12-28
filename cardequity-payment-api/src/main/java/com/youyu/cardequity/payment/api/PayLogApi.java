@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author panqingqing
@@ -49,12 +49,12 @@ public interface PayLogApi {
     /**
      * 支付宝异步通知结果
      *
-     * @param httpServletRequest
+     * @param params2Map
      * @return
      */
     @ApiOperation(value = "支付宝异步通知结果")
     @PostMapping(value = "/alipayAsyncMessage")
-    String alipayAsyncMessage(HttpServletRequest httpServletRequest);
+    String alipayAsyncMessage(@RequestBody Map<String, String> params2Map);
 
     /**
      * 交易关闭接口
