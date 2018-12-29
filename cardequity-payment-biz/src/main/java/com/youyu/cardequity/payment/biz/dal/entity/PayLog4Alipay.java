@@ -154,7 +154,7 @@ public class PayLog4Alipay extends PayLog {
     }
 
     public boolean canSendMsg2Trade() {
-        return eq(alipayTradeStatus, TRADE_SUCCESS.getCode()) &&
+        return /*eq(alipayTradeStatus, TRADE_SUCCESS.getCode()) &&*/
                 eq(alipayOurResponse, ALIPAY_ASYNC_RESPONSE_SUCC);
     }
 

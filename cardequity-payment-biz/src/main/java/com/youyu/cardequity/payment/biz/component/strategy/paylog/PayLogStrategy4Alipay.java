@@ -58,7 +58,7 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
         AlipayTradeAppPayRequest alipayTradeAppPayRequest = new AlipayTradeAppPayRequest();
         AlipayTradeAppPayModel alipayTradeAppPayModel = getAlipayTradeAppPayModel(payLog4Alipay);
         alipayTradeAppPayRequest.setBizModel(alipayTradeAppPayModel);
-        alipayTradeAppPayRequest.setNotifyUrl(alipayProperties.getNotifyUrl());
+        alipayTradeAppPayRequest.setNotifyUrl("http://pea.free.idcfengye.com/notcontrol/cardequity/payment/alipayAsyncMessage");
         return alipayTradeAppPayRequest;
     }
 

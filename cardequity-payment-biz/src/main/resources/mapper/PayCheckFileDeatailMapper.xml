@@ -18,8 +18,8 @@
         <result column="BUSIN_TYPE" jdbcType="VARCHAR" property="businType"/>
         <result column="FILE_NAME" jdbcType="VARCHAR" property="fileName"/>
         <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
-        <result column="ORDER_AMOUNT" javaType="DECIMAL" property="orderAmount" />
-        <result column="REFUND_BATCH_NO" javaType="VARCHAR" property="refundBatchNo" />
+        <result column="ORDER_AMOUNT" jdbcType="DECIMAL" property="orderAmount"/>
+        <result column="REFUND_BATCH_NO" jdbcType="VARCHAR" property="refundBatchNo"/>
 
         <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>

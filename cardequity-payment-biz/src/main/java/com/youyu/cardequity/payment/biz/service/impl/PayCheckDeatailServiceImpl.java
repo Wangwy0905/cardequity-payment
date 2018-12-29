@@ -71,8 +71,8 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
         PayCheckFileDeatail payCheckFileDeatail = payCheckFileDeatailMapper.getByAppSeetSerialNoRefundBatchNo(tradeOrder.getAppSheetSerialNo(), tradeOrder.getPayRefundNo());
         if (isNull(payCheckFileDeatail)) {
             // TODO: 2018/12/28
-            // 日切
-            // 非日切 交易失败
+            // 日切:注意,如果是失败的话，可能第二天也没有对账单
+            // 非日切 退款失败
             return;
         }
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
