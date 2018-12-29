@@ -39,10 +39,28 @@ public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
     @Autowired
     private PayLogMapper payLogMapper;
 
-    @Autowired
-    private RabbitmqSender rabbitmqSender;
+    /*@Autowired
+    private RabbitmqSender rabbitmqSender;*/
 
     /**
+     * 退款状态包含：
+     * 1、REFUND_SUCCESS：退款成功，分两种情况
+     * 全额退款情况：trade_status= TRADE_CLOSED，而refund_status=REFUND_SUCCESS
+     * 非全额退款情况：trade_status= TRADE_SUCCESS，而refund_status=REFUND_SUCCESS
+     * 2、REFUND_CLOSED：退款关闭
+     * <p>
+     * <p>
+     * 不返回success，异步通知发送几次
+     * 接收到异步通知后，未返回success，异步通知发送几次？
+     * 异步通知分为四个状态：
+     * WAIT_BUYER_PAY 交易创建，等待买家付款
+     * TRADE_CLOSED 未付款交易超时关闭，或支付完成后全额退款
+     * TRADE_SUCCESS 交易支付成功
+     * TRADE_FINISHED 交易结束，不可退款
+     * 1、不同的接口会返回不同状态的异步通知，具体返回以接口文档为准，
+     * 2、每种状态通知接收之后都必须返回success这七个字符，不带任何其他字符包括空格，返回了success则不会再发送通知，
+     * 3、不返回success，会在25小时以内完成8次通知（通知的间隔频率一般是：4m,10m,10m,1h,2h,6h,15h）；才会结束通知发送。
+     *
      * @param payLog
      * @param t      支付宝异步参数:Map
      * @param <T>
@@ -59,12 +77,12 @@ public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
             payLogMapper.updateAppSheetSerialNo4OtherPayIdRouteVoIdFlag(payLog4Alipay.getAppSheetSerialNo(), payLog4Alipay.getId(), FAIL.getCode());
         }
 
-        if (payLog4Alipay.canSendMsg2Trade()) {
+        /*if (payLog4Alipay.canSendMsg2Trade()) {
             PayLogAsyncMessageDto payLogAsyncMessageDto = copyProperties(payLog4Alipay, PayLogAsyncMessageDto.class);
             String message = toJSONString(payLogAsyncMessageDto);
             log.info("异步通知交易系统支付宝支付对应的支付流水号:[{}]和消息信息:[{}]", payLog4Alipay.getId(), message);
             rabbitmqSender.sendMessage(message, PAY_ASYNC_MESSAGE);
-        }
+        }*/
     }
 
 }
