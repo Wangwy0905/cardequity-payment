@@ -137,7 +137,7 @@ public class PayLog4Alipay extends PayLog {
         this.thirdSerialNo = params2Map.get(ALIPAY_TRADE_NO);
         this.alipayTradeStatus = params2Map.get(ALIPAY_TRADE_STATUS);
         this.alipayOurResponse = getAlipayOurResponse(params2Map, sellerId, appId, alipayPublicKey);
-        if (eq(alipayTradeStatus, TRADE_SUCCESS.getCode())) {
+        if (matches(alipayTradeStatus, TRADE_SUCCESS.getCode(), TRADE_FINISHED.getCode())) {
             this.state = eq(alipayOurResponse, ALIPAY_ASYNC_RESPONSE_SUCC) ? state.paymentSucc() : state.paymentFail();
             this.routeVoIdFlag = state.isPaySucc() ? NORMAL.getCode() : this.routeVoIdFlag;
             sendMsg2Trade();
@@ -154,14 +154,15 @@ public class PayLog4Alipay extends PayLog {
         this.tradeCloseFlag = alipayTradeCloseResponse.isSuccess();
     }
 
-    public boolean analysisAlipayTradeQueryResponse(AlipayTradeQueryResponse alipayTradeQueryResponse) {
+    public void analysisAlipayTradeQueryResponse(AlipayTradeQueryResponse alipayTradeQueryResponse) {
         this.alipayTradeQueryMessage = toJSONString(alipayTradeQueryResponse);
+        this.alipayTradeStatus = alipayTradeQueryResponse.getTradeStatus();
         boolean tradeQueryFlag = alipayTradeQueryResponse.isSuccess();
         if (tradeQueryFlag) {
-            this.alipayTradeStatus = alipayTradeQueryResponse.getTradeStatus();
             this.state = matches(alipayTradeStatus, TRADE_SUCCESS.getCode(), TRADE_FINISHED.getCode()) ? state.paymentSucc() : state.paymentFail();
+            return;
         }
-        return tradeQueryFlag;
+        this.state = state.paymentFail();
     }
 
     @Override

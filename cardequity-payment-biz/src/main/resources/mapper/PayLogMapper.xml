@@ -378,7 +378,7 @@
     <select id="getByTimeTradeQuery" resultMap="BaseResultMap">
         select * from TB_PAY_LOG
         where CREATE_TIME between CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdStart,jdbcType=INTEGER} MINUTE
-        AND CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdEnd,jdbcType=INTEGER} MINUTE
+        and CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdEnd,jdbcType=INTEGER} MINUTE
     </select>
 
     <update id="updateByAppSheetSerialNoRouteVoIdFlag">

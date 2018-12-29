@@ -113,6 +113,17 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
         doBill2TradeRefund(payCheckFileDeatail);
     }
 
+    private void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail) {
+        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSeetSerialNo());
+        if (isNull(tradeOrder)) {
+            // TODO: 2018/12/28 文件单边
+            return;
+        }
+
+        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
+        payChannelInfo.doBill2Trade(payCheckFileDeatail, tradeOrder);
+    }
+
     private void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail) {
         TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNo(payCheckFileDeatail.getAppSeetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
         if (isNull(tradeOrder)) {
@@ -124,17 +135,6 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
         payChannelInfo.doBill2TradeRefund(payCheckFileDeatail, tradeOrder);
     }
 
-
-    private void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail) {
-        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSeetSerialNo());
-        if (isNull(tradeOrder)) {
-            // TODO: 2018/12/28 文件单边
-            return;
-        }
-
-        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
-        payChannelInfo.doBill2Trade(payCheckFileDeatail, tradeOrder);
-    }
 
     private void protectPayCheckDeatailDto(PayCheckDeatailDto payCheckDeatailDto) {
         String billDate = payCheckDeatailDto.getBillDate();
