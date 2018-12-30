@@ -15,6 +15,10 @@
         <result column="TYPE" jdbcType="VARCHAR" property="type"/>
         <result column="STATUS" jdbcType="VARCHAR" property="status"/>
         <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+
+        <result column="CLIENT_ID" jdbcType="VARCHAR" property="clientId"/>
+        <result column="CLIENT_NAME" jdbcType="VARCHAR" property="clientName"/>
+
         <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
@@ -30,7 +34,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        ID, PAY_LOG_ID, APP_SHEET_SERIAL_NO, REFUND_APPLY_AMOUNT, REFUND_AMOUNT, REFUND_NO, REFUND_REASON, TYPE, STATUS, REMARK, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+        ID, PAY_LOG_ID, APP_SHEET_SERIAL_NO, REFUND_APPLY_AMOUNT, REFUND_AMOUNT, REFUND_NO, REFUND_REASON, TYPE, STATUS, REMARK,
+        CLIENT_ID, CLIENT_NAME, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
     </sql>
 
     <sql id="Base_Column_List_ALIPAY">
@@ -121,6 +126,12 @@
             <if test="remark != null">
                 REMARK,
             </if>
+            <if test="clientId != null">
+                CLIENT_ID,
+            </if>
+            <if test="clientName != null">
+                CLIENT_NAME,
+            </if>
             <if test="alipayTradeNo != null">
                 ALIPAY_TRADE_NO,
             </if>
@@ -173,6 +184,12 @@
             </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="clientId != null">
+                #{clientId,jdbcType=VARCHAR},
+            </if>
+            <if test="clientName != null">
+                #{clientName,jdbcType=VARCHAR},
             </if>
             <if test="alipayTradeNo != null">
                 #{alipayTradeNo,jdbcType=VARCHAR},

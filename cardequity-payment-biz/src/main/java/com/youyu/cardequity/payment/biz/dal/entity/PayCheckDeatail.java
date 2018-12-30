@@ -103,7 +103,7 @@ public class PayCheckDeatail extends BaseDto<String> {
 
     // TODO: 2018/12/30 记得写入到数据库中
     /**
-     * 退款状态:每个渠道定义不一样，需要解析后转义
+     * 退款状态:每个渠道定义不一样，需要解析后转义,无需退款的时候:填0
      */
     @Column(name = "RETURN_STATUS")
     private String returnStatus;
@@ -198,6 +198,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.appDate = payCheckFileDeatail.getAppDate();
         this.fileAmount = payCheckFileDeatail.getAppAmount();
         this.fileStatus = payCheckFileDeatail.getPayState();
+        this.returnStatus = payCheckFileDeatail.getReturnStatus();
         this.dealDate = payCheckFileDeatail.getAppDate();
         this.appSeetSerialNo = payCheckFileDeatail.getAppSeetSerialNo();
         this.businType = payCheckFileDeatail.getBusinType();
@@ -211,7 +212,17 @@ public class PayCheckDeatail extends BaseDto<String> {
 
         this.localAmount = ZERO;
         this.localState = "0";
-        setFileUnilateralProperties(payLog);
+
+        if (isNull(payLog)) {
+            this.localPayAmount = ZERO;
+            this.localPayState = "0";
+            return;
+        }
+
+        this.localPayAmount = payLog.getOccurBalance();
+        this.localPayState = payLog.getPayState();
+        this.clientId = payLog.getClientId();
+        this.clientName = payLog.getClientName();
     }
 
     public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder, PayLog payLog) {
@@ -222,6 +233,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.appDate = payCheckFileDeatail.getAppDate();
         this.fileAmount = payCheckFileDeatail.getAppAmount();
         this.fileStatus = payCheckFileDeatail.getPayState();
+        this.returnStatus = payCheckFileDeatail.getReturnStatus();
         this.dealDate = payCheckFileDeatail.getAppDate();
         this.appSeetSerialNo = payCheckFileDeatail.getAppSeetSerialNo();
         this.businType = payCheckFileDeatail.getBusinType();
@@ -249,6 +261,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.appDate = payCheckFileDeatail.getAppDate();
         this.fileAmount = payCheckFileDeatail.getAppAmount();
         this.fileStatus = payCheckFileDeatail.getPayState();
+        this.returnStatus = payCheckFileDeatail.getReturnStatus();
         this.dealDate = payCheckFileDeatail.getAppDate();
         this.appSeetSerialNo = payCheckFileDeatail.getAppSeetSerialNo();
         this.businType = payCheckFileDeatail.getBusinType();
@@ -270,25 +283,39 @@ public class PayCheckDeatail extends BaseDto<String> {
     }
 
     public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail, PayTradeRefund payTradeRefund) {
+        this();
+        this.tranceNo = payCheckFileDeatail.getTranceNo();
+        this.checkDate = payCheckFileDeatail.getCheckDate();
+        this.channelNo = payCheckFileDeatail.getChannelNo();
+        this.appDate = payCheckFileDeatail.getAppDate();
+        this.fileAmount = payCheckFileDeatail.getAppAmount();
+        this.fileStatus = payCheckFileDeatail.getPayState();
+        this.returnStatus = payCheckFileDeatail.getReturnStatus();
+        this.dealDate = payCheckFileDeatail.getAppDate();
+        this.appSeetSerialNo = payCheckFileDeatail.getAppSeetSerialNo();
+        this.businType = payCheckFileDeatail.getBusinType();
+        this.checkNum = 1;
+        this.transActionDate = date2String(now(), "YYYYMMDD");
 
-    }
+        // TODO: 2018/12/29
+        this.checkStatus = null;
+        this.backFlag = REFUNDED.getCode();
+        this.type = "2";
+        this.returnStatus = payCheckFileDeatail.getReturnStatus();
 
-    /**
-     * 设置文件单边数据
-     *
-     * @param payLog
-     */
-    private void setFileUnilateralProperties(PayLog payLog) {
-        if (isNull(payLog)) {
+        this.localAmount = ZERO;
+        this.localState = "0";
+
+        if (isNull(payTradeRefund)) {
             this.localPayAmount = ZERO;
             this.localPayState = "0";
             return;
         }
 
-        this.localPayAmount = payLog.getOccurBalance();
-        this.localPayState = payLog.getPayState();
-        this.clientId = payLog.getClientId();
-        this.clientName = payLog.getClientName();
+        this.localPayAmount = payTradeRefund.getRefundAmount();
+        this.localPayState = payTradeRefund.getRefundStatus();
+        this.clientId = payTradeRefund.getClientId();
+        this.clientName = payTradeRefund.getClientName();
     }
 
     @Override

@@ -147,7 +147,6 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
         payChannelInfo.doBill2TradeRefund(payCheckFileDeatail, tradeOrder);
     }
 
-
     private void protectPayCheckDeatailDto(PayCheckDeatailDto payCheckDeatailDto) {
         String billDate = payCheckDeatailDto.getBillDate();
         if (isBlank(billDate)) {

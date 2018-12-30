@@ -89,6 +89,20 @@ public class PayTradeRefund extends BaseEntity<String> {
     @Column(name = "REMARK")
     protected String remark;
 
+    // TODO: 2018/12/30 记得数据库加上这两个字段
+    /**
+     * 客户号:
+     */
+    @Column(name = "CLIENT_ID")
+    protected String clientId;
+
+    // TODO: 2018/12/30 记得数据库加上这两个字段
+    /**
+     * 客户姓名:
+     */
+    @Column(name = "CLIENT_NAME")
+    protected String clientName;
+
     public PayTradeRefund() {
     }
 
@@ -100,6 +114,8 @@ public class PayTradeRefund extends BaseEntity<String> {
         this.refundNo = tradeRefundApplyDto.getRefundNo();
         this.refundReason = tradeRefundApplyDto.getRefundReason();
         this.status = getBeanByClass(PayTradeRefundStatus4NonRefund.class);
+        this.clientId = payLog.getClientId();
+        this.clientName = payLog.getClientName();
     }
 
     public void getTradeRefund(PayLog payLog) {
