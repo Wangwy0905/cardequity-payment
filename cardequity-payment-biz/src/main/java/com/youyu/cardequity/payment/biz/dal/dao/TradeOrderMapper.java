@@ -20,6 +20,7 @@ public interface TradeOrderMapper {
      */
     void insertSelective(TradeOrder tradeOrder);
 
+    // TODO: 2018/12/30 记得写sql
     TradeOrder getByAppSeetSerialNoPayRefundNoIsNull(@Param("appSeetSerialNo") String appSeetSerialNo);
 
     TradeOrder getByAppSeetSerialNoPayRefundNo(@Param("appSeetSerialNo") String appSeetSerialNo, @Param("refundBatchNo") String refundBatchNo);

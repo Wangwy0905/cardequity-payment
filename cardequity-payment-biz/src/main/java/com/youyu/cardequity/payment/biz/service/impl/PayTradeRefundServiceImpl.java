@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter.copyProperties;
-import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.REFUND_NO_NOT_EXIST;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.REFUND_ORDER_NO_PAYMENT_ABNORMAL;
 import static java.util.Objects.isNull;
@@ -55,8 +54,7 @@ public class PayTradeRefundServiceImpl implements PayTradeRefundService {
     }
 
     private PayLog getPayLog(PayTradeRefundDto tradeRefundApplyDto) {
-        String appSheetSerialNo = tradeRefundApplyDto.getAppSheetSerialNo();
-        PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(appSheetSerialNo, NORMAL.getCode());
+        PayLog payLog = payLogMapper.getById(tradeRefundApplyDto.getId());
 
         if (isNull(payLog)) {
             throw new BizException(REFUND_ORDER_NO_PAYMENT_ABNORMAL);

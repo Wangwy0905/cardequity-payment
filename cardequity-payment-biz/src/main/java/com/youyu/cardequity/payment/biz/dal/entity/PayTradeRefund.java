@@ -1,5 +1,6 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
+import com.youyu.cardequity.common.base.util.StringUtil;
 import com.youyu.cardequity.payment.biz.component.status.paytraderefund.PayTradeRefundStatus;
 import com.youyu.cardequity.payment.biz.component.status.paytraderefund.PayTradeRefundStatus4NonRefund;
 import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
@@ -111,6 +112,11 @@ public class PayTradeRefund extends BaseEntity<String> {
 
     public boolean isRefundSucc() {
         return status.isRefundSucc();
+    }
+
+    public void refundAfterBill2TradeRefund(String remark) {
+        this.status = status.refundSucc();
+        this.remark = StringUtil.join(this.remark, "||", remark);
     }
 
     @Override

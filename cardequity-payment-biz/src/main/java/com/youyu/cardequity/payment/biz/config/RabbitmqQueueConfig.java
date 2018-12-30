@@ -38,4 +38,24 @@ public class RabbitmqQueueConfig {
         return new Queue(rabbitmqProperties.getTradeOrderMessageQueue(), true);
     }
 
+    /**
+     * 支付盘后对账退款消息通知:Queue
+     *
+     * @return
+     */
+    @Bean("payAfterRefundMessageQueue")
+    public Queue payAfterRefundMessageQueue() {
+        return new Queue(rabbitmqProperties.getPayAfterRefundMessageQueue(), true);
+    }
+
+    /**
+     * 支付盘后对账退款状态消息通知:Queue
+     *
+     * @return
+     */
+    @Bean("payAfterRefundStatusMessageQueue")
+    public Queue payAfterRefundStatusMessageQueue() {
+        return new Queue(rabbitmqProperties.getPayAfterRefundStatusMessageQueue(), true);
+    }
+
 }

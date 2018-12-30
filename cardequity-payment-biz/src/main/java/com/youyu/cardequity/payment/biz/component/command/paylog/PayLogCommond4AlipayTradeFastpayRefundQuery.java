@@ -65,7 +65,7 @@ public class PayLogCommond4AlipayTradeFastpayRefundQuery extends PayLogCommond {
         AlipayTradeFastpayRefundQueryModel alipayTradeFastpayRefundQueryModel = new AlipayTradeFastpayRefundQueryModel();
         alipayTradeFastpayRefundQueryModel.setTradeNo(payLog.getThirdSerialNo());
         alipayTradeFastpayRefundQueryModel.setOutTradeNo(payLog.getAppSheetSerialNo());
-        alipayTradeFastpayRefundQueryModel.setOutRequestNo(payTradeRefund4Alipay.getId());
+        alipayTradeFastpayRefundQueryModel.setOutRequestNo(payTradeRefund4Alipay.getRefundNo());
         return alipayTradeFastpayRefundQueryModel;
     }
 }

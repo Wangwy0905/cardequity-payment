@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import static com.youyu.cardequity.common.base.util.MoneyUtil.string2BigDecimal;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_SUCC;
+import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_SUCC;
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 import static org.apache.commons.lang3.StringUtils.replace;
 
@@ -118,6 +119,13 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
     @Column(name = "REFUND_BATCH_NO")
     private String refundBatchNo;
 
+    // TODO: 2018/12/30 记得写入到数据库中
+    /**
+     * 退款状态:每个渠道定义不一样，需要解析后转义
+     */
+    @Column(name = "RETURN_STATUS")
+    private String returnStatus;
+
     public PayCheckFileDeatail() {
     }
 
@@ -146,6 +154,7 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
         String refundBatchNo = datas[22];
         if (isNoneBlank(refundBatchNo)) {
             this.refundBatchNo = refundBatchNo;
+            this.returnStatus = STATUS_SUCC;
         }
     }
 

@@ -100,4 +100,11 @@ public interface PayLogMapper {
      * @param routeVoIdFlag
      */
     void updateAppSheetSerialNo4OtherPayIdRouteVoIdFlag(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("id") String id, @Param("routeVoIdFlag") String routeVoIdFlag);
+
+    /**
+     * 盘后文件对交易对账:支付成功
+     *
+     * @param payLog
+     */
+    void updateByPayAfterBill2TradeSucc(PayLog payLog);
 }

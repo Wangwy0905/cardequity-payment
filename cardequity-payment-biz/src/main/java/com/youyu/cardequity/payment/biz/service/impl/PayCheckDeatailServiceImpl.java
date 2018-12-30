@@ -1,11 +1,7 @@
 package com.youyu.cardequity.payment.biz.service.impl;
 
-import com.youyu.cardequity.payment.biz.dal.dao.PayChannelInfoMapper;
-import com.youyu.cardequity.payment.biz.dal.dao.PayCheckFileDeatailMapper;
-import com.youyu.cardequity.payment.biz.dal.dao.TradeOrderMapper;
-import com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo;
-import com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail;
-import com.youyu.cardequity.payment.biz.dal.entity.TradeOrder;
+import com.youyu.cardequity.payment.biz.dal.dao.*;
+import com.youyu.cardequity.payment.biz.dal.entity.*;
 import com.youyu.cardequity.payment.biz.service.PayCheckDeatailService;
 import com.youyu.cardequity.payment.dto.PayCheckDeatailDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.youyu.cardequity.common.base.util.DateUtil.*;
+import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.replace;
@@ -34,14 +31,23 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     private PayCheckFileDeatailMapper payCheckFileDeatailMapper;
     @Autowired
     private PayChannelInfoMapper payChannelInfoMapper;
+    @Autowired
+    private PayCheckDeatailMapper payCheckDeatailMapper;
+    @Autowired
+    private PayLogMapper payLogMapper;
+    @Autowired
+    private PayTradeRefundMapper payTradeRefundMapper;
 
     @Override
     public void reconciliation(PayCheckDeatailDto payCheckDeatailDto) {
         protectPayCheckDeatailDto(payCheckDeatailDto);
 
+        // TODO: 2018/12/29 做事务切割,对于已经对账的文件和交易需要打标志
         bill2Trade(payCheckDeatailDto);
 
         trade2Bill(payCheckDeatailDto);
+
+        // TODO: 2018/12/29 两天未查询到的则直接算支付失败
     }
 
     /**
@@ -116,7 +122,10 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     private void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail) {
         TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSeetSerialNo());
         if (isNull(tradeOrder)) {
-            // TODO: 2018/12/28 文件单边
+            // 文件交易单边
+            PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(payCheckFileDeatail.getAppSeetSerialNo(), NORMAL.getCode());
+            PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, payLog);
+            payCheckDeatailMapper.insertSelective(payCheckDeatail);
             return;
         }
 
@@ -127,7 +136,10 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     private void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail) {
         TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNo(payCheckFileDeatail.getAppSeetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
         if (isNull(tradeOrder)) {
-            // TODO: 2018/12/28
+            // 文件退款单边
+            PayTradeRefund payTradeRefund = payTradeRefundMapper.getByAppSheetSerialNoRefundNo(payCheckFileDeatail.getAppSeetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
+            PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, payTradeRefund);
+            payCheckDeatailMapper.insertSelective(payCheckDeatail);
             return;
         }
 

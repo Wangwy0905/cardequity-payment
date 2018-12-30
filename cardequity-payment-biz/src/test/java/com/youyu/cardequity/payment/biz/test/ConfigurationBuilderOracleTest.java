@@ -43,7 +43,7 @@ public class ConfigurationBuilderOracleTest {
         config.setJdbcConnectionConfiguration(connectionConfiguration);
 
         YyTableConfig t1 = new YyTableConfig();
-        t1.setTableName("TB_%");
+        t1.setTableName("TB_PAY_CHECK_DEATAIL%");
 //        t1.setPkColumn("id");
         t1.setSqlStatement("JDBC");
 //        t1.setSqlStatement("select SEQ_{1}.nextval from dual");

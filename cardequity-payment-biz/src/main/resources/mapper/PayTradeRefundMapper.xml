@@ -82,6 +82,12 @@
         where ID = #{id,jdbcType=VARCHAR}
     </update>
 
+    <update id="updateByRefundAfterBill2TradeRefund" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund">
+        update TB_PAY_TRADE_REFUND
+        set STATUS = #{status,jdbcType=VARCHAR}, REMARK = #{remark,jdbcType=VARCHAR}
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
     <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayTradeRefund">
         insert into TB_PAY_TRADE_REFUND
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -50,4 +50,10 @@ public interface PayTradeRefundMapper {
      */
     void updateByAlipayRefundQuery(PayTradeRefund4Alipay payTradeRefund4Alipay);
 
+    /**
+     * 盘后修改退款状态
+     *
+     * @param payTradeRefund
+     */
+    void updateByRefundAfterBill2TradeRefund(PayTradeRefund payTradeRefund);
 }

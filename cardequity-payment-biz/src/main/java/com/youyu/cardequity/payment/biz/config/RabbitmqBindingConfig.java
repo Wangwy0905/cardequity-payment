@@ -37,7 +37,43 @@ public class RabbitmqBindingConfig {
      * @return
      */
     @Bean
-    public Binding alipayAsyncMessageBinding() {
+    public Binding payAsyncMessageBinding() {
         return bind(payAsyncMessageQueue).to(payAsyncMessageExchange).with(rabbitmqProperties.getPayAsyncMessageRoutingKey());
+    }
+
+    @Autowired
+    @Qualifier("payAfterRefundMessageQueue")
+    private Queue payAfterRefundMessageQueue;
+
+    @Autowired
+    @Qualifier("payAfterRefundMessageExchange")
+    private DirectExchange payAfterRefundMessageExchange;
+
+    /**
+     * 支付盘后对账退款消息通知:Binding
+     *
+     * @return
+     */
+    @Bean
+    public Binding payAfterRefundMessageBinding() {
+        return bind(payAfterRefundMessageQueue).to(payAfterRefundMessageExchange).with(rabbitmqProperties.getPayAfterRefundMessageRoutingKey());
+    }
+
+    @Autowired
+    @Qualifier("payAfterRefundStatusMessageQueue")
+    private Queue payAfterRefundStatusMessageQueue;
+
+    @Autowired
+    @Qualifier("payAfterRefundStatusMessageExchange")
+    private DirectExchange payAfterRefundStatusMessageExchange;
+
+    /**
+     * 支付盘后对账退款状态消息通知:Binding
+     *
+     * @return
+     */
+    @Bean
+    public Binding payAfterRefundStatusMessageBinding() {
+        return bind(payAfterRefundStatusMessageQueue).to(payAfterRefundStatusMessageExchange).with(rabbitmqProperties.getPayAfterRefundStatusMessageRoutingKey());
     }
 }

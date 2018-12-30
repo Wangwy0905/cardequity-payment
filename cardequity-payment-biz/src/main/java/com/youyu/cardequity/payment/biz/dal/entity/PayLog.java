@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.StatusAndStrategyNumUtil.getNumber;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
+import static org.apache.commons.lang3.StringUtils.join;
 
 /**
  * @author panqingqing
@@ -222,6 +223,16 @@ public class PayLog extends BaseEntity<String> {
 
     public boolean isPaySucc() {
         return state.isPaySucc();
+    }
+
+    /**
+     * 盘后文件对交易对账成功
+     *
+     * @param remark
+     */
+    public void payAfterBill2TradeSucc(String remark) {
+        this.state = state.paymentSucc();
+        this.remark = join(this.remark, "||", remark);
     }
 
     @Override

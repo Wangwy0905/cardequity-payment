@@ -65,6 +65,7 @@ public class PayTradeRefundStrategy4Alipay extends PayTradeRefundStrategy {
         alipayTradeRefundModel.setOutTradeNo(payTradeRefund4Alipay.getAppSheetSerialNo());
         alipayTradeRefundModel.setTradeNo(payTradeRefund4Alipay.getAlipayTradeNo());
         alipayTradeRefundModel.setRefundAmount(payTradeRefund4Alipay.getRefundApplyAmount().toString());
+        alipayTradeRefundModel.setOutRequestNo(payTradeRefund4Alipay.getRefundNo());
         alipayTradeRefundModel.setRefundReason(payTradeRefund4Alipay.getRefundReason());
         return alipayTradeRefundModel;
     }

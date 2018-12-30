@@ -20,6 +20,7 @@
         <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
         <result column="ORDER_AMOUNT" jdbcType="DECIMAL" property="orderAmount"/>
         <result column="REFUND_BATCH_NO" jdbcType="VARCHAR" property="refundBatchNo"/>
+        <result column="RETURN_STATUS" jdbcType="VARCHAR" property="returnStatus"/>
 
         <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
@@ -29,7 +30,7 @@
 
     <sql id="Base_Column_List">
         ID, TRANCE_NO, CHANNEL_NO, CHECK_DATE, FILE_ID, APP_DATE, APP_AMOUNT, PAY_STATE, BANK_CARD_NO, APP_SEET_SERIAL_NO, BUSIN_TYPE, FILE_NAME, REMARK,
-        ORDER_AMOUNT, REFUND_BATCH_NO, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+        ORDER_AMOUNT, REFUND_BATCH_NO, RETURN_STATUS, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
     </sql>
 
     <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail">
@@ -79,6 +80,9 @@
             </if>
             <if test="refundBatchNo != null">
                 REFUND_BATCH_NO,
+            </if>
+            <if test="returnStatus != null">
+                RETURN_STATUS,
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME,
@@ -138,6 +142,9 @@
             </if>
             <if test="refundBatchNo != null">
                 #{refundBatchNo,jdbcType=VARCHAR},
+            </if>
+            <if test="returnStatus != null">
+                #{returnStatus,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},

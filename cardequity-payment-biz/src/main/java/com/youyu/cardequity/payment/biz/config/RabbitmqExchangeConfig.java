@@ -27,4 +27,24 @@ public class RabbitmqExchangeConfig {
     public DirectExchange payAsyncMessageExchange() {
         return new DirectExchange(rabbitmqProperties.getPayAsyncMessageExchange(), true, false);
     }
+
+    /**
+     * 支付盘后对账退款消息通知:Exchange
+     *
+     * @return
+     */
+    @Bean("payAfterRefundMessageExchange")
+    public DirectExchange payAfterRefundMessageExchange() {
+        return new DirectExchange(rabbitmqProperties.getPayAfterRefundMessageExchange(), true, false);
+    }
+
+    /**
+     * 支付盘后对账退款状态消息通知:Exchange
+     *
+     * @return
+     */
+    @Bean("payAfterRefundStatusMessageExchange")
+    public DirectExchange payAfterRefundStatusMessageExchange() {
+        return new DirectExchange(rabbitmqProperties.getPayAfterRefundStatusMessageExchange(), true, false);
+    }
 }
