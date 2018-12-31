@@ -5,7 +5,9 @@ import com.youyu.cardequity.payment.biz.component.rabbitmq.RabbitmqSender;
 import com.youyu.cardequity.payment.biz.dal.dao.PayCheckDeatailMapper;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.dao.PayTradeRefundMapper;
+import com.youyu.cardequity.payment.biz.dal.dao.TradeOrderMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.*;
+import com.youyu.cardequity.payment.biz.enums.AlipayDayCutEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,6 +35,8 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
     private PayLogMapper payLogMapper;
     @Autowired
     private PayTradeRefundMapper payTradeRefundMapper;
+    @Autowired
+    private TradeOrderMapper tradeOrderMapper;
 
     @Autowired
     private RabbitmqSender rabbitmqSender;
@@ -56,6 +60,7 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
 
                 payCheckDeatail.setBackFlag(NEED_REFUND.getCode());
             }
+            // TODO: 2018/12/31 json数据带上交易的状态
             rabbitmqSender.sendMessage(toJSONString(tradeOrder.getAppSheetSerialNo()), PAY_AFTER_REFUND_MESSAGE);
         }
         payCheckDeatailMapper.insertSelective(payCheckDeatail);
@@ -77,22 +82,20 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
                 payTradeRefund.refundAfterBill2TradeRefund("支付宝盘活对账退款状态为退款成功!");
                 payTradeRefundMapper.updateByRefundAfterBill2TradeRefund(payTradeRefund);
             }
+            // TODO: 2018/12/31 带上退款状态
             rabbitmqSender.sendMessage(toJSONString(payTradeRefund.getId()), PAY_AFTER_REFUND_STATUS_MESSAGE);
         }
         payCheckDeatailMapper.insertSelective(payCheckDeatail);
     }
 
     @Override
-    public void doTrade2Bill(TradeOrder tradeOrder, PayCheckFileDeatail payCheckFileDeatail) {
-        // TODO: 2018/12/28
-        // 状态一致: 正常
-        // 状态不一致: 退款 :通知交易系统
-    }
+    public void doTrade2BillNotFile(TradeOrder tradeOrder) {
+        PayLog payLog = payLogMapper.getById(tradeOrder.getPayLogId());
+        AlipayDayCutEnum alipayDayCutEnum = payLog.getAlipayDayCutEnum();
 
-    @Override
-    public void doTrade2BillRefund(TradeOrder tradeOrder, PayCheckFileDeatail payCheckFileDeatail) {
-        // TODO: 2018/12/28
-        // 退款状态一致: 正常
-        // 退款状态不一致: 通知交易修改成退款状态即可
+        alipayDayCutEnum.doTrade2BillNotFile(payLog, tradeOrder);
+
+        tradeOrderMapper.updateByDoTrade2BillNotFile(tradeOrder);
+        payLogMapper.updateByDoTrade2BillNotFile(payLog);
     }
 }

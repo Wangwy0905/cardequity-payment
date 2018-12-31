@@ -200,13 +200,16 @@ public class PayChannelInfo extends BaseEntity<String> {
     }
 
     public void doTrade2Bill(TradeOrder tradeOrder, PayCheckFileDeatail payCheckFileDeatail) {
-        checkState();
-        payCheckFileDeatailStrategy.doTrade2Bill(tradeOrder, payCheckFileDeatail);
+        doBill2Trade(payCheckFileDeatail, tradeOrder);
     }
 
     public void doTrade2BillRefund(TradeOrder tradeOrder, PayCheckFileDeatail payCheckFileDeatail) {
+        doBill2TradeRefund(payCheckFileDeatail, tradeOrder);
+    }
+
+    public void doTrade2BillNotFile(TradeOrder tradeOrder) {
         checkState();
-        payCheckFileDeatailStrategy.doTrade2BillRefund(tradeOrder, payCheckFileDeatail);
+        payCheckFileDeatailStrategy.doTrade2BillNotFile(tradeOrder);
     }
 
     public String getPayLogFactoryNo() {

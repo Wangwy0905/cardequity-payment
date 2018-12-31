@@ -14,6 +14,8 @@ import static com.youyu.cardequity.common.base.util.DateUtil.now;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.NOT_NEED_REFUND;
 import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.REFUNDED;
+import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.BUSIN_TYPE_TRADE;
+import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_FAIL;
 import static java.math.BigDecimal.ZERO;
 import static java.util.Objects.isNull;
 
@@ -318,6 +320,67 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.clientName = payTradeRefund.getClientName();
     }
 
+    public PayCheckDeatail(PayLog payLog, TradeOrder tradeOrder) {
+        this();
+        this.type = "1";
+        this.channelNo = payLog.getPayChannelNo();
+        this.clientId = payLog.getClientId();
+        this.clientName = payLog.getClientName();
+        this.appSeetSerialNo = payLog.getAppSheetSerialNo();
+        this.businType = BUSIN_TYPE_TRADE;
+        this.checkNum = 1;
+        this.localAmount = tradeOrder.getOrderAmount();
+        this.localPayAmount = payLog.getOccurBalance();
+    }
+
+    public void dayCut(PayLog payLog, TradeOrder tradeOrder) {
+        this.localState = tradeOrder.getPayState();
+        this.localPayState = payLog.getPayState();
+        this.fileStatus = "";
+        // TODO: 2018/12/31
+        //考虑对账状态是日切导致的
+        this.checkStatus = "";
+        this.backFlag = NOT_NEED_REFUND.getCode();
+    }
+
+    public void notDayCut(PayLog payLog, TradeOrder tradeOrder) {
+        this.localState = STATUS_PAYMENT_FAIL;
+        this.localPayState = STATUS_PAYMENT_FAIL;
+        this.fileStatus = STATUS_PAYMENT_FAIL;
+        // TODO: 2018/12/31
+        //考虑对账状态是正常的,因为非日切导致数据没有
+        this.checkStatus = "";
+        this.backFlag = NOT_NEED_REFUND.getCode();
+        payLog.payFail();
+        tradeOrder.payFail();
+    }
+
+    public void beforeDayCut(PayLog payLog, TradeOrder tradeOrder) {
+        this.checkNum = this.checkNum + 1;
+        this.localState = STATUS_PAYMENT_FAIL;
+        this.localPayState = STATUS_PAYMENT_FAIL;
+        this.fileStatus = STATUS_PAYMENT_FAIL;
+        // TODO: 2018/12/31
+        //考虑对账状态是正常的,因为前一天日切导致数据没有(是前一天的日切导致的)
+        this.checkStatus = "";
+        this.backFlag = NOT_NEED_REFUND.getCode();
+        payLog.payFail();
+        tradeOrder.payFail();
+    }
+
+    /**
+     * 两天对账都没有文件,则任务交易是支付失败的
+     */
+    public void setLocalPayFail() {
+        this.localState = STATUS_PAYMENT_FAIL;
+        this.localPayState = STATUS_PAYMENT_FAIL;
+        this.fileStatus = STATUS_PAYMENT_FAIL;
+        // TODO: 2018/12/31
+        //考虑对账状态是正常的,因为两天都没有对账到
+        this.checkStatus = "";
+        this.backFlag = NOT_NEED_REFUND.getCode();
+    }
+
     @Override
     public String getId() {
         return id;
@@ -327,5 +390,4 @@ public class PayCheckDeatail extends BaseDto<String> {
     public void setId(String id) {
         this.id = id;
     }
-
 }

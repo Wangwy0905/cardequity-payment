@@ -47,7 +47,7 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
 
         trade2Bill(payCheckDeatailDto);
 
-        // TODO: 2018/12/29 两天未查询到的则直接算支付失败
+        // TODO: 2018/12/29 两天未查询到的则直接算支付失败由trade2Bill这个方法直接做掉
     }
 
     /**
@@ -56,7 +56,7 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
      * @param payCheckDeatailDto
      */
     private void trade2Bill(PayCheckDeatailDto payCheckDeatailDto) {
-        // TODO: 2018/12/28  查询未对账的前一天数据
+        // TODO: 2018/12/28  查询未对账的前一天数据和由于日切导致的数据需要继续对账
         List<TradeOrder> tradeOrders = tradeOrderMapper.getByCreateNotReconciliation();
         for (TradeOrder tradeOrder : tradeOrders) {
             executeTrade2Bill(tradeOrder);
@@ -76,23 +76,35 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     private void doTrade2BillRefund(TradeOrder tradeOrder) {
         PayCheckFileDeatail payCheckFileDeatail = payCheckFileDeatailMapper.getByAppSeetSerialNoRefundBatchNo(tradeOrder.getAppSheetSerialNo(), tradeOrder.getPayRefundNo());
         if (isNull(payCheckFileDeatail)) {
+
             // TODO: 2018/12/28
             // 日切:注意,如果是失败的话，可能第二天也没有对账单
             // 非日切 退款失败
+
+
             return;
         }
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
         payChannelInfo.doTrade2BillRefund(tradeOrder, payCheckFileDeatail);
     }
 
+    /**
+     * // 对账单为空的时候有可能是由于日切导致的:比如日切是0点,那么第一天11:59做的交易可能在支付机构那边是第二天的12:01分,
+     * 那么对账单有可能是第二天才会出现,如果第二天还没有出现对账单,则认为是支付失败的,相当于日切导致的数据,
+     * 但是到支付机构那边连续两天都没有产生,则认为是支付失败的数据(因为有的支付机构只发送支付成功的数据!)
+     * // 日切
+     * // 非日切 交易失败
+     *
+     * @param tradeOrder
+     */
     private void doTrade2Bill(TradeOrder tradeOrder) {
         PayCheckFileDeatail payCheckFileDeatail = payCheckFileDeatailMapper.getByAppSeetSerialNoRefundBatchNoIsNull(tradeOrder.getAppSheetSerialNo());
         if (isNull(payCheckFileDeatail)) {
-            // TODO: 2018/12/28
-            // 日切
-            // 非日切 交易失败
+            PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
+            payChannelInfo.doTrade2BillNotFile(tradeOrder);
             return;
         }
+
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
         payChannelInfo.doTrade2Bill(tradeOrder, payCheckFileDeatail);
     }

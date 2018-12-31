@@ -132,4 +132,8 @@
         </trim>
     </insert>
 
+    <update id="updateByDoTrade2BillNotFile">
+        update TB_TRADE_ORDER set PAY_STATE = #{payState,jdbcType=VARCHAR} where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
 </mapper>

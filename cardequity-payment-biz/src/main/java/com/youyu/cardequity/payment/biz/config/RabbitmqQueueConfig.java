@@ -58,4 +58,14 @@ public class RabbitmqQueueConfig {
         return new Queue(rabbitmqProperties.getPayAfterRefundStatusMessageQueue(), true);
     }
 
+    /**
+     * 支付宝盘后对账支付失败状态且非日切的消息通知:Queue
+     *
+     * @return
+     */
+    @Bean("payAfterPayFailNotDayCutMessageQueue")
+    public Queue payAfterPayFailNotDayCutMessageQueue() {
+        return new Queue(rabbitmqProperties.getPayAfterPayFailNotDayCutMessageQueue(), true);
+    }
+
 }

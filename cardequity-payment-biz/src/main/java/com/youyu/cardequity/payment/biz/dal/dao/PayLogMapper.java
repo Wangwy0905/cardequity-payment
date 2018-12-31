@@ -107,4 +107,11 @@ public interface PayLogMapper {
      * @param payLog
      */
     void updateByPayAfterBill2TradeSucc(PayLog payLog);
+
+    /**
+     * 盘后对账更新支付状态
+     *
+     * @param payLog
+     */
+    void updateByDoTrade2BillNotFile(PayLog payLog);
 }

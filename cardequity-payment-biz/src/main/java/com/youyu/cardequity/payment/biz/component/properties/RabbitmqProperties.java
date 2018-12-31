@@ -65,4 +65,18 @@ public class RabbitmqProperties {
      * 支付宝盘后对账退款状态消息通知:RoutingKey:建议路由key和绑定key一样,路由key:是用于发送消息到交换机上的。绑定key:是用于交换机和queue队列绑定的。
      */
     private String payAfterRefundStatusMessageRoutingKey = "rabbit_pay_after_refund_status_message_routing_key";
+
+
+    /**
+     * 支付宝盘后对账支付失败状态且非日切的消息通知:Queue
+     */
+    private String payAfterPayFailNotDayCutMessageQueue = "rabbit_pay_after_refund_status_message_queue";
+    /**
+     * 支付宝盘后对账支付失败状态且非日切的消息通知:Exchange
+     */
+    private String payAfterPayFailNotDayCutMessageExchange = "rabbit_pay_after_refund_status_message_exchange";
+    /**
+     * 支付宝盘后对账支付失败状态且非日切的消息通知:RoutingKey:建议路由key和绑定key一样,路由key:是用于发送消息到交换机上的。绑定key:是用于交换机和queue队列绑定的。
+     */
+    private String payAfterPayFailNotDayCutMessageRoutingKey = "rabbit_pay_after_refund_status_message_routing_key";
 }

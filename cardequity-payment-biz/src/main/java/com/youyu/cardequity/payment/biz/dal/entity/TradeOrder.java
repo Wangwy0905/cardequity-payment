@@ -1,5 +1,6 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
+import com.youyu.cardequity.payment.biz.component.rabbitmq.RabbitmqSender;
 import com.youyu.cardequity.payment.dto.TradeOrderDto;
 import com.youyu.common.entity.BaseEntity;
 import lombok.Getter;
@@ -10,7 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
+import static com.alibaba.fastjson.JSON.toJSONString;
+import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
+import static com.youyu.cardequity.common.base.util.StringUtil.eq;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
+import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE;
+import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_FAIL;
 
 /**
  * @author panqingqing
@@ -112,6 +118,22 @@ public class TradeOrder extends BaseEntity<String> {
         this.payRefundNo = tradeOrderDto.getPayRefundNo();
         this.refundAmount = tradeOrderDto.getRefundAmount();
         this.refundStatus = tradeOrderDto.getRefundStatus();
+        this.payLogId = tradeOrderDto.getPayLogId();
     }
 
+    public void payFail() {
+        if (eq(this.payState, STATUS_PAYMENT_FAIL)) {
+            return;
+        }
+
+        this.payState = STATUS_PAYMENT_FAIL;
+        getBeanByClass(RabbitmqSender.class).sendMessage(getPayFailMessage(), PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE);
+    }
+
+    private String getPayFailMessage() {
+        TradeOrder tradeOrder = new TradeOrder();
+        tradeOrder.setAppSheetSerialNo(this.appSheetSerialNo);
+        tradeOrder.setPayState(this.payState);
+        return toJSONString(tradeOrder);
+    }
 }

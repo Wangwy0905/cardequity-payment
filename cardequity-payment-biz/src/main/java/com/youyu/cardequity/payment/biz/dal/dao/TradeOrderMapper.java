@@ -23,8 +23,12 @@ public interface TradeOrderMapper {
     // TODO: 2018/12/30 记得写sql
     TradeOrder getByAppSeetSerialNoPayRefundNoIsNull(@Param("appSeetSerialNo") String appSeetSerialNo);
 
+    // TODO: 2018/12/30 记得写sql
     TradeOrder getByAppSeetSerialNoPayRefundNo(@Param("appSeetSerialNo") String appSeetSerialNo, @Param("refundBatchNo") String refundBatchNo);
 
+    // TODO: 2018/12/30 记得写sql
     List<TradeOrder> getByCreateNotReconciliation();
 
+
+    void updateByDoTrade2BillNotFile(TradeOrder tradeOrder);
 }

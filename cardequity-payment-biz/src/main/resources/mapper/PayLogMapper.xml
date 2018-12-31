@@ -399,4 +399,7 @@
         where ID = #{id,jdbcType=VARCHAR}
     </update>
 
+    <update id="updateByDoTrade2BillNotFile" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
+        update TB_PAY_LOG set STATE = #{state,jdbcType=VARCHAR} where ID = #{id,jdbcType=VARCHAR}
+    </update>
 </mapper>

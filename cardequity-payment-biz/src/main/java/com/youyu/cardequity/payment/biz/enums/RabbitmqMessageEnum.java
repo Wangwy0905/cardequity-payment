@@ -41,6 +41,15 @@ public enum RabbitmqMessageEnum {
             String routingKey = rabbitmqProperties.getPayAfterRefundStatusMessageRoutingKey();
             return new Tuple2<>(exchange, routingKey);
         }
+    },
+    PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE("3", "盘后对账支付失败,需通知交易系统进行支付状态变为支付失败,并进行相关操作或人工干预") {
+        @Override
+        public Tuple2<String, String> getExchangeRoutingKey() {
+            RabbitmqProperties rabbitmqProperties = getBeanByClass(RabbitmqProperties.class);
+            String exchange = rabbitmqProperties.getPayAfterPayFailNotDayCutMessageExchange();
+            String routingKey = rabbitmqProperties.getPayAfterPayFailNotDayCutMessageRoutingKey();
+            return new Tuple2<>(exchange, routingKey);
+        }
     };
 
 

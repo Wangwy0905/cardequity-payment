@@ -76,4 +76,22 @@ public class RabbitmqBindingConfig {
     public Binding payAfterRefundStatusMessageBinding() {
         return bind(payAfterRefundStatusMessageQueue).to(payAfterRefundStatusMessageExchange).with(rabbitmqProperties.getPayAfterRefundStatusMessageRoutingKey());
     }
+
+    @Autowired
+    @Qualifier("payAfterPayFailNotDayCutMessageQueue")
+    private Queue payAfterPayFailNotDayCutMessageQueue;
+
+    @Autowired
+    @Qualifier("payAfterPayFailNotDayCutMessageExchange")
+    private DirectExchange payAfterPayFailNotDayCutMessageExchange;
+
+    /**
+     * 支付宝盘后对账支付失败状态且非日切的消息通知:Binding
+     *
+     * @return
+     */
+    @Bean
+    public Binding payAfterPayFailNotDayCutMessageBinding() {
+        return bind(payAfterPayFailNotDayCutMessageQueue).to(payAfterPayFailNotDayCutMessageExchange).with(rabbitmqProperties.getPayAfterPayFailNotDayCutMessageRoutingKey());
+    }
 }

@@ -47,4 +47,14 @@ public class RabbitmqExchangeConfig {
     public DirectExchange payAfterRefundStatusMessageExchange() {
         return new DirectExchange(rabbitmqProperties.getPayAfterRefundStatusMessageExchange(), true, false);
     }
+
+    /**
+     * 支付宝盘后对账支付失败状态且非日切的消息通知:Exchange
+     *
+     * @return
+     */
+    @Bean("payAfterPayFailNotDayCutMessageExchange")
+    public DirectExchange payAfterPayFailNotDayCutMessageExchange() {
+        return new DirectExchange(rabbitmqProperties.getPayAfterPayFailNotDayCutMessageExchange(), true, false);
+    }
 }

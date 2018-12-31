@@ -9,12 +9,12 @@ package com.youyu.cardequity.payment.biz.help.constant;
 public final class BusinessConstant {
 
     /**
-     * 支付类型
+     * 支付宝支付类型
      */
     public static final String PAY_TYPE_ALIPAY = "1";
 
     /**
-     * 退款类型
+     * 支付宝退款类型
      */
     public static final String RETURN_TYPE_ALIPAY = "1";
     /**

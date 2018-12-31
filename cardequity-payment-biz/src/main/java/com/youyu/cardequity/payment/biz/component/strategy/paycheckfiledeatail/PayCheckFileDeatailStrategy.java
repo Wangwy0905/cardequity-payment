@@ -28,18 +28,9 @@ public abstract class PayCheckFileDeatailStrategy {
     public abstract void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder);
 
     /**
-     * 交易对对账单
+     * 交易去对对账单,此时没有对账文件
      *
      * @param tradeOrder
-     * @param payCheckFileDeatail
      */
-    public abstract void doTrade2Bill(TradeOrder tradeOrder, PayCheckFileDeatail payCheckFileDeatail);
-
-    /**
-     * 交易退款对对账单
-     *
-     * @param tradeOrder
-     * @param payCheckFileDeatail
-     */
-    public abstract void doTrade2BillRefund(TradeOrder tradeOrder, PayCheckFileDeatail payCheckFileDeatail);
+    public abstract void doTrade2BillNotFile(TradeOrder tradeOrder);
 }
