@@ -45,7 +45,6 @@ public interface TradeOrderMapper {
      * @param mayBeRefundUnilateral
      * @return
      */
-    // TODO: 2019/1/2
     List<TradeOrder> getBySyncDataDateAndDayCut(@Param("syncDataDate") String syncDataDate, @Param("mayBeTradeUnilateral") String mayBeTradeUnilateral, @Param("mayBeRefundUnilateral") String mayBeRefundUnilateral);
 
     /**
@@ -53,12 +52,12 @@ public interface TradeOrderMapper {
      *
      * @param tradeOrder
      */
-    void updatePayStatusByPayAfter(TradeOrder tradeOrder);
+    void updatePayStatusPayCheckDeatailIdByPayAfter(TradeOrder tradeOrder);
 
     /**
      * 非日切导致的对账没有文件的时候更新退款状态,认为是退款失败的
      *
      * @param tradeOrder
      */
-    void updateReturnStatusByRefundAfter(TradeOrder tradeOrder);
+    void updateReturnStatusPayCheckDeatailIdByRefundAfter(TradeOrder tradeOrder);
 }

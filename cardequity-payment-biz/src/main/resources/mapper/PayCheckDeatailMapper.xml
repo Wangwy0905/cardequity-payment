@@ -6,7 +6,6 @@
 
     <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.PayCheckDeatail">
         <id column="ID" jdbcType="VARCHAR" property="id"/>
-        <result column="TYPE" jdbcType="VARCHAR" property="type"/>
         <result column="TRANCE_NO" jdbcType="VARCHAR" property="tranceNo"/>
         <result column="CHECK_DATE" jdbcType="VARCHAR" property="checkDate"/>
         <result column="CHANNEL_NO" jdbcType="VARCHAR" property="channelNo"/>
@@ -39,7 +38,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        ID, TYPE, TRANCE_NO, CHECK_DATE, CHANNEL_NO, APP_DATE, LOCAL_AMOUNT, LOCAL_PAY_AMOUNT, LOCAL_STATE, LOCAL_PAY_STATE,
+        ID, TRANCE_NO, CHECK_DATE, CHANNEL_NO, APP_DATE, LOCAL_AMOUNT, LOCAL_PAY_AMOUNT, LOCAL_STATE, LOCAL_PAY_STATE,
         FILE_AMOUNT, FILE_STATUS, RETURN_STATUS, DEAL_DATE, TRANS_ACTION_DATE, CLIENT_ID, CLIENT_NAME, BANK_CODE,
         BANK_CARD_NO, APP_SHEET_SERIAL_NO, BUSIN_TYPE, CHECK_NUM, CHECK_STATUS, BACK_FLAG, REMARK, REFUND_BATCH_NO,
         UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
@@ -50,9 +49,6 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 ID,
-            </if>
-            <if test="type != null">
-                TYPE,
             </if>
             <if test="tranceNo != null">
                 TRANCE_NO,
@@ -142,9 +138,6 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=VARCHAR},
-            </if>
-            <if test="type != null">
-                #{type,jdbcType=VARCHAR},
             </if>
             <if test="tranceNo != null">
                 #{tranceNo,jdbcType=VARCHAR},

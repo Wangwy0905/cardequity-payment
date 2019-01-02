@@ -33,6 +33,7 @@ public enum AlipayDayCutEnum {
         public void doTrade2BillNotFile(PayLog payLog, TradeOrder tradeOrder) {
             PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payLog, tradeOrder);
             payCheckDeatail.dayCut4Trade(payLog, tradeOrder);
+            tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
             getBeanByClass(PayCheckDeatailMapper.class).insertSelective(payCheckDeatail);
         }
 
@@ -40,6 +41,7 @@ public enum AlipayDayCutEnum {
         public void doTrade2BillRefundNotFile(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
             PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payTradeRefund, tradeOrder);
             payCheckDeatail.dayCut4Refund(payTradeRefund, tradeOrder);
+            tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
             getBeanByClass(PayCheckDeatailMapper.class).insertSelective(payCheckDeatail);
         }
     },
@@ -48,6 +50,7 @@ public enum AlipayDayCutEnum {
         public void doTrade2BillNotFile(PayLog payLog, TradeOrder tradeOrder) {
             PayCheckDeatail payCheckDeatail = getBeanByClass(PayCheckDeatailMapper.class).getByAppSeetSerialNoRefundBatchNoIsNull(tradeOrder.getAppSheetSerialNo());
             payCheckDeatail.beforeDayCut4Trade(payLog, tradeOrder);
+            tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
             getBeanByClass(PayCheckDeatailMapper.class).updateByDoTradeAndReturn2BillNotFile(payCheckDeatail);
         }
 
@@ -55,6 +58,7 @@ public enum AlipayDayCutEnum {
         public void doTrade2BillRefundNotFile(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
             PayCheckDeatail payCheckDeatail = getBeanByClass(PayCheckDeatailMapper.class).getByAppSeetSerialNoRefundBatchNo(tradeOrder.getAppSheetSerialNo(), tradeOrder.getPayRefundNo());
             payCheckDeatail.beforeDayCut4Refund(payTradeRefund, tradeOrder);
+            tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
             getBeanByClass(PayCheckDeatailMapper.class).updateByDoTradeAndReturn2BillNotFile(payCheckDeatail);
         }
     },
@@ -63,6 +67,7 @@ public enum AlipayDayCutEnum {
         public void doTrade2BillNotFile(PayLog payLog, TradeOrder tradeOrder) {
             PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payLog, tradeOrder);
             payCheckDeatail.notDayCut4Trade(payLog, tradeOrder);
+            tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
             getBeanByClass(PayCheckDeatailMapper.class).insertSelective(payCheckDeatail);
         }
 
@@ -70,6 +75,7 @@ public enum AlipayDayCutEnum {
         public void doTrade2BillRefundNotFile(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
             PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payTradeRefund, tradeOrder);
             payCheckDeatail.notDayCut4Refund(payTradeRefund, tradeOrder);
+            tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
             getBeanByClass(PayCheckDeatailMapper.class).insertSelective(payCheckDeatail);
         }
     };

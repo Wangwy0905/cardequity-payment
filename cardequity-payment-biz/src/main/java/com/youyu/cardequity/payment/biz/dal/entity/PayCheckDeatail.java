@@ -43,12 +43,6 @@ public class PayCheckDeatail extends BaseDto<String> {
     private String id;
 
     /**
-     * 类型:1:交易 2:退款
-     */
-    @Column(name = "TYPE")
-    private String type;
-
-    /**
      * 银行流水号:文件中给到，如果是确定文件单边（Tb_PayLocalUnilateralCheckNum超出配置参数）=danbian+8位日期+9位计数器
      */
     @Column(name = "TRANCE_NO")
@@ -219,7 +213,6 @@ public class PayCheckDeatail extends BaseDto<String> {
 
         this.checkStatus = MAY_BE_FILE_UNILATERAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
-        this.type = "1";
 
         this.localAmount = ZERO;
         this.localState = "0";
@@ -239,7 +232,6 @@ public class PayCheckDeatail extends BaseDto<String> {
 
         this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
-        this.type = "1";
 
         this.clientId = tradeOrder.getClientId();
         this.clientName = tradeOrder.getClientName();
@@ -255,7 +247,6 @@ public class PayCheckDeatail extends BaseDto<String> {
 
         this.checkStatus = NORMAL.getCode();
         this.backFlag = REFUNDED.getCode();
-        this.type = "2";
 
         this.clientId = tradeOrder.getClientId();
         this.clientName = tradeOrder.getClientName();
@@ -270,7 +261,6 @@ public class PayCheckDeatail extends BaseDto<String> {
 
         this.checkStatus = MAY_BE_FILE_UNILATERAL.getCode();
         this.backFlag = REFUNDED.getCode();
-        this.type = "2";
 
         this.localAmount = ZERO;
         this.localState = "0";
@@ -287,7 +277,6 @@ public class PayCheckDeatail extends BaseDto<String> {
 
     public PayCheckDeatail(PayLog payLog, TradeOrder tradeOrder) {
         this();
-        this.type = "1";
         this.businType = BUSIN_TYPE_TRADE;
         this.fileStatus = "";
         this.returnStatus = "";
@@ -303,7 +292,6 @@ public class PayCheckDeatail extends BaseDto<String> {
 
     public PayCheckDeatail(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
         this();
-        this.type = "2";
         this.businType = BUSIN_TYPE_REFUND;
         this.fileStatus = "";
         this.returnStatus = "";

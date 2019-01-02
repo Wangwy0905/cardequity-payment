@@ -19,6 +19,7 @@
         <result column="REFUND_STATUS" jdbcType="VARCHAR" property="refundStatus"/>
         <result column="PAY_REFUND_ID" jdbcType="VARCHAR" property="payRefundId"/>
         <result column="SYNC_DATA_DATE" jdbcType="VARCHAR" property="syncDataDate"/>
+        <result column="PAY_CHECK_DEATAIL_ID" jdbcType="VARCHAR" property="payCheckDeatailId"/>
 
         <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
@@ -28,7 +29,7 @@
 
     <sql id="Base_Column_List">
         ID, APP_SHEET_SERIAL_NO, TRANS_ACCOUNT_ID, CLIENT_ID, CLIENT_NAME, PAY_CHANNEL_NO, PAY_LOG_ID, ORDER_AMOUNT, PAY_STATE, PAY_REFUND_NO, REFUND_AMOUNT, REFUND_STATUS,
-        PAY_REFUND_ID, SYNC_DATA_DATE, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+        PAY_REFUND_ID, SYNC_DATA_DATE, PAY_CHECK_DEATAIL_ID, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
     </sql>
 
     <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder">
@@ -75,6 +76,9 @@
             </if>
             <if test="syncDataDate != null">
                 SYNC_DATA_DATE,
+            </if>
+            <if test="payCheckDeatailId != null">
+                PAY_CHECK_DEATAIL_ID,
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME,
@@ -132,6 +136,9 @@
             <if test="syncDataDate != null">
                 #{syncDataDate,jdbcType=VARCHAR},
             </if>
+            <if test="payCheckDeatailId != null">
+                #{payCheckDeatailId,jdbcType=VARCHAR},
+            </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
@@ -147,12 +154,12 @@
         </trim>
     </insert>
 
-    <update id="updatePayStatusByPayAfter" parameterType="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder">
-        update TB_TRADE_ORDER set PAY_STATE = #{payState,jdbcType=VARCHAR} where ID = #{id,jdbcType=VARCHAR}
+    <update id="updatePayStatusPayCheckDeatailIdByPayAfter" parameterType="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder">
+        update TB_TRADE_ORDER set PAY_STATE = #{payState,jdbcType=VARCHAR}, PAY_CHECK_DEATAIL_ID = #{payCheckDeatailId,jdbcType=VARCHAR} where ID = #{id,jdbcType=VARCHAR}
     </update>
 
-    <update id="updateReturnStatusByRefundAfter" parameterType="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder">
-        update TB_TRADE_ORDER set REFUND_STATUS = #{refundStatus,jdbcType=VARCHAR} where ID = #{id,jdbcType=VARCHAR}
+    <update id="updateReturnStatusPayCheckDeatailIdByRefundAfter" parameterType="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder">
+        update TB_TRADE_ORDER set REFUND_STATUS = #{refundStatus,jdbcType=VARCHAR}, PAY_CHECK_DEATAIL_ID = #{payCheckDeatailId,jdbcType=VARCHAR}  where ID = #{id,jdbcType=VARCHAR}
     </update>
 
     <select id="getByAppSeetSerialNoPayRefundNoIsNull" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -167,6 +174,17 @@
         from TB_TRADE_ORDER
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
         and PAY_REFUND_NO = #{payRefundNo,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getBySyncDataDateAndDayCut" resultMap="BaseResultMap">
+        select t1.*
+        from TB_TRADE_ORDER t1
+        where t1.SYNC_DATA_DATE = #{syncDataDate,jdbcType=VARCHAR}
+        and not exists(
+            select 1 from TB_PAY_CHECK_DEATAIL t2
+            where t1.PAY_CHECK_DEATAIL_ID = t2.id
+            and t2.CHECK_STATUS not in (#{mayBeTradeUnilateral,jdbcType=VARCHAR}, #{mayBeRefundUnilateral,jdbcType=VARCHAR})
+        )
     </select>
 
 </mapper>

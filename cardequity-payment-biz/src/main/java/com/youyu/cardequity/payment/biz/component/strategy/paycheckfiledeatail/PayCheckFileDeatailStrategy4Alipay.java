@@ -59,12 +59,14 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
                 payLog.payAfterBill2TradeSucc();
                 payLogMapper.updateStatusByPayAfter(payLog);
             }
-            tradeOrder.payFail(PAY_AFTER_REFUND_MESSAGE);
-            tradeOrderMapper.updatePayStatusByPayAfter(tradeOrder);
+            tradeOrder.paySucc(PAY_AFTER_REFUND_MESSAGE);
 
             payCheckDeatail.setBackFlag(NEED_REFUND.getCode());
             payCheckDeatail.setCheckStatus(FILE_UNILATERAL.getCode());
         }
+        tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
+        tradeOrderMapper.updatePayStatusPayCheckDeatailIdByPayAfter(tradeOrder);
+
         payCheckDeatailMapper.insertSelective(payCheckDeatail);
     }
 
@@ -84,11 +86,13 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
                 payTradeRefund.refundAfterBill2TradeRefund();
                 payTradeRefundMapper.updateStatusByRefundAfter(payTradeRefund);
             }
-            tradeOrder.refundFail(PAY_AFTER_REFUND_STATUS_MESSAGE);
-            tradeOrderMapper.updateReturnStatusByRefundAfter(tradeOrder);
+            tradeOrder.refundSucc(PAY_AFTER_REFUND_STATUS_MESSAGE);
 
             payCheckDeatail.setCheckStatus(REFUNDED.getCode());
         }
+        tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
+        tradeOrderMapper.updateReturnStatusPayCheckDeatailIdByRefundAfter(tradeOrder);
+
         payCheckDeatailMapper.insertSelective(payCheckDeatail);
     }
 
@@ -98,7 +102,7 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
         AlipayDayCutEnum alipayDayCutEnum = payLog.getAlipayDayCutEnum();
         alipayDayCutEnum.doTrade2BillNotFile(payLog, tradeOrder);
 
-        tradeOrderMapper.updatePayStatusByPayAfter(tradeOrder);
+        tradeOrderMapper.updatePayStatusPayCheckDeatailIdByPayAfter(tradeOrder);
         payLogMapper.updateStatusByPayAfter(payLog);
     }
 
@@ -108,7 +112,7 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
         AlipayDayCutEnum alipayDayCutEnum = payTradeRefund.getAlipayDayCutEnum();
         alipayDayCutEnum.doTrade2BillRefundNotFile(payTradeRefund, tradeOrder);
 
-        tradeOrderMapper.updateReturnStatusByRefundAfter(tradeOrder);
+        tradeOrderMapper.updateReturnStatusPayCheckDeatailIdByRefundAfter(tradeOrder);
         payTradeRefundMapper.updateStatusByRefundAfter(payTradeRefund);
 
     }

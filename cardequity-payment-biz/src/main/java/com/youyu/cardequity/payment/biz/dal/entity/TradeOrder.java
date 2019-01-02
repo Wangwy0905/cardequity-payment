@@ -17,8 +17,8 @@ import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass
 import static com.youyu.cardequity.common.base.util.DateUtil.*;
 import static com.youyu.cardequity.common.base.util.StringUtil.eq;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
-import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_FAIL;
+import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_SUCC;
 import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_FAIL;
 import static org.apache.commons.lang3.time.DateUtils.addDays;
 
@@ -118,6 +118,12 @@ public class TradeOrder extends BaseEntity<String> {
     @Column(name = "SYNC_DATA_DATE")
     private String syncDataDate;
 
+    /**
+     * 对账id
+     */
+    @Column(name = "PAY_CHECK_DEATAIL_ID")
+    private String payCheckDeatailId;
+
     public TradeOrder() {
 
     }
@@ -139,13 +145,23 @@ public class TradeOrder extends BaseEntity<String> {
         this.syncDataDate = date2String(addDays(now(), -1), YYYYMMDD);
     }
 
+    public void paySucc(RabbitmqMessageEnum rabbitmqMessageEnum) {
+        this.payState = STATUS_PAYMENT_SUCC;
+        senderTradeMessage(rabbitmqMessageEnum);
+    }
+
     public void payFail(RabbitmqMessageEnum rabbitmqMessageEnum) {
         if (eq(this.payState, STATUS_PAYMENT_FAIL)) {
             return;
         }
 
         this.payState = STATUS_PAYMENT_FAIL;
-        getBeanByClass(RabbitmqSender.class).sendMessage(getPayFailMessage(), rabbitmqMessageEnum);
+        senderTradeMessage(rabbitmqMessageEnum);
+    }
+
+    public void refundSucc(RabbitmqMessageEnum rabbitmqMessageEnum) {
+        this.refundStatus = STATUS_FAIL;
+        senderRefundMessage(rabbitmqMessageEnum);
     }
 
     public void refundFail(RabbitmqMessageEnum rabbitmqMessageEnum) {
@@ -154,11 +170,18 @@ public class TradeOrder extends BaseEntity<String> {
         }
 
         this.refundStatus = STATUS_FAIL;
-        getBeanByClass(RabbitmqSender.class).sendMessage(getReturnFailMessage(), PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE);
-
+        senderRefundMessage(rabbitmqMessageEnum);
     }
 
-    private String getReturnFailMessage() {
+    private void senderTradeMessage(RabbitmqMessageEnum rabbitmqMessageEnum) {
+        getBeanByClass(RabbitmqSender.class).sendMessage(getTradeMessage(), rabbitmqMessageEnum);
+    }
+
+    private void senderRefundMessage(RabbitmqMessageEnum rabbitmqMessageEnum) {
+        getBeanByClass(RabbitmqSender.class).sendMessage(getReturnMessage(), rabbitmqMessageEnum);
+    }
+
+    private String getReturnMessage() {
         TradeOrder tradeOrder = new TradeOrder();
         tradeOrder.setAppSheetSerialNo(this.appSheetSerialNo);
         tradeOrder.setPayRefundId(this.payRefundId);
@@ -167,7 +190,7 @@ public class TradeOrder extends BaseEntity<String> {
         return toJSONString(tradeOrder);
     }
 
-    private String getPayFailMessage() {
+    private String getTradeMessage() {
         TradeOrder tradeOrder = new TradeOrder();
         tradeOrder.setAppSheetSerialNo(this.appSheetSerialNo);
         tradeOrder.setPayState(this.payState);
