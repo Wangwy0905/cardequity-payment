@@ -36,6 +36,11 @@ public class PayTradeRefundResponseDto extends BaseDto<String> {
      */
     public static final String STATUS_FAIL = "4";
 
+    /**
+     * 无需退款
+     */
+    public static final String STATUS_NOT_NEED_REFUND = "5";
+
     @ApiModelProperty(value = "订单编号")
     private String appSheetSerialNo;
 
