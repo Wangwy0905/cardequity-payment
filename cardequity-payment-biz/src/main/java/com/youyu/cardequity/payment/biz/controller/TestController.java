@@ -40,10 +40,10 @@ public class TestController {
     @RequestMapping("/pay")
     public Result<String> pay() {
         PayLogDto payLogDto = new PayLogDto();
-        payLogDto.setSubject("苹果耳机");
+        payLogDto.setSubject("水果拼盘");
         payLogDto.setAppSheetSerialNo(uuid4NoRail());
-        payLogDto.setTimeoutExpress("90m");
-        payLogDto.setOccurBalance(new BigDecimal("1200"));
+//        payLogDto.setTimeoutExpress("90m");
+        payLogDto.setOccurBalance(new BigDecimal("0.01"));
         payLogDto.setPayChannelNo("000001");
         PayLogResponseDto alipayPrepayment4PayLogDto = payLogService.pay(payLogDto);
         return Result.ok(alipayPrepayment4PayLogDto.getRespInfo());

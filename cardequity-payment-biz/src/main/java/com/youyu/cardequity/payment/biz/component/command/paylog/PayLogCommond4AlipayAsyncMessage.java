@@ -1,21 +1,16 @@
 package com.youyu.cardequity.payment.biz.component.command.paylog;
 
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
-import com.youyu.cardequity.payment.biz.component.rabbitmq.RabbitmqSender;
+import com.youyu.cardequity.payment.biz.component.properties.AlipayProperties;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
-import com.youyu.cardequity.payment.dto.PayLogAsyncMessageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static com.alibaba.fastjson.JSON.toJSONString;
-import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter.copyProperties;
-import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_ASYNC_MESSAGE;
 import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.FAIL;
 
 /**
@@ -29,12 +24,8 @@ import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.FAIL;
 @Component
 public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
 
-    @Value("${alipay.sellerId:}")
-    private String sellerId;
-    @Value("${alipay.appId:}")
-    private String appId;
-    @Value("${alipay.alipayPublicKey:}")
-    private String alipayPublicKey;
+    @Autowired
+    private AlipayProperties alipayProperties;
 
     @Autowired
     private PayLogMapper payLogMapper;
@@ -70,7 +61,7 @@ public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
     public <T> void executeCmd(PayLog payLog, T t) {
         Map<String, String> params2Map = (Map<String, String>) t;
         PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLog;
-        payLog4Alipay.analysisAlipayAsyncMessage(params2Map, sellerId, appId, alipayPublicKey);
+        payLog4Alipay.analysisAlipayAsyncMessage(params2Map, alipayProperties.getSellerId(), alipayProperties.getAppId(), alipayProperties.getAlipayPublicKey());
         payLogMapper.updateAlipayAsyncMessage(payLog4Alipay);
 
         if (payLog4Alipay.isPaySucc()) {

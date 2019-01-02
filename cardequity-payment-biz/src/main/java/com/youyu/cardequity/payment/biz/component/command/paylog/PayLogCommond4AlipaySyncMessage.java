@@ -1,12 +1,12 @@
 package com.youyu.cardequity.payment.biz.component.command.paylog;
 
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
+import com.youyu.cardequity.payment.biz.component.properties.AlipayProperties;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,10 +19,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class PayLogCommond4AlipaySyncMessage extends PayLogCommond {
 
-    @Value("${alipay.sellerId:}")
-    private String sellerId;
-    @Value("${alipay.appId:}")
-    private String appId;
+    @Autowired
+    private AlipayProperties alipayProperties;
 
     @Autowired
     private PayLogMapper payLogMapper;
@@ -38,7 +36,7 @@ public class PayLogCommond4AlipaySyncMessage extends PayLogCommond {
         AlipaySyncMessageDto alipaySyncMessageDto = (AlipaySyncMessageDto) t;
         verifySignatur(alipaySyncMessageDto);
         PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLog;
-        payLog4Alipay.analysisAlipaySycnMessage(alipaySyncMessageDto, sellerId, appId);
+        payLog4Alipay.analysisAlipaySycnMessage(alipaySyncMessageDto, alipayProperties.getSellerId(), alipayProperties.getAppId());
         payLogMapper.updateAlipaySyncMessage(payLog4Alipay);
     }
 

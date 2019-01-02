@@ -54,7 +54,7 @@ public class PayTradeRefundServiceImpl implements PayTradeRefundService {
     }
 
     private PayLog getPayLog(PayTradeRefundDto tradeRefundApplyDto) {
-        PayLog payLog = payLogMapper.getById(tradeRefundApplyDto.getId());
+        PayLog payLog = payLogMapper.getById(tradeRefundApplyDto.getPayLogId());
 
         if (isNull(payLog)) {
             throw new BizException(REFUND_ORDER_NO_PAYMENT_ABNORMAL);
