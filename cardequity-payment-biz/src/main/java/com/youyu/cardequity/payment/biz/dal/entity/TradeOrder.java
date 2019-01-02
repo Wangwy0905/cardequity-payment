@@ -14,11 +14,13 @@ import java.math.BigDecimal;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
+import static com.youyu.cardequity.common.base.util.DateUtil.*;
 import static com.youyu.cardequity.common.base.util.StringUtil.eq;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_FAIL;
 import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_FAIL;
+import static org.apache.commons.lang3.time.DateUtils.addDays;
 
 /**
  * @author panqingqing
@@ -110,6 +112,12 @@ public class TradeOrder extends BaseEntity<String> {
     @Column(name = "REFUND_STATUS")
     private String refundStatus;
 
+    /**
+     * 同步数据日期
+     */
+    @Column(name = "SYNC_DATA_DATE")
+    private String syncDataDate;
+
     public TradeOrder() {
 
     }
@@ -128,6 +136,7 @@ public class TradeOrder extends BaseEntity<String> {
         this.refundStatus = tradeOrderDto.getRefundStatus();
         this.payLogId = tradeOrderDto.getPayLogId();
         this.payRefundId = tradeOrderDto.getPayRefundId();
+        this.syncDataDate = date2String(addDays(now(), -1), YYYYMMDD);
     }
 
     public void payFail(RabbitmqMessageEnum rabbitmqMessageEnum) {

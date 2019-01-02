@@ -86,8 +86,8 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
     /**
      * 申请单号:交易申请单号
      */
-    @Column(name = "APP_SEET_SERIAL_NO")
-    private String appSeetSerialNo;
+    @Column(name = "APP_SHEET_SERIAL_NO")
+    private String appSheetSerialNo;
 
     /**
      * 业务类型:可能需要转义
@@ -145,7 +145,7 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
         this.appDate = datas[4];
         this.appAmount = string2BigDecimal(datas[12]);
         this.payState = STATUS_PAYMENT_SUCC;
-        this.appSeetSerialNo = datas[1];
+        this.appSheetSerialNo = datas[1];
         this.businType = businType;
         this.fileName = fileName;
         this.remark = datas[datas.length - 1];

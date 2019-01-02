@@ -208,7 +208,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.fileStatus = payCheckFileDeatail.getPayState();
         this.returnStatus = payCheckFileDeatail.getReturnStatus();
         this.dealDate = payCheckFileDeatail.getAppDate();
-        this.appSheetSerialNo = payCheckFileDeatail.getAppSeetSerialNo();
+        this.appSheetSerialNo = payCheckFileDeatail.getAppSheetSerialNo();
         this.businType = payCheckFileDeatail.getBusinType();
         this.returnStatus = payCheckFileDeatail.getReturnStatus();
         this.refundBatchNo = payCheckFileDeatail.getRefundBatchNo();
@@ -356,6 +356,7 @@ public class PayCheckDeatail extends BaseDto<String> {
 
     public void beforeDayCut4Trade(PayLog payLog, TradeOrder tradeOrder) {
         this.checkNum = this.checkNum + 1;
+
         this.localState = STATUS_PAYMENT_FAIL;
         this.localPayState = STATUS_PAYMENT_FAIL;
         this.fileStatus = STATUS_PAYMENT_FAIL;

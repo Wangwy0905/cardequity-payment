@@ -37,8 +37,16 @@ public interface TradeOrderMapper {
      */
     TradeOrder getByAppSeetSerialNoPayRefundNo(@Param("appSeetSerialNo") String appSeetSerialNo, @Param("refundBatchNo") String refundBatchNo);
 
-    // TODO: 2018/12/28  查询未对账的前一天数据和由于日切导致的数据需要继续对账
-    List<TradeOrder> getByCreateNotReconciliation();
+    /**
+     * 查询未对账的前一天数据和由于日切导致的数据需要继续对账
+     *
+     * @param syncDataDate
+     * @param mayBeTradeUnilateral
+     * @param mayBeRefundUnilateral
+     * @return
+     */
+    // TODO: 2019/1/2
+    List<TradeOrder> getBySyncDataDateAndDayCut(@Param("syncDataDate") String syncDataDate, @Param("mayBeTradeUnilateral") String mayBeTradeUnilateral, @Param("mayBeRefundUnilateral") String mayBeRefundUnilateral);
 
     /**
      * 非日切导致的对账没有文件的时候更新支付状态,认为是支付失败的

@@ -14,7 +14,7 @@
         <result column="APP_AMOUNT" jdbcType="DECIMAL" property="appAmount"/>
         <result column="PAY_STATE" jdbcType="VARCHAR" property="payState"/>
         <result column="BANK_CARD_NO" jdbcType="VARCHAR" property="bankCardNo"/>
-        <result column="APP_SEET_SERIAL_NO" jdbcType="VARCHAR" property="appSeetSerialNo"/>
+        <result column="APP_SHEET_SERIAL_NO" jdbcType="VARCHAR" property="appSheetSerialNo"/>
         <result column="BUSIN_TYPE" jdbcType="VARCHAR" property="businType"/>
         <result column="FILE_NAME" jdbcType="VARCHAR" property="fileName"/>
         <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
@@ -29,7 +29,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        ID, TRANCE_NO, CHANNEL_NO, CHECK_DATE, FILE_ID, APP_DATE, APP_AMOUNT, PAY_STATE, BANK_CARD_NO, APP_SEET_SERIAL_NO, BUSIN_TYPE, FILE_NAME, REMARK,
+        ID, TRANCE_NO, CHANNEL_NO, CHECK_DATE, FILE_ID, APP_DATE, APP_AMOUNT, PAY_STATE, BANK_CARD_NO, APP_SHEET_SERIAL_NO, BUSIN_TYPE, FILE_NAME, REMARK,
         ORDER_AMOUNT, REFUND_BATCH_NO, RETURN_STATUS, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
     </sql>
 
@@ -63,8 +63,8 @@
             <if test="bankCardNo != null">
                 BANK_CARD_NO,
             </if>
-            <if test="appSeetSerialNo != null">
-                APP_SEET_SERIAL_NO,
+            <if test="appSheetSerialNo != null">
+                APP_SHEET_SERIAL_NO,
             </if>
             <if test="businType != null">
                 BUSIN_TYPE,
@@ -125,8 +125,8 @@
             <if test="bankCardNo != null">
                 #{bankCardNo,jdbcType=VARCHAR},
             </if>
-            <if test="appSeetSerialNo != null">
-                #{appSeetSerialNo,jdbcType=VARCHAR},
+            <if test="appSheetSerialNo != null">
+                #{appSheetSerialNo,jdbcType=VARCHAR},
             </if>
             <if test="businType != null">
                 #{businType,jdbcType=VARCHAR},
@@ -164,5 +164,25 @@
     <delete id="deleteByTranceNo" parameterType="java.lang.String">
         delete from TB_PAY_CHECK_FILE_DEATAIL where TRANCE_NO = #{tranceNo,jdbcType=VARCHAR}
     </delete>
+
+    <select id="getListByBillDate" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from TB_PAY_CHECK_FILE_DEATAIL
+        where CHECK_DATE = #{billDate,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getByAppSeetSerialNoRefundBatchNoIsNull" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from TB_PAY_CHECK_FILE_DEATAIL
+        where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+        and REFUND_BATCH_NO is null
+    </select>
+
+    <select id="getByAppSeetSerialNoRefundBatchNo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from TB_PAY_CHECK_FILE_DEATAIL
+        where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+        and REFUND_BATCH_NO = #{refundBatchNo,jdbcType=VARCHAR}
+    </select>
 
 </mapper>

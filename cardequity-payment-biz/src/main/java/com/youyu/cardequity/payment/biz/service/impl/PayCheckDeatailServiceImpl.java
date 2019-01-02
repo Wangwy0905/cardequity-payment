@@ -11,10 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.youyu.cardequity.common.base.util.DateUtil.*;
+import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.MAY_BE_REFUND_UNILATERAL;
+import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.MAY_BE_TRADE_UNILATERAL;
 import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.replace;
 import static org.apache.commons.lang3.time.DateUtils.addDays;
 
 /**
@@ -67,10 +68,10 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     }
 
     private void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail) {
-        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSeetSerialNo());
+        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSheetSerialNo());
         if (isNull(tradeOrder)) {
             // 文件单边交易
-            PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(payCheckFileDeatail.getAppSeetSerialNo(), NORMAL.getCode());
+            PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(payCheckFileDeatail.getAppSheetSerialNo(), NORMAL.getCode());
             PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, payLog);
             payCheckDeatailMapper.insertSelective(payCheckDeatail);
             return;
@@ -81,10 +82,10 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     }
 
     private void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail) {
-        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNo(payCheckFileDeatail.getAppSeetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
+        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
         if (isNull(tradeOrder)) {
             // 文件单边退款
-            PayTradeRefund payTradeRefund = payTradeRefundMapper.getByAppSheetSerialNoRefundNo(payCheckFileDeatail.getAppSeetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
+            PayTradeRefund payTradeRefund = payTradeRefundMapper.getByAppSheetSerialNoRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
             PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, payTradeRefund);
             payCheckDeatailMapper.insertSelective(payCheckDeatail);
             return;
@@ -95,7 +96,7 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     }
 
     private void tradeAndRefund2Bill(PayCheckDeatailDto payCheckDeatailDto, PayCheckDeatailService payCheckDeatailService) {
-        List<TradeOrder> tradeOrders = tradeOrderMapper.getByCreateNotReconciliation();
+        List<TradeOrder> tradeOrders = tradeOrderMapper.getBySyncDataDateAndDayCut(payCheckDeatailDto.getBillDate(), MAY_BE_TRADE_UNILATERAL.getCode(), MAY_BE_REFUND_UNILATERAL.getCode());
         for (TradeOrder tradeOrder : tradeOrders) {
             payCheckDeatailService.executeTradeAndRefund2Bill(tradeOrder);
         }
@@ -139,8 +140,8 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     private void protectPayCheckDeatailDto(PayCheckDeatailDto payCheckDeatailDto) {
         String billDate = payCheckDeatailDto.getBillDate();
         if (isBlank(billDate)) {
-            billDate = date2String(addDays(now(), -1), YYYY_MM_DD);
+            billDate = date2String(addDays(now(), -1), YYYYMMDD);
         }
-        payCheckDeatailDto.setBillDate(replace(billDate, "-", ""));
+        payCheckDeatailDto.setBillDate(billDate);
     }
 }
