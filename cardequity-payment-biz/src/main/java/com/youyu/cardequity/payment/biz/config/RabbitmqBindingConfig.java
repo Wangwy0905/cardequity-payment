@@ -94,4 +94,22 @@ public class RabbitmqBindingConfig {
     public Binding payAfterPayFailNotDayCutMessageBinding() {
         return bind(payAfterPayFailNotDayCutMessageQueue).to(payAfterPayFailNotDayCutMessageExchange).with(rabbitmqProperties.getPayAfterPayFailNotDayCutMessageRoutingKey());
     }
+
+    @Autowired
+    @Qualifier("payAfterReturnFailNotDayCutMessageQueue")
+    private Queue payAfterReturnFailNotDayCutMessageQueue;
+
+    @Autowired
+    @Qualifier("payAfterReturnFailNotDayCutMessageExchange")
+    private DirectExchange payAfterReturnFailNotDayCutMessageExchange;
+
+    /**
+     * 支付宝盘后对账退款失败状态且非日切的消息通知:Binding
+     *
+     * @return
+     */
+    @Bean
+    public Binding payAfterReturnFailNotDayCutMessageBinding() {
+        return bind(payAfterReturnFailNotDayCutMessageQueue).to(payAfterReturnFailNotDayCutMessageExchange).with(rabbitmqProperties.getPayAfterReturnFailNotDayCutMessageRoutingKey());
+    }
 }

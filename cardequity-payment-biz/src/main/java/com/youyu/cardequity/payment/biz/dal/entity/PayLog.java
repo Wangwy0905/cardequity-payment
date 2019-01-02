@@ -14,18 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
-import static com.youyu.cardequity.common.base.util.DateUtil.*;
-import static com.youyu.cardequity.common.base.util.LocalDateUtils.localDateTime2Date;
 import static com.youyu.cardequity.common.base.util.StatusAndStrategyNumUtil.getNumber;
-import static com.youyu.cardequity.common.base.util.StringUtil.eq;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
-import static com.youyu.cardequity.payment.biz.enums.AlipayDayCutEnum.*;
-import static org.apache.commons.lang3.StringUtils.join;
-import static org.apache.commons.lang3.time.DateUtils.addDays;
+import static com.youyu.cardequity.payment.biz.enums.AlipayDayCutEnum.getAlipayDayCutEnumByTime;
 
 /**
  * @author panqingqing
@@ -233,27 +226,12 @@ public class PayLog extends BaseEntity<String> {
         return state.isPaySucc();
     }
 
-    /**
-     * 盘后文件对交易对账成功
-     *
-     * @param remark
-     */
-    public void payAfterBill2TradeSucc(String remark) {
+    public void payAfterBill2TradeSucc() {
         this.state = state.paymentSucc();
-        this.remark = join(this.remark, "||", remark);
     }
 
     public AlipayDayCutEnum getAlipayDayCutEnum() {
-        LocalDateTime createTime = getCreateTime();
-        String payTimeStr = createTime.toLocalDate().toString();
-        String reconciliationDateBeforeDayStr = date2String(addDays(now(), -1), YYYY_MM_DD);
-        if (!eq(payTimeStr, reconciliationDateBeforeDayStr)) {
-            return BEFORE_DAY_CUT;
-        }
-
-        Date createDate = localDateTime2Date(createTime);
-        Date dayCutPoint = string2Date(payTimeStr + " 23:50:00", YYYY_MM_DD_HH_MM_SS);
-        return createDate.compareTo(dayCutPoint) >= 0 ? DAY_CUT : NOT_DAY_CUT;
+        return getAlipayDayCutEnumByTime(getCreateTime());
     }
 
     @Override

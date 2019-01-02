@@ -1,8 +1,8 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
-import com.youyu.cardequity.common.base.util.StringUtil;
 import com.youyu.cardequity.payment.biz.component.status.paytraderefund.PayTradeRefundStatus;
 import com.youyu.cardequity.payment.biz.component.status.paytraderefund.PayTradeRefundStatus4NonRefund;
+import com.youyu.cardequity.payment.biz.enums.AlipayDayCutEnum;
 import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
 import com.youyu.common.entity.BaseEntity;
 import lombok.Getter;
@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.StatusAndStrategyNumUtil.getNumber;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
+import static com.youyu.cardequity.payment.biz.enums.AlipayDayCutEnum.getAlipayDayCutEnumByTime;
 
 /**
  * @author panqingqing
@@ -89,19 +90,26 @@ public class PayTradeRefund extends BaseEntity<String> {
     @Column(name = "REMARK")
     protected String remark;
 
-    // TODO: 2018/12/30 记得数据库加上这两个字段
+    //数据库加上这个字段
     /**
      * 客户号:
      */
     @Column(name = "CLIENT_ID")
     protected String clientId;
 
-    // TODO: 2018/12/30 记得数据库加上这两个字段
+    //数据库加上这个字段
     /**
      * 客户姓名:
      */
     @Column(name = "CLIENT_NAME")
     protected String clientName;
+
+    //数据库加上这个字段
+    /**
+     * 渠道号:
+     */
+    @Column(name = "CHANNEL_NO")
+    protected String channelNo;
 
     public PayTradeRefund() {
     }
@@ -116,6 +124,7 @@ public class PayTradeRefund extends BaseEntity<String> {
         this.status = getBeanByClass(PayTradeRefundStatus4NonRefund.class);
         this.clientId = payLog.getClientId();
         this.clientName = payLog.getClientName();
+        this.channelNo = payLog.getPayChannelNo();
     }
 
     public void getTradeRefund(PayLog payLog) {
@@ -130,9 +139,16 @@ public class PayTradeRefund extends BaseEntity<String> {
         return status.isRefundSucc();
     }
 
-    public void refundAfterBill2TradeRefund(String remark) {
+    public void refundAfterBill2TradeRefund() {
         this.status = status.refundSucc();
-        this.remark = StringUtil.join(this.remark, "||", remark);
+    }
+
+    public AlipayDayCutEnum getAlipayDayCutEnum() {
+        return getAlipayDayCutEnumByTime(getCreateTime());
+    }
+
+    public void refundFail() {
+        this.status = status.refundFail();
     }
 
     @Override

@@ -50,8 +50,16 @@ public enum RabbitmqMessageEnum {
             String routingKey = rabbitmqProperties.getPayAfterPayFailNotDayCutMessageRoutingKey();
             return new Tuple2<>(exchange, routingKey);
         }
+    },
+    PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE("4", "盘后对账退款失败,需通知交易系统进行退款状态变为退款失败,并进行相关操作或人工干预") {
+        @Override
+        public Tuple2<String, String> getExchangeRoutingKey() {
+            RabbitmqProperties rabbitmqProperties = getBeanByClass(RabbitmqProperties.class);
+            String exchange = rabbitmqProperties.getPayAfterReturnFailNotDayCutMessageExchange();
+            String routingKey = rabbitmqProperties.getPayAfterReturnFailNotDayCutMessageRoutingKey();
+            return new Tuple2<>(exchange, routingKey);
+        }
     };
-
 
     private String code;
 

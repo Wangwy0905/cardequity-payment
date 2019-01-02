@@ -212,6 +212,11 @@ public class PayChannelInfo extends BaseEntity<String> {
         payCheckFileDeatailStrategy.doTrade2BillNotFile(tradeOrder);
     }
 
+    public void doTrade2BillRefundNotFile(TradeOrder tradeOrder) {
+        checkState();
+        payCheckFileDeatailStrategy.doTrade2BillRefundNotFile(tradeOrder);
+    }
+
     public String getPayLogFactoryNo() {
         return getNumber(this.payLogFactory);
     }

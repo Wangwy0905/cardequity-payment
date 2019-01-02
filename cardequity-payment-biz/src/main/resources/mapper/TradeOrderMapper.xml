@@ -17,6 +17,7 @@
         <result column="PAY_REFUND_NO" jdbcType="VARCHAR" property="payRefundNo"/>
         <result column="REFUND_AMOUNT" jdbcType="DECIMAL" property="refundAmount"/>
         <result column="REFUND_STATUS" jdbcType="VARCHAR" property="refundStatus"/>
+        <result column="PAY_REFUND_ID" jdbcType="VARCHAR" property="payRefundId"/>
 
         <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
@@ -25,7 +26,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        ID, APP_SHEET_SERIAL_NO, TRANS_ACCOUNT_ID, CLIENT_ID, CLIENT_NAME, PAY_CHANNEL_NO, PAY_LOG_ID, ORDER_AMOUNT, PAY_STATE, PAY_REFUND_NO, REFUND_AMOUNT, REFUND_STATUS, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+        ID, APP_SHEET_SERIAL_NO, TRANS_ACCOUNT_ID, CLIENT_ID, CLIENT_NAME, PAY_CHANNEL_NO, PAY_LOG_ID, ORDER_AMOUNT, PAY_STATE, PAY_REFUND_NO, REFUND_AMOUNT, REFUND_STATUS,
+        PAY_REFUND_ID, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
     </sql>
 
     <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder">
@@ -66,6 +68,9 @@
             </if>
             <if test="refundStatus != null">
                 REFUND_STATUS,
+            </if>
+            <if test="payRefundId != null">
+                PAY_REFUND_ID,
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME,
@@ -117,6 +122,9 @@
             <if test="refundStatus != null">
                 #{refundStatus,jdbcType=VARCHAR},
             </if>
+            <if test="payRefundId != null">
+                #{payRefundId,jdbcType=VARCHAR},
+            </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
@@ -132,8 +140,26 @@
         </trim>
     </insert>
 
-    <update id="updateByDoTrade2BillNotFile">
+    <update id="updatePayStatusByPayAfter" parameterType="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder">
         update TB_TRADE_ORDER set PAY_STATE = #{payState,jdbcType=VARCHAR} where ID = #{id,jdbcType=VARCHAR}
     </update>
+
+    <update id="updateReturnStatusByRefundAfter" parameterType="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder">
+        update TB_TRADE_ORDER set REFUND_STATUS = #{refundStatus,jdbcType=VARCHAR} where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getByAppSeetSerialNoPayRefundNoIsNull" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from TB_TRADE_ORDER
+        where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+        and PAY_REFUND_NO is null
+    </select>
+
+    <select id="getByAppSeetSerialNoPayRefundNo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from TB_TRADE_ORDER
+        where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+        and PAY_REFUND_NO = #{payRefundNo,jdbcType=VARCHAR}
+    </select>
 
 </mapper>

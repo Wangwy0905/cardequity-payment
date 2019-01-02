@@ -35,7 +35,6 @@ public class TradeOrderServiceImpl implements TradeOrderService {
             tradeOrders.add(new TradeOrder(tradeOrderDto));
         }
 
-        // TODO: 2018/12/27  后续考虑先删后存
         batchService.batchDispose(tradeOrders, TradeOrderMapper.class, "insertSelective");
     }
 }

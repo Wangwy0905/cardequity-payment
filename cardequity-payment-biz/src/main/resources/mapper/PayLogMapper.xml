@@ -394,12 +394,7 @@
         and APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
     </update>
 
-    <update id="updateByPayAfterBill2TradeSucc" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
-        update TB_PAY_LOG set STATE = #{state,jdbcType=VARCHAR}, REMARK =#{remark,jdbcType=VARCHAR}
-        where ID = #{id,jdbcType=VARCHAR}
-    </update>
-
-    <update id="updateByDoTrade2BillNotFile" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
+    <update id="updateStatusByPayAfter" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
         update TB_PAY_LOG set STATE = #{state,jdbcType=VARCHAR} where ID = #{id,jdbcType=VARCHAR}
     </update>
 </mapper>

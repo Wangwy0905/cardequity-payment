@@ -70,13 +70,27 @@ public class RabbitmqProperties {
     /**
      * 支付宝盘后对账支付失败状态且非日切的消息通知:Queue
      */
-    private String payAfterPayFailNotDayCutMessageQueue = "rabbit_pay_after_refund_status_message_queue";
+    private String payAfterPayFailNotDayCutMessageQueue = "rabbit_pay_after_pay_fail_not_day_cut_message_queue";
     /**
      * 支付宝盘后对账支付失败状态且非日切的消息通知:Exchange
      */
-    private String payAfterPayFailNotDayCutMessageExchange = "rabbit_pay_after_refund_status_message_exchange";
+    private String payAfterPayFailNotDayCutMessageExchange = "rabbit_pay_after_pay_fail_not_day_cut_message_exchange";
     /**
      * 支付宝盘后对账支付失败状态且非日切的消息通知:RoutingKey:建议路由key和绑定key一样,路由key:是用于发送消息到交换机上的。绑定key:是用于交换机和queue队列绑定的。
      */
-    private String payAfterPayFailNotDayCutMessageRoutingKey = "rabbit_pay_after_refund_status_message_routing_key";
+    private String payAfterPayFailNotDayCutMessageRoutingKey = "rabbit_pay_after_pay_fail_not_day_cut_message_routing_key";
+
+
+    /**
+     * 支付宝盘后对账退款失败状态且非日切的消息通知:Queue
+     */
+    private String payAfterReturnFailNotDayCutMessageQueue = "rabbit_pay_after_return_fail_not_day_cut_message_queue";
+    /**
+     * 支付宝盘后对账退款失败状态且非日切的消息通知:Exchange
+     */
+    private String payAfterReturnFailNotDayCutMessageExchange = "rabbit_pay_after_return_fail_not_day_cut_message_exchange";
+    /**
+     * 支付宝盘后对账退款失败状态且非日切的消息通知:RoutingKey:建议路由key和绑定key一样,路由key:是用于发送消息到交换机上的。绑定key:是用于交换机和queue队列绑定的。
+     */
+    private String payAfterReturnFailNotDayCutMessageRoutingKey = "rabbit_pay_after_return_fail_not_day_cut_message_routing_key";
 }

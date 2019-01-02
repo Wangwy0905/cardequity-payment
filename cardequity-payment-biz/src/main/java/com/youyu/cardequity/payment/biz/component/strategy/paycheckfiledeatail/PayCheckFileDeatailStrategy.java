@@ -33,4 +33,11 @@ public abstract class PayCheckFileDeatailStrategy {
      * @param tradeOrder
      */
     public abstract void doTrade2BillNotFile(TradeOrder tradeOrder);
+
+    /**
+     * 交易退款去对对账单,此时没有对账文件
+     *
+     * @param tradeOrder
+     */
+    public abstract void doTrade2BillRefundNotFile(TradeOrder tradeOrder);
 }

@@ -12,9 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.util.StringUtil.eq;
 import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.NEED_REFUND;
+import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.FILE_UNILATERAL;
+import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.REFUNDED;
 import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_REFUND_MESSAGE;
 import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_REFUND_STATUS_MESSAGE;
 
@@ -51,17 +52,18 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
     @Override
     public void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder) {
         PayLog payLog = payLogMapper.getById(tradeOrder.getPayLogId());
-
         PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, tradeOrder, payLog);
+
         if (!eq(payCheckFileDeatail.getPayState(), tradeOrder.getPayState())) {
             if (!payLog.isPaySucc()) {
-                payLog.payAfterBill2TradeSucc("支付宝盘后对账支付状态为支付成功!");
-                payLogMapper.updateByPayAfterBill2TradeSucc(payLog);
-
-                payCheckDeatail.setBackFlag(NEED_REFUND.getCode());
+                payLog.payAfterBill2TradeSucc();
+                payLogMapper.updateStatusByPayAfter(payLog);
             }
-            // TODO: 2018/12/31 json数据带上交易的状态
-            rabbitmqSender.sendMessage(toJSONString(tradeOrder.getAppSheetSerialNo()), PAY_AFTER_REFUND_MESSAGE);
+            tradeOrder.payFail(PAY_AFTER_REFUND_MESSAGE);
+            tradeOrderMapper.updatePayStatusByPayAfter(tradeOrder);
+
+            payCheckDeatail.setBackFlag(NEED_REFUND.getCode());
+            payCheckDeatail.setCheckStatus(FILE_UNILATERAL.getCode());
         }
         payCheckDeatailMapper.insertSelective(payCheckDeatail);
     }
@@ -75,15 +77,17 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
      */
     @Override
     public void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder) {
-        PayTradeRefund payTradeRefund = payTradeRefundMapper.getById(tradeOrder.getPayRefundNo());
+        PayTradeRefund payTradeRefund = payTradeRefundMapper.getById(tradeOrder.getPayRefundId());
         PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, tradeOrder, payTradeRefund);
         if (!eq(payCheckFileDeatail.getReturnStatus(), payTradeRefund.getRefundStatus())) {
             if (!payTradeRefund.isRefundSucc()) {
-                payTradeRefund.refundAfterBill2TradeRefund("支付宝盘活对账退款状态为退款成功!");
-                payTradeRefundMapper.updateByRefundAfterBill2TradeRefund(payTradeRefund);
+                payTradeRefund.refundAfterBill2TradeRefund();
+                payTradeRefundMapper.updateStatusByRefundAfter(payTradeRefund);
             }
-            // TODO: 2018/12/31 带上退款状态
-            rabbitmqSender.sendMessage(toJSONString(payTradeRefund.getId()), PAY_AFTER_REFUND_STATUS_MESSAGE);
+            tradeOrder.refundFail(PAY_AFTER_REFUND_STATUS_MESSAGE);
+            tradeOrderMapper.updateReturnStatusByRefundAfter(tradeOrder);
+
+            payCheckDeatail.setCheckStatus(REFUNDED.getCode());
         }
         payCheckDeatailMapper.insertSelective(payCheckDeatail);
     }
@@ -92,10 +96,20 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
     public void doTrade2BillNotFile(TradeOrder tradeOrder) {
         PayLog payLog = payLogMapper.getById(tradeOrder.getPayLogId());
         AlipayDayCutEnum alipayDayCutEnum = payLog.getAlipayDayCutEnum();
-
         alipayDayCutEnum.doTrade2BillNotFile(payLog, tradeOrder);
 
-        tradeOrderMapper.updateByDoTrade2BillNotFile(tradeOrder);
-        payLogMapper.updateByDoTrade2BillNotFile(payLog);
+        tradeOrderMapper.updatePayStatusByPayAfter(tradeOrder);
+        payLogMapper.updateStatusByPayAfter(payLog);
+    }
+
+    @Override
+    public void doTrade2BillRefundNotFile(TradeOrder tradeOrder) {
+        PayTradeRefund payTradeRefund = payTradeRefundMapper.getById(tradeOrder.getPayRefundId());
+        AlipayDayCutEnum alipayDayCutEnum = payTradeRefund.getAlipayDayCutEnum();
+        alipayDayCutEnum.doTrade2BillRefundNotFile(payTradeRefund, tradeOrder);
+
+        tradeOrderMapper.updateReturnStatusByRefundAfter(tradeOrder);
+        payTradeRefundMapper.updateStatusByRefundAfter(payTradeRefund);
+
     }
 }

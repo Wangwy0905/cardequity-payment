@@ -21,12 +21,12 @@ public interface PayCheckDeatailMapper {
     void insertSelective(PayCheckDeatail payCheckDeatail);
 
     /**
-     * 根据交易单号查询有可能交易单边的对账数据
+     * 根据交易单号和退款单号为空去查询有可能交易单边的对账数据
      *
      * @param appSheetSerialNo
      * @return
      */
-    PayCheckDeatail getByAppSeetSerialNo(@Param("appSheetSerialNo") String appSheetSerialNo);
+    PayCheckDeatail getByAppSeetSerialNoRefundBatchNoIsNull(@Param("appSheetSerialNo") String appSheetSerialNo);
 
     /**
      * this.checkNum = this.checkNum + 1;
@@ -38,6 +38,27 @@ public interface PayCheckDeatailMapper {
      * this.checkStatus = "";
      * this.backFlag = NOT_NEED_REFUND.getCode();
      */
-    void updateByDoTrade2BillNotFile();
+    void updateByDoTrade2BillNotFile(PayCheckDeatail payCheckDeatail);
 
+    /**
+     * 根据交易单号和退款批次号查询有可能交易单边的对账数据
+     *
+     * @param appSheetSerialNo
+     * @param payRefundNo
+     * @return
+     */
+    PayCheckDeatail getByAppSeetSerialNoRefundBatchNo(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("payRefundNo") String payRefundNo);
+
+    /**
+     * this.checkNum = this.checkNum + 1;
+     * <p>
+     * this.localState = STATUS_FAIL;
+     * this.localPayState = STATUS_FAIL;
+     * this.fileStatus = STATUS_FAIL;
+     * // TODO: 2018/12/31
+     * //考虑对账状态是正常的,因为前一天日切导致数据没有(是前一天的日切导致的,连续两天都没有)
+     * this.checkStatus = "";
+     * this.backFlag = NOT_NEED_REFUND.getCode();
+     */
+    void updateByDoTrade2BillRefundNotFile(PayCheckDeatail payCheckDeatail);
 }

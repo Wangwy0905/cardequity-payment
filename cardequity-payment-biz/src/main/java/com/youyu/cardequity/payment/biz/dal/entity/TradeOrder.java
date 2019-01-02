@@ -1,6 +1,7 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
 import com.youyu.cardequity.payment.biz.component.rabbitmq.RabbitmqSender;
+import com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum;
 import com.youyu.cardequity.payment.dto.TradeOrderDto;
 import com.youyu.common.entity.BaseEntity;
 import lombok.Getter;
@@ -15,8 +16,9 @@ import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.StringUtil.eq;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
-import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE;
+import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_FAIL;
+import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_FAIL;
 
 /**
  * @author panqingqing
@@ -84,8 +86,15 @@ public class TradeOrder extends BaseEntity<String> {
     @Column(name = "PAY_STATE")
     private String payState;
 
+    //数据库表加上该字段
     /**
-     * 退款单号
+     * 支付系统退款流水号
+     */
+    @Column(name = "PAY_REFUND_ID")
+    private String payRefundId;
+
+    /**
+     * 退款单号:退款批次号
      */
     @Column(name = "PAY_REFUND_NO")
     private String payRefundNo;
@@ -119,15 +128,35 @@ public class TradeOrder extends BaseEntity<String> {
         this.refundAmount = tradeOrderDto.getRefundAmount();
         this.refundStatus = tradeOrderDto.getRefundStatus();
         this.payLogId = tradeOrderDto.getPayLogId();
+        this.payRefundId = tradeOrderDto.getPayRefundId();
     }
 
-    public void payFail() {
+    public void payFail(RabbitmqMessageEnum rabbitmqMessageEnum) {
         if (eq(this.payState, STATUS_PAYMENT_FAIL)) {
             return;
         }
 
         this.payState = STATUS_PAYMENT_FAIL;
-        getBeanByClass(RabbitmqSender.class).sendMessage(getPayFailMessage(), PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE);
+        getBeanByClass(RabbitmqSender.class).sendMessage(getPayFailMessage(), rabbitmqMessageEnum);
+    }
+
+    public void refundFail(RabbitmqMessageEnum rabbitmqMessageEnum) {
+        if (eq(this.refundStatus, STATUS_FAIL)) {
+            return;
+        }
+
+        this.refundStatus = STATUS_FAIL;
+        getBeanByClass(RabbitmqSender.class).sendMessage(getReturnFailMessage(), PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE);
+
+    }
+
+    private String getReturnFailMessage() {
+        TradeOrder tradeOrder = new TradeOrder();
+        tradeOrder.setAppSheetSerialNo(this.appSheetSerialNo);
+        tradeOrder.setPayRefundId(this.payRefundId);
+        tradeOrder.setPayRefundNo(this.payChannelNo);
+        tradeOrder.setRefundStatus(this.refundStatus);
+        return toJSONString(tradeOrder);
     }
 
     private String getPayFailMessage() {

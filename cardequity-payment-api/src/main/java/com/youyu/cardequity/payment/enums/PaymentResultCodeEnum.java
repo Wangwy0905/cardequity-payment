@@ -43,7 +43,8 @@ public enum PaymentResultCodeEnum implements CardequityIBaseResultCode {
     REFUND_SUCC_CANNOT_REFUNDED("0014", "退款成功的订单不能再次退款!"),
     REFUND_NO_NOT_EXIST("0015", "退款单号不存在!"),
     ALIPAY_BILL_DOWNLOAD_FAILED("0016", "支付宝对账单下载失败!"),
-    ALIPAY_BILL_DOWNLOAD_URL_FAILED("0017", "支付宝对账单获取下载地址失败!");
+    ALIPAY_BILL_DOWNLOAD_URL_FAILED("0017", "支付宝对账单获取下载地址失败!"),
+    ALIPAY_DAY_CUT_CANNOT_NULL("0018", "获取支付宝日切参数对应的时间不能为null!");
 
     private String code;
 

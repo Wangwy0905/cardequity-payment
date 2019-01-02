@@ -25,7 +25,7 @@ public class PayCheckDeatailController implements PayCheckDeatailApi {
 
     @Override
     public Result reconciliation(PayCheckDeatailDto payCheckDeatailDto) {
-        payCheckDeatailService.reconciliation(payCheckDeatailDto);
+        payCheckDeatailService.reconciliation(payCheckDeatailDto, payCheckDeatailService);
         return ok();
     }
 }

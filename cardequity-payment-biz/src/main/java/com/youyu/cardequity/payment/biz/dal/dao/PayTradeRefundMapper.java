@@ -55,5 +55,6 @@ public interface PayTradeRefundMapper {
      *
      * @param payTradeRefund
      */
-    void updateByRefundAfterBill2TradeRefund(PayTradeRefund payTradeRefund);
+    void updateStatusByRefundAfter(PayTradeRefund payTradeRefund);
+
 }

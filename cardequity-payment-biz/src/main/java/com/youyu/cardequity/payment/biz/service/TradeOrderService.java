@@ -10,6 +10,7 @@ public interface TradeOrderService {
 
     /**
      * 同步交易订单消息数据
+     * 备注:后续考虑先删后存
      *
      * @param json
      */

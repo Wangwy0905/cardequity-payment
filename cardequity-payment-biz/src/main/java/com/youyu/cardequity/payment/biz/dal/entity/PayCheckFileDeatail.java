@@ -119,7 +119,7 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
     @Column(name = "REFUND_BATCH_NO")
     private String refundBatchNo;
 
-    // TODO: 2018/12/30 记得写入到数据库中
+    //数据库记得加上该字段
     /**
      * 退款状态:每个渠道定义不一样，需要解析后转义
      */

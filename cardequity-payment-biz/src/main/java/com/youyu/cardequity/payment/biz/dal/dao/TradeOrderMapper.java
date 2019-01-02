@@ -20,15 +20,37 @@ public interface TradeOrderMapper {
      */
     void insertSelective(TradeOrder tradeOrder);
 
-    // TODO: 2018/12/30 记得写sql
+    /**
+     * 查询交易数据,不包括退款的
+     *
+     * @param appSeetSerialNo
+     * @return
+     */
     TradeOrder getByAppSeetSerialNoPayRefundNoIsNull(@Param("appSeetSerialNo") String appSeetSerialNo);
 
-    // TODO: 2018/12/30 记得写sql
+    /**
+     * 根据单号和退款编号查询退款数据
+     *
+     * @param appSeetSerialNo
+     * @param refundBatchNo
+     * @return
+     */
     TradeOrder getByAppSeetSerialNoPayRefundNo(@Param("appSeetSerialNo") String appSeetSerialNo, @Param("refundBatchNo") String refundBatchNo);
 
-    // TODO: 2018/12/30 记得写sql
+    // TODO: 2018/12/28  查询未对账的前一天数据和由于日切导致的数据需要继续对账
     List<TradeOrder> getByCreateNotReconciliation();
 
+    /**
+     * 非日切导致的对账没有文件的时候更新支付状态,认为是支付失败的
+     *
+     * @param tradeOrder
+     */
+    void updatePayStatusByPayAfter(TradeOrder tradeOrder);
 
-    void updateByDoTrade2BillNotFile(TradeOrder tradeOrder);
+    /**
+     * 非日切导致的对账没有文件的时候更新退款状态,认为是退款失败的
+     *
+     * @param tradeOrder
+     */
+    void updateReturnStatusByRefundAfter(TradeOrder tradeOrder);
 }

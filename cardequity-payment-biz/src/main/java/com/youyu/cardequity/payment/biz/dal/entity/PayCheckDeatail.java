@@ -14,8 +14,13 @@ import static com.youyu.cardequity.common.base.util.DateUtil.now;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.NOT_NEED_REFUND;
 import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.REFUNDED;
+import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.*;
+import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE;
+import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE;
+import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.BUSIN_TYPE_REFUND;
 import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.BUSIN_TYPE_TRADE;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_FAIL;
+import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_FAIL;
 import static java.math.BigDecimal.ZERO;
 import static java.util.Objects.isNull;
 
@@ -80,13 +85,13 @@ public class PayCheckDeatail extends BaseDto<String> {
     private BigDecimal localPayAmount;
 
     /**
-     * 支付状态:字典100005需要转义，交易表数据单边填0
+     * 支付状态:字典100005需要转义，交易表数据单边填0,退款复用该状态
      */
     @Column(name = "LOCAL_STATE")
     private String localState;
 
     /**
-     * 支付系统状态:字典100005需要转义，支付日志表数据单边填0
+     * 支付系统状态:字典100005需要转义，支付日志表数据单边填0,退款复用该状态
      */
     @Column(name = "LOCAL_PAY_STATE")
     private String localPayState;
@@ -98,12 +103,12 @@ public class PayCheckDeatail extends BaseDto<String> {
     private BigDecimal fileAmount;
 
     /**
-     * 文件支付状态:字典100009
+     * 文件支付状态:字典100009,退款复用该状态
      */
     @Column(name = "FILE_STATUS")
     private String fileStatus;
 
-    // TODO: 2018/12/30 记得写入到数据库中
+    //数据库记得加该字段
     /**
      * 退款状态:每个渠道定义不一样，需要解析后转义,无需退款的时候:填0
      */
@@ -190,9 +195,11 @@ public class PayCheckDeatail extends BaseDto<String> {
 
     public PayCheckDeatail() {
         this.id = uuid4NoRail();
+        this.transActionDate = date2String(now(), "YYYYMMDD");
+        this.checkNum = 1;
     }
 
-    public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail, PayLog payLog) {
+    public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail) {
         this();
         this.tranceNo = payCheckFileDeatail.getTranceNo();
         this.checkDate = payCheckFileDeatail.getCheckDate();
@@ -204,23 +211,24 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.dealDate = payCheckFileDeatail.getAppDate();
         this.appSeetSerialNo = payCheckFileDeatail.getAppSeetSerialNo();
         this.businType = payCheckFileDeatail.getBusinType();
-        this.checkNum = 1;
-        this.transActionDate = date2String(now(), "YYYYMMDD");
-        // TODO: 2018/12/29
-        this.checkStatus = null;
-        this.remark = "文件交易单边";
+        this.returnStatus = payCheckFileDeatail.getReturnStatus();
+        this.refundBatchNo = payCheckFileDeatail.getRefundBatchNo();
+    }
+
+    public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail, PayLog payLog) {
+        this(payCheckFileDeatail);
+
+        this.checkStatus = MAY_BE_FILE_UNILATERAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
         this.type = "1";
 
         this.localAmount = ZERO;
         this.localState = "0";
-
         if (isNull(payLog)) {
             this.localPayAmount = ZERO;
             this.localPayState = "0";
             return;
         }
-
         this.localPayAmount = payLog.getOccurBalance();
         this.localPayState = payLog.getPayState();
         this.clientId = payLog.getClientId();
@@ -228,53 +236,27 @@ public class PayCheckDeatail extends BaseDto<String> {
     }
 
     public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder, PayLog payLog) {
-        this();
-        this.tranceNo = payCheckFileDeatail.getTranceNo();
-        this.checkDate = payCheckFileDeatail.getCheckDate();
-        this.channelNo = payCheckFileDeatail.getChannelNo();
-        this.appDate = payCheckFileDeatail.getAppDate();
-        this.fileAmount = payCheckFileDeatail.getAppAmount();
-        this.fileStatus = payCheckFileDeatail.getPayState();
-        this.returnStatus = payCheckFileDeatail.getReturnStatus();
-        this.dealDate = payCheckFileDeatail.getAppDate();
-        this.appSeetSerialNo = payCheckFileDeatail.getAppSeetSerialNo();
-        this.businType = payCheckFileDeatail.getBusinType();
-        this.checkNum = 1;
-        this.transActionDate = date2String(now(), "YYYYMMDD");
+        this(payCheckFileDeatail);
 
-        // TODO: 2018/12/29
-        this.checkStatus = null;
+        this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
         this.type = "1";
 
         this.clientId = tradeOrder.getClientId();
         this.clientName = tradeOrder.getClientName();
         this.localAmount = tradeOrder.getOrderAmount();
-        this.localPayAmount = payLog.getOccurBalance();
         this.localState = tradeOrder.getPayState();
+
+        this.localPayAmount = payLog.getOccurBalance();
         this.localPayState = payLog.getPayState();
     }
 
     public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder, PayTradeRefund payTradeRefund) {
-        this();
-        this.tranceNo = payCheckFileDeatail.getTranceNo();
-        this.checkDate = payCheckFileDeatail.getCheckDate();
-        this.channelNo = payCheckFileDeatail.getChannelNo();
-        this.appDate = payCheckFileDeatail.getAppDate();
-        this.fileAmount = payCheckFileDeatail.getAppAmount();
-        this.fileStatus = payCheckFileDeatail.getPayState();
-        this.returnStatus = payCheckFileDeatail.getReturnStatus();
-        this.dealDate = payCheckFileDeatail.getAppDate();
-        this.appSeetSerialNo = payCheckFileDeatail.getAppSeetSerialNo();
-        this.businType = payCheckFileDeatail.getBusinType();
-        this.checkNum = 1;
-        this.transActionDate = date2String(now(), "YYYYMMDD");
+        this(payCheckFileDeatail);
 
-        // TODO: 2018/12/29
-        this.checkStatus = null;
+        this.checkStatus = NORMAL.getCode();
         this.backFlag = REFUNDED.getCode();
         this.type = "2";
-        this.returnStatus = payCheckFileDeatail.getReturnStatus();
 
         this.clientId = tradeOrder.getClientId();
         this.clientName = tradeOrder.getClientName();
@@ -285,35 +267,19 @@ public class PayCheckDeatail extends BaseDto<String> {
     }
 
     public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail, PayTradeRefund payTradeRefund) {
-        this();
-        this.tranceNo = payCheckFileDeatail.getTranceNo();
-        this.checkDate = payCheckFileDeatail.getCheckDate();
-        this.channelNo = payCheckFileDeatail.getChannelNo();
-        this.appDate = payCheckFileDeatail.getAppDate();
-        this.fileAmount = payCheckFileDeatail.getAppAmount();
-        this.fileStatus = payCheckFileDeatail.getPayState();
-        this.returnStatus = payCheckFileDeatail.getReturnStatus();
-        this.dealDate = payCheckFileDeatail.getAppDate();
-        this.appSeetSerialNo = payCheckFileDeatail.getAppSeetSerialNo();
-        this.businType = payCheckFileDeatail.getBusinType();
-        this.checkNum = 1;
-        this.transActionDate = date2String(now(), "YYYYMMDD");
+        this(payCheckFileDeatail);
 
-        // TODO: 2018/12/29
-        this.checkStatus = null;
+        this.checkStatus = MAY_BE_FILE_UNILATERAL.getCode();
         this.backFlag = REFUNDED.getCode();
         this.type = "2";
-        this.returnStatus = payCheckFileDeatail.getReturnStatus();
 
         this.localAmount = ZERO;
         this.localState = "0";
-
         if (isNull(payTradeRefund)) {
             this.localPayAmount = ZERO;
             this.localPayState = "0";
             return;
         }
-
         this.localPayAmount = payTradeRefund.getRefundAmount();
         this.localPayState = payTradeRefund.getRefundStatus();
         this.clientId = payTradeRefund.getClientId();
@@ -323,62 +289,89 @@ public class PayCheckDeatail extends BaseDto<String> {
     public PayCheckDeatail(PayLog payLog, TradeOrder tradeOrder) {
         this();
         this.type = "1";
+        this.businType = BUSIN_TYPE_TRADE;
+        this.fileStatus = "";
+
         this.channelNo = payLog.getPayChannelNo();
         this.clientId = payLog.getClientId();
         this.clientName = payLog.getClientName();
         this.appSeetSerialNo = payLog.getAppSheetSerialNo();
-        this.businType = BUSIN_TYPE_TRADE;
-        this.checkNum = 1;
-        this.localAmount = tradeOrder.getOrderAmount();
         this.localPayAmount = payLog.getOccurBalance();
+
+        this.localAmount = tradeOrder.getOrderAmount();
     }
 
-    public void dayCut(PayLog payLog, TradeOrder tradeOrder) {
+    public PayCheckDeatail(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
+        this();
+        this.type = "2";
+        this.businType = BUSIN_TYPE_REFUND;
+        this.fileStatus = "";
+
+        this.channelNo = payTradeRefund.getChannelNo();
+        this.clientId = payTradeRefund.getClientId();
+        this.clientName = payTradeRefund.getClientName();
+        this.appSeetSerialNo = payTradeRefund.getAppSheetSerialNo();
+        this.localPayAmount = payTradeRefund.getRefundAmount();
+
+        this.localAmount = tradeOrder.getRefundAmount();
+    }
+
+    public void dayCut4Trade(PayLog payLog, TradeOrder tradeOrder) {
         this.localState = tradeOrder.getPayState();
         this.localPayState = payLog.getPayState();
-        this.fileStatus = "";
-        // TODO: 2018/12/31
-        //考虑对账状态是日切导致的
-        this.checkStatus = "";
+
+        this.checkStatus = MAY_BE_TRADE_UNILATERAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
     }
 
-    public void notDayCut(PayLog payLog, TradeOrder tradeOrder) {
+    public void dayCut4Refund(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
+        this.localState = tradeOrder.getRefundStatus();
+        this.localPayState = payTradeRefund.getRefundStatus();
+        this.checkStatus = MAY_BE_REFUND_UNILATERAL.getCode();
+        this.backFlag = NOT_NEED_REFUND.getCode();
+    }
+
+    public void notDayCut4Trade(PayLog payLog, TradeOrder tradeOrder) {
         this.localState = STATUS_PAYMENT_FAIL;
         this.localPayState = STATUS_PAYMENT_FAIL;
         this.fileStatus = STATUS_PAYMENT_FAIL;
-        // TODO: 2018/12/31
-        //考虑对账状态是正常的,因为非日切导致数据没有
-        this.checkStatus = "";
+        this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
         payLog.payFail();
-        tradeOrder.payFail();
+        tradeOrder.payFail(PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE);
     }
 
-    public void beforeDayCut(PayLog payLog, TradeOrder tradeOrder) {
+    public void notDayCut4Refund(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
+        this.localState = STATUS_FAIL;
+        this.localPayState = STATUS_FAIL;
+        this.fileStatus = STATUS_FAIL;
+        this.checkStatus = NORMAL.getCode();
+        this.backFlag = NOT_NEED_REFUND.getCode();
+        payTradeRefund.refundFail();
+        tradeOrder.refundFail(PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE);
+    }
+
+    public void beforeDayCut4Trade(PayLog payLog, TradeOrder tradeOrder) {
         this.checkNum = this.checkNum + 1;
         this.localState = STATUS_PAYMENT_FAIL;
         this.localPayState = STATUS_PAYMENT_FAIL;
         this.fileStatus = STATUS_PAYMENT_FAIL;
-        // TODO: 2018/12/31
-        //考虑对账状态是正常的,因为前一天日切导致数据没有(是前一天的日切导致的)
-        this.checkStatus = "";
+        this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
         payLog.payFail();
-        tradeOrder.payFail();
+        tradeOrder.payFail(PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE);
     }
 
-    /**
-     * 两天对账都没有文件,则任务交易是支付失败的
-     */
-    public void setLocalPayFail() {
-        this.localState = STATUS_PAYMENT_FAIL;
-        this.localPayState = STATUS_PAYMENT_FAIL;
-        this.fileStatus = STATUS_PAYMENT_FAIL;
-        // TODO: 2018/12/31
-        //考虑对账状态是正常的,因为两天都没有对账到
-        this.checkStatus = "";
+    public void beforeDayCut4Refund(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
+        this.checkNum = this.checkNum + 1;
+
+        this.localState = STATUS_FAIL;
+        this.localPayState = STATUS_FAIL;
+        this.fileStatus = STATUS_FAIL;
+        this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
+        payTradeRefund.refundFail();
+        tradeOrder.refundFail(PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE);
     }
 
     @Override
