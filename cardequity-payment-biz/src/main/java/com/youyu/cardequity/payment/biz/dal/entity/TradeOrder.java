@@ -86,7 +86,6 @@ public class TradeOrder extends BaseEntity<String> {
     @Column(name = "PAY_STATE")
     private String payState;
 
-    //数据库表加上该字段
     /**
      * 支付系统退款流水号
      */

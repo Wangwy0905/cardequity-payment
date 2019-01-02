@@ -29,18 +29,6 @@ public interface PayCheckDeatailMapper {
     PayCheckDeatail getByAppSeetSerialNoRefundBatchNoIsNull(@Param("appSheetSerialNo") String appSheetSerialNo);
 
     /**
-     * this.checkNum = this.checkNum + 1;
-     * this.localState = STATUS_PAYMENT_FAIL;
-     * this.localPayState = STATUS_PAYMENT_FAIL;
-     * this.fileStatus = STATUS_PAYMENT_FAIL;
-     * // TODO: 2018/12/31
-     * //考虑对账状态是正常的,因为前一天日切导致数据没有(是前一天的日切导致的)
-     * this.checkStatus = "";
-     * this.backFlag = NOT_NEED_REFUND.getCode();
-     */
-    void updateByDoTrade2BillNotFile(PayCheckDeatail payCheckDeatail);
-
-    /**
      * 根据交易单号和退款批次号查询有可能交易单边的对账数据
      *
      * @param appSheetSerialNo
@@ -50,15 +38,9 @@ public interface PayCheckDeatailMapper {
     PayCheckDeatail getByAppSeetSerialNoRefundBatchNo(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("payRefundNo") String payRefundNo);
 
     /**
-     * this.checkNum = this.checkNum + 1;
-     * <p>
-     * this.localState = STATUS_FAIL;
-     * this.localPayState = STATUS_FAIL;
-     * this.fileStatus = STATUS_FAIL;
-     * // TODO: 2018/12/31
-     * //考虑对账状态是正常的,因为前一天日切导致数据没有(是前一天的日切导致的,连续两天都没有)
-     * this.checkStatus = "";
-     * this.backFlag = NOT_NEED_REFUND.getCode();
+     * 考虑对账状态是正常的,因为前一天日切导致数据没有(是前一天的日切导致的)
+     *
+     * @param payCheckDeatail
      */
-    void updateByDoTrade2BillRefundNotFile(PayCheckDeatail payCheckDeatail);
+    void updateByDoTradeAndReturn2BillNotFile(PayCheckDeatail payCheckDeatail);
 }

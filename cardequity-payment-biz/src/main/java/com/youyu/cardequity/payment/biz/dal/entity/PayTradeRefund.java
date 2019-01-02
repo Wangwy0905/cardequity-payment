@@ -90,21 +90,18 @@ public class PayTradeRefund extends BaseEntity<String> {
     @Column(name = "REMARK")
     protected String remark;
 
-    //数据库加上这个字段
     /**
      * 客户号:
      */
     @Column(name = "CLIENT_ID")
     protected String clientId;
 
-    //数据库加上这个字段
     /**
      * 客户姓名:
      */
     @Column(name = "CLIENT_NAME")
     protected String clientName;
 
-    //数据库加上这个字段
     /**
      * 渠道号:
      */

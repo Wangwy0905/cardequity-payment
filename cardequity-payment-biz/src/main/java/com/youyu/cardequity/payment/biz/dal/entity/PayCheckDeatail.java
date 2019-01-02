@@ -108,7 +108,6 @@ public class PayCheckDeatail extends BaseDto<String> {
     @Column(name = "FILE_STATUS")
     private String fileStatus;
 
-    //数据库记得加该字段
     /**
      * 退款状态:每个渠道定义不一样，需要解析后转义,无需退款的时候:填0
      */
@@ -154,8 +153,8 @@ public class PayCheckDeatail extends BaseDto<String> {
     /**
      * 申请单号:交易申请单号
      */
-    @Column(name = "APP_SEET_SERIAL_NO")
-    private String appSeetSerialNo;
+    @Column(name = "APP_SHEET_SERIAL_NO")
+    private String appSheetSerialNo;
 
     /**
      * 业务类型:可能需要转义
@@ -209,7 +208,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.fileStatus = payCheckFileDeatail.getPayState();
         this.returnStatus = payCheckFileDeatail.getReturnStatus();
         this.dealDate = payCheckFileDeatail.getAppDate();
-        this.appSeetSerialNo = payCheckFileDeatail.getAppSeetSerialNo();
+        this.appSheetSerialNo = payCheckFileDeatail.getAppSeetSerialNo();
         this.businType = payCheckFileDeatail.getBusinType();
         this.returnStatus = payCheckFileDeatail.getReturnStatus();
         this.refundBatchNo = payCheckFileDeatail.getRefundBatchNo();
@@ -291,11 +290,12 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.type = "1";
         this.businType = BUSIN_TYPE_TRADE;
         this.fileStatus = "";
+        this.returnStatus = "";
 
         this.channelNo = payLog.getPayChannelNo();
         this.clientId = payLog.getClientId();
         this.clientName = payLog.getClientName();
-        this.appSeetSerialNo = payLog.getAppSheetSerialNo();
+        this.appSheetSerialNo = payLog.getAppSheetSerialNo();
         this.localPayAmount = payLog.getOccurBalance();
 
         this.localAmount = tradeOrder.getOrderAmount();
@@ -306,11 +306,12 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.type = "2";
         this.businType = BUSIN_TYPE_REFUND;
         this.fileStatus = "";
+        this.returnStatus = "";
 
         this.channelNo = payTradeRefund.getChannelNo();
         this.clientId = payTradeRefund.getClientId();
         this.clientName = payTradeRefund.getClientName();
-        this.appSeetSerialNo = payTradeRefund.getAppSheetSerialNo();
+        this.appSheetSerialNo = payTradeRefund.getAppSheetSerialNo();
         this.localPayAmount = payTradeRefund.getRefundAmount();
 
         this.localAmount = tradeOrder.getRefundAmount();
@@ -335,6 +336,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.localState = STATUS_PAYMENT_FAIL;
         this.localPayState = STATUS_PAYMENT_FAIL;
         this.fileStatus = STATUS_PAYMENT_FAIL;
+        this.returnStatus = STATUS_FAIL;
         this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
         payLog.payFail();
@@ -345,6 +347,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.localState = STATUS_FAIL;
         this.localPayState = STATUS_FAIL;
         this.fileStatus = STATUS_FAIL;
+        this.returnStatus = STATUS_FAIL;
         this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
         payTradeRefund.refundFail();
@@ -356,6 +359,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.localState = STATUS_PAYMENT_FAIL;
         this.localPayState = STATUS_PAYMENT_FAIL;
         this.fileStatus = STATUS_PAYMENT_FAIL;
+        this.returnStatus = STATUS_FAIL;
         this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
         payLog.payFail();
@@ -368,6 +372,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.localState = STATUS_FAIL;
         this.localPayState = STATUS_FAIL;
         this.fileStatus = STATUS_FAIL;
+        this.returnStatus = STATUS_FAIL;
         this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
         payTradeRefund.refundFail();

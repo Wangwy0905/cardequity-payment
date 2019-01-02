@@ -48,7 +48,7 @@ public enum AlipayDayCutEnum {
         public void doTrade2BillNotFile(PayLog payLog, TradeOrder tradeOrder) {
             PayCheckDeatail payCheckDeatail = getBeanByClass(PayCheckDeatailMapper.class).getByAppSeetSerialNoRefundBatchNoIsNull(tradeOrder.getAppSheetSerialNo());
             payCheckDeatail.beforeDayCut4Trade(payLog, tradeOrder);
-            getBeanByClass(PayCheckDeatailMapper.class).updateByDoTrade2BillNotFile(payCheckDeatail);
+            getBeanByClass(PayCheckDeatailMapper.class).updateByDoTradeAndReturn2BillNotFile(payCheckDeatail);
         }
 
         @Override
