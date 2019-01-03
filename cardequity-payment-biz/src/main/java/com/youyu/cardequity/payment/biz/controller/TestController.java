@@ -56,7 +56,7 @@ public class TestController {
     }
 
 
-    @RequestMapping("/receive")
+    @RequestMapping(value = "/receive", method = POST)
     public String receive(HttpServletRequest request) {
         Map<String, String> params2Map = WebUtil.params2Map(request);
         return payLogService.alipayAsyncMessage(params2Map);

@@ -251,8 +251,9 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.clientId = tradeOrder.getClientId();
         this.clientName = tradeOrder.getClientName();
         this.localAmount = tradeOrder.getRefundAmount();
-        this.localPayAmount = payTradeRefund.getRefundAmount();
         this.localState = tradeOrder.getRefundStatus();
+
+        this.localPayAmount = payTradeRefund.getRefundAmount();
         this.localPayState = payTradeRefund.getRefundStatus();
     }
 
@@ -316,6 +317,7 @@ public class PayCheckDeatail extends BaseDto<String> {
     public void dayCut4Refund(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
         this.localState = tradeOrder.getRefundStatus();
         this.localPayState = payTradeRefund.getRefundStatus();
+
         this.checkStatus = MAY_BE_REFUND_UNILATERAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
     }
@@ -327,6 +329,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.returnStatus = STATUS_FAIL;
         this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
+
         payLog.payFail();
         tradeOrder.payFail(PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE);
     }
@@ -338,6 +341,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.returnStatus = STATUS_FAIL;
         this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
+
         payTradeRefund.refundFail();
         tradeOrder.refundFail(PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE);
     }
@@ -349,6 +353,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.localPayState = STATUS_PAYMENT_FAIL;
         this.fileStatus = STATUS_PAYMENT_FAIL;
         this.returnStatus = STATUS_FAIL;
+
         this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
         payLog.payFail();
@@ -364,6 +369,7 @@ public class PayCheckDeatail extends BaseDto<String> {
         this.returnStatus = STATUS_FAIL;
         this.checkStatus = NORMAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
+
         payTradeRefund.refundFail();
         tradeOrder.refundFail(PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE);
     }
