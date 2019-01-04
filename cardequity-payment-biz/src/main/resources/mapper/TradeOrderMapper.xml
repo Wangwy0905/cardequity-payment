@@ -20,6 +20,7 @@
         <result column="PAY_REFUND_ID" jdbcType="VARCHAR" property="payRefundId"/>
         <result column="SYNC_DATA_DATE" jdbcType="VARCHAR" property="syncDataDate"/>
         <result column="PAY_CHECK_DEATAIL_ID" jdbcType="VARCHAR" property="payCheckDeatailId"/>
+        <result column="BUSIN_CODE" jdbcType="VARCHAR" property="businCode"/>
 
         <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
@@ -29,7 +30,7 @@
 
     <sql id="Base_Column_List">
         ID, APP_SHEET_SERIAL_NO, TRANS_ACCOUNT_ID, CLIENT_ID, CLIENT_NAME, PAY_CHANNEL_NO, PAY_LOG_ID, ORDER_AMOUNT, PAY_STATE, PAY_REFUND_NO, REFUND_AMOUNT, REFUND_STATUS,
-        PAY_REFUND_ID, SYNC_DATA_DATE, PAY_CHECK_DEATAIL_ID, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+        PAY_REFUND_ID, SYNC_DATA_DATE, PAY_CHECK_DEATAIL_ID, BUSIN_CODE, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
     </sql>
 
     <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder">
@@ -79,6 +80,9 @@
             </if>
             <if test="payCheckDeatailId != null">
                 PAY_CHECK_DEATAIL_ID,
+            </if>
+            <if test="businCode != null">
+                BUSIN_CODE,
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME,
@@ -138,6 +142,9 @@
             </if>
             <if test="payCheckDeatailId != null">
                 #{payCheckDeatailId,jdbcType=VARCHAR},
+            </if>
+            <if test="businCode != null">
+                #{businCode,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
