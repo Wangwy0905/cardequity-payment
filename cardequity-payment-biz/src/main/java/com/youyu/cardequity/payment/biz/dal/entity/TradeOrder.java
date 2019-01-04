@@ -159,12 +159,28 @@ public class TradeOrder extends BaseEntity<String> {
     }
 
     public void payFail(RabbitmqMessageEnum rabbitmqMessageEnum) {
-        if (eq(this.payState, STATUS_PAYMENT_FAIL)) {
+        if (isPayFail()) {
             return;
         }
 
         this.payState = STATUS_PAYMENT_FAIL;
         senderTradeMessage(rabbitmqMessageEnum);
+    }
+
+    public boolean isPaySucc() {
+        return eq(this.payState, STATUS_PAYMENT_SUCC);
+    }
+
+    public boolean isPayFail() {
+        return eq(this.payState, STATUS_PAYMENT_FAIL);
+    }
+
+    public boolean isRefundSucc() {
+        return eq(this.refundStatus, STATUS_SUCC);
+    }
+
+    public boolean isRefundFail() {
+        return eq(this.refundStatus, STATUS_FAIL);
     }
 
     public void refundSucc(RabbitmqMessageEnum rabbitmqMessageEnum) {
@@ -173,7 +189,7 @@ public class TradeOrder extends BaseEntity<String> {
     }
 
     public void refundFail(RabbitmqMessageEnum rabbitmqMessageEnum) {
-        if (eq(this.refundStatus, STATUS_FAIL)) {
+        if (isRefundFail()) {
             return;
         }
 

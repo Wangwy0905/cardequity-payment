@@ -12,8 +12,7 @@ import java.math.BigDecimal;
 import static com.youyu.cardequity.common.base.util.DateUtil.date2String;
 import static com.youyu.cardequity.common.base.util.DateUtil.now;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
-import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.NEED_REFUND;
-import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.NOT_NEED_REFUND;
+import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.*;
 import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.REFUNDED;
 import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.*;
 import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE;
@@ -191,6 +190,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.id = uuid4NoRail();
         this.transActionDate = date2String(now(), "YYYYMMDD");
         this.checkNum = 1;
+        this.checkStatus = UNTREATED.getCode();
     }
 
     public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail) {
@@ -205,7 +205,6 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.dealDate = payCheckFileDeatail.getAppDate();
         this.appSheetSerialNo = payCheckFileDeatail.getAppSheetSerialNo();
         this.businType = payCheckFileDeatail.getBusinType();
-        this.returnStatus = payCheckFileDeatail.getReturnStatus();
         this.refundBatchNo = payCheckFileDeatail.getRefundBatchNo();
     }
 
@@ -328,7 +327,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.localPayState = STATUS_PAYMENT_FAIL;
         this.fileStatus = STATUS_PAYMENT_FAIL;
         this.returnStatus = STATUS_FAIL;
-        this.checkStatus = NORMAL.getCode();
+        this.checkStatus = tradeOrder.isPayFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
 
         payLog.payFail();
@@ -340,7 +339,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.localPayState = STATUS_FAIL;
         this.fileStatus = STATUS_FAIL;
         this.returnStatus = STATUS_FAIL;
-        this.checkStatus = NORMAL.getCode();
+        this.checkStatus = tradeOrder.isRefundFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
 
         payTradeRefund.refundFail();
@@ -355,7 +354,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.fileStatus = STATUS_PAYMENT_FAIL;
         this.returnStatus = STATUS_FAIL;
 
-        this.checkStatus = NORMAL.getCode();
+        this.checkStatus = tradeOrder.isPayFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
         payLog.payFail();
         tradeOrder.payFail(PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE);
@@ -368,7 +367,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.localPayState = STATUS_FAIL;
         this.fileStatus = STATUS_FAIL;
         this.returnStatus = STATUS_FAIL;
-        this.checkStatus = NORMAL.getCode();
+        this.checkStatus = tradeOrder.isRefundFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
 
         payTradeRefund.refundFail();

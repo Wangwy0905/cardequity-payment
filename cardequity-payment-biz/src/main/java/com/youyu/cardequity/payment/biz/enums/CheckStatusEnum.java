@@ -23,7 +23,9 @@ public enum CheckStatusEnum {
     MAY_BE_TRADE_UNILATERAL("9", "可能交易单边:交易有,文件没有,可能日切导致的!"),
     MAY_BE_FILE_UNILATERAL("10", "可能文件单边:文件有,交易没有或者退款没有!"),
     REFUND_UNILATERAL("11", "退款单边"),
-    MAY_BE_REFUND_UNILATERAL("12", "可能退款单边:退款有,文件没有,可能日切导致的!");
+    MAY_BE_REFUND_UNILATERAL("12", "可能退款单边:退款有,文件没有,可能日切导致的!"),
+    RECHARGE_UNILATERAL("13", "充值单边"),
+    MAY_BE_RECHARGE_UNILATERAL("14", "可能充值单边");
 
     private String code;
 

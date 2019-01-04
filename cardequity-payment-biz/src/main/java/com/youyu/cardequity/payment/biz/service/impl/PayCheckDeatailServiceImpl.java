@@ -133,6 +133,7 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
             payChannelInfo.doTrade2BillRefundNotFile(tradeOrder);
             return;
         }
+
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
         payChannelInfo.doTrade2BillRefund(tradeOrder, payCheckFileDeatail);
     }

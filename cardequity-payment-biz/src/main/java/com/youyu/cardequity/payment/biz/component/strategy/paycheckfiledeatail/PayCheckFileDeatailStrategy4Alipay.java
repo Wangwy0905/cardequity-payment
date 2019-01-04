@@ -12,10 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.youyu.cardequity.common.base.util.StringUtil.eq;
 import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.NEED_REFUND;
-import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.FILE_UNILATERAL;
-import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.REFUNDED;
+import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.INCONSISTENT_STATE;
 import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_REFUND_MESSAGE;
 import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_REFUND_STATUS_MESSAGE;
 
@@ -54,16 +52,18 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
         PayLog payLog = payLogMapper.getById(tradeOrder.getPayLogId());
         PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, tradeOrder, payLog);
 
-        if (!eq(payCheckFileDeatail.getPayState(), tradeOrder.getPayState())) {
-            if (!payLog.isPaySucc()) {
-                payLog.payAfterBill2TradeSucc();
-                payLogMapper.updateStatusByPayAfter(payLog);
-            }
+        if (!payLog.isPaySucc()) {
+            payLog.payAfterBill2TradeSucc();
+            payLogMapper.updateStatusByPayAfter(payLog);
+        }
+
+        if (!tradeOrder.isPaySucc()) {
             tradeOrder.paySucc(PAY_AFTER_REFUND_MESSAGE);
 
             payCheckDeatail.setBackFlag(NEED_REFUND.getCode());
-            payCheckDeatail.setCheckStatus(FILE_UNILATERAL.getCode());
+            payCheckDeatail.setCheckStatus(INCONSISTENT_STATE.getCode());
         }
+
         tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
         tradeOrderMapper.updatePayStatusPayCheckDeatailIdByPayAfter(tradeOrder);
 
@@ -81,14 +81,16 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
     public void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder) {
         PayTradeRefund payTradeRefund = payTradeRefundMapper.getById(tradeOrder.getPayRefundId());
         PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, tradeOrder, payTradeRefund);
-        if (!eq(payCheckFileDeatail.getReturnStatus(), payTradeRefund.getRefundStatus())) {
-            if (!payTradeRefund.isRefundSucc()) {
-                payTradeRefund.refundAfterBill2TradeRefund();
-                payTradeRefundMapper.updateStatusByRefundAfter(payTradeRefund);
-            }
+
+        if (!payTradeRefund.isRefundSucc()) {
+            payTradeRefund.refundAfterBill2TradeRefund();
+            payTradeRefundMapper.updateStatusByRefundAfter(payTradeRefund);
+        }
+
+        if (!tradeOrder.isRefundSucc()) {
             tradeOrder.refundSucc(PAY_AFTER_REFUND_STATUS_MESSAGE);
 
-            payCheckDeatail.setCheckStatus(FILE_UNILATERAL.getCode());
+            payCheckDeatail.setCheckStatus(INCONSISTENT_STATE.getCode());
         }
         tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
         tradeOrderMapper.updateReturnStatusPayCheckDeatailIdByRefundAfter(tradeOrder);
