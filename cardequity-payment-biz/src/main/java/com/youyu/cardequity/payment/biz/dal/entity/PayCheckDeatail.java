@@ -1,6 +1,6 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
-import com.youyu.common.dto.BaseDto;
+import com.youyu.common.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,8 +32,8 @@ import static java.util.Objects.isNull;
  */
 @Getter
 @Setter
-@Table(name = "TB_PAY_CHANNEL_INFO")
-public class PayCheckDeatail extends BaseDto<String> {
+@Table(name = "TB_PAY_CHECK_DEATAIL")
+public class PayCheckDeatail extends BaseEntity<String> {
 
     /**
      * 主键

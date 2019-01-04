@@ -23,19 +23,19 @@ public interface TradeOrderMapper {
     /**
      * 查询交易数据,不包括退款的
      *
-     * @param appSeetSerialNo
+     * @param appSheetSerialNo
      * @return
      */
-    TradeOrder getByAppSeetSerialNoPayRefundNoIsNull(@Param("appSeetSerialNo") String appSeetSerialNo);
+    TradeOrder getByAppSheetSerialNoPayRefundNoIsNull(@Param("appSheetSerialNo") String appSheetSerialNo);
 
     /**
      * 根据单号和退款编号查询退款数据
      *
-     * @param appSeetSerialNo
+     * @param appSheetSerialNo
      * @param refundBatchNo
      * @return
      */
-    TradeOrder getByAppSeetSerialNoPayRefundNo(@Param("appSeetSerialNo") String appSeetSerialNo, @Param("refundBatchNo") String refundBatchNo);
+    TradeOrder getByAppSeetSerialNoPayRefundNo(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("refundBatchNo") String refundBatchNo);
 
     /**
      * 查询未对账的前一天数据和由于日切导致的数据需要继续对账

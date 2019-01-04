@@ -162,7 +162,7 @@
         update TB_TRADE_ORDER set REFUND_STATUS = #{refundStatus,jdbcType=VARCHAR}, PAY_CHECK_DEATAIL_ID = #{payCheckDeatailId,jdbcType=VARCHAR}  where ID = #{id,jdbcType=VARCHAR}
     </update>
 
-    <select id="getByAppSeetSerialNoPayRefundNoIsNull" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="getByAppSheetSerialNoPayRefundNoIsNull" parameterType="java.lang.String" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
         from TB_TRADE_ORDER
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
@@ -173,17 +173,17 @@
         select <include refid="Base_Column_List"/>
         from TB_TRADE_ORDER
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
-        and PAY_REFUND_NO = #{payRefundNo,jdbcType=VARCHAR}
+        and PAY_REFUND_NO = #{refundBatchNo,jdbcType=VARCHAR}
     </select>
 
     <select id="getBySyncDataDateAndDayCut" resultMap="BaseResultMap">
         select t1.*
         from TB_TRADE_ORDER t1
         where t1.SYNC_DATA_DATE = #{syncDataDate,jdbcType=VARCHAR}
-        and not exists(
+        or exists(
             select 1 from TB_PAY_CHECK_DEATAIL t2
             where t1.PAY_CHECK_DEATAIL_ID = t2.id
-            and t2.CHECK_STATUS not in (#{mayBeTradeUnilateral,jdbcType=VARCHAR}, #{mayBeRefundUnilateral,jdbcType=VARCHAR})
+            and t2.CHECK_STATUS in (#{mayBeTradeUnilateral,jdbcType=VARCHAR}, #{mayBeRefundUnilateral,jdbcType=VARCHAR})
         )
     </select>
 

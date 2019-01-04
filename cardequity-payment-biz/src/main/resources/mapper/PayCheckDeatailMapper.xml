@@ -45,7 +45,7 @@
     </sql>
 
     <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckDeatail">
-        insert into TB_PAY_CHANNEL_INFO
+        insert into TB_PAY_CHECK_DEATAIL
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 ID,
@@ -229,7 +229,7 @@
     <select id="getByAppSeetSerialNoRefundBatchNoIsNull" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from TB_PAY_CHANNEL_INFO
+        from TB_PAY_CHECK_DEATAIL
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
         and REFUND_BATCH_NO is null
     </select>
@@ -237,13 +237,13 @@
     <select id="getByAppSeetSerialNoRefundBatchNo" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from TB_PAY_CHANNEL_INFO
+        from TB_PAY_CHECK_DEATAIL
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
         and REFUND_BATCH_NO = #{refundBatchNo,jdbcType=VARCHAR}
     </select>
 
     <update id="updateByDoTradeAndReturn2BillNotFile" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckDeatail">
-        update TB_PAY_CHANNEL_INFO
+        update TB_PAY_CHECK_DEATAIL
         set CHECK_NUM = #{checkNum,jdbcType=INTEGER},
         LOCAL_STATE = #{localState,jdbcType=VARCHAR},
         LOCAL_PAY_STATE = #{localPayState,jdbcType=VARCHAR},

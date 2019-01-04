@@ -5,6 +5,8 @@ import com.youyu.cardequity.payment.biz.service.PayCheckDeatailService;
 import com.youyu.cardequity.payment.dto.PayCheckDeatailDto;
 import com.youyu.common.api.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +26,8 @@ public class PayCheckDeatailController implements PayCheckDeatailApi {
     private PayCheckDeatailService payCheckDeatailService;
 
     @Override
-    public Result reconciliation(PayCheckDeatailDto payCheckDeatailDto) {
+    @PostMapping(value = "/reconciliation")
+    public Result reconciliation(@RequestBody PayCheckDeatailDto payCheckDeatailDto) {
         payCheckDeatailService.reconciliation(payCheckDeatailDto, payCheckDeatailService);
         return ok();
     }

@@ -8,9 +8,7 @@
     <springProperty scope="context" name="springProfilesActive" source="spring.profiles.active"/>
 
     <!-- 本地测试 -->
-    <springProfile name="dev">
-        <logger name="com.youyu.cardequity.payment.biz" level="DEBUG"/>
-    </springProfile>
+    <logger name="com.youyu.cardequity.payment.biz" level="DEBUG"/>
 
     <!-- 测试环境 -->
     <springProfile name="test">

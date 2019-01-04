@@ -2,6 +2,7 @@ package com.youyu.cardequity.payment.biz.help.util;
 
 import com.csvreader.CsvReader;
 import com.youyu.cardequity.common.base.tuple2.Tuple2;
+import com.youyu.cardequity.payment.biz.help.bill.AlipayBill;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -93,8 +94,8 @@ public class AlipayFileUtil {
      * @param suffix
      * @return
      */
-    public static Tuple2<String, List<String>> parseAlipayCsv2DataList(String filePath, String suffix) {
-        List<String> datas = new ArrayList<>();
+    public static Tuple2<String, List<AlipayBill>> parseAlipayCsv2DataList(String filePath, String suffix) {
+        List<AlipayBill> datas = new ArrayList<>();
         File file = new File(filePath);
         String fileName = file.list((dir, name) -> endsWith(name, suffix))[0];
         String fileNamePath = filePath + fileName;
@@ -107,7 +108,7 @@ public class AlipayFileUtil {
                 if (startsWith(record, POUND_SIGN) || startsWith(record, ALIPAY_NAME)) {
                     continue;
                 }
-                datas.add(record);
+                datas.add(new AlipayBill(csvReader));
             }
             return new Tuple2<>(fileName, datas);
         } catch (Exception e) {

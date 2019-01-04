@@ -1,5 +1,6 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
+import com.youyu.cardequity.payment.biz.help.bill.AlipayBill;
 import com.youyu.cardequity.payment.dto.PayCheckFileDeatailDto;
 import com.youyu.common.entity.BaseEntity;
 import lombok.Getter;
@@ -132,25 +133,25 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
      * data格式:param1,param2,param3...
      * 具体参数参考支付宝对账单:https://docs.open.alipay.com/204/106262/
      *
-     * @param datas
+     * @param alipayBill
      * @param payCheckFileDeatailDto
      * @param fileName
      * @param businType
      */
-    public PayCheckFileDeatail(String[] datas, PayCheckFileDeatailDto payCheckFileDeatailDto, String fileName, String businType) {
+    public PayCheckFileDeatail(AlipayBill alipayBill, PayCheckFileDeatailDto payCheckFileDeatailDto, String fileName, String businType) {
         this.id = uuid4NoRail();
-        this.tranceNo = datas[0];
+        this.tranceNo = alipayBill.getTradeNo();
         this.channelNo = payCheckFileDeatailDto.getChannelNo();
         this.checkDate = replace(payCheckFileDeatailDto.getBillDate(), "-", "");
-        this.appDate = datas[4];
-        this.appAmount = string2BigDecimal(datas[12]);
+        this.appDate = alipayBill.getCreateTime();
+        this.appAmount = string2BigDecimal(alipayBill.getMerchantsPaidIn());
         this.payState = STATUS_PAYMENT_SUCC;
-        this.appSheetSerialNo = datas[1];
+        this.appSheetSerialNo = alipayBill.getOrderNo();
         this.businType = businType;
         this.fileName = fileName;
-        this.remark = datas[datas.length - 1];
-        this.orderAmount = string2BigDecimal(datas[11]);
-        String refundBatchNo = datas[22];
+        this.remark = alipayBill.getRemark();
+        this.orderAmount = string2BigDecimal(alipayBill.getOrderAmount());
+        String refundBatchNo = alipayBill.getReturnBatchNo();
         if (isNoneBlank(refundBatchNo)) {
             this.refundBatchNo = refundBatchNo;
             this.returnStatus = STATUS_SUCC;

@@ -20,6 +20,7 @@ import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_FAIL;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_SUCC;
 import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_FAIL;
+import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_SUCC;
 import static org.apache.commons.lang3.time.DateUtils.addDays;
 
 /**
@@ -160,7 +161,7 @@ public class TradeOrder extends BaseEntity<String> {
     }
 
     public void refundSucc(RabbitmqMessageEnum rabbitmqMessageEnum) {
-        this.refundStatus = STATUS_FAIL;
+        this.refundStatus = STATUS_SUCC;
         senderRefundMessage(rabbitmqMessageEnum);
     }
 

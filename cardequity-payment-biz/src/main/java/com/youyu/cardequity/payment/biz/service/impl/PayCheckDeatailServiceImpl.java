@@ -4,17 +4,20 @@ import com.youyu.cardequity.payment.biz.dal.dao.*;
 import com.youyu.cardequity.payment.biz.dal.entity.*;
 import com.youyu.cardequity.payment.biz.service.PayCheckDeatailService;
 import com.youyu.cardequity.payment.dto.PayCheckDeatailDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.util.DateUtil.*;
 import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.MAY_BE_REFUND_UNILATERAL;
 import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.MAY_BE_TRADE_UNILATERAL;
 import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
 import static java.util.Objects.isNull;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.time.DateUtils.addDays;
 
@@ -24,6 +27,7 @@ import static org.apache.commons.lang3.time.DateUtils.addDays;
  * @date 2018年12月10日 下午10:00:00
  * @work 对账信息管理 Service impl
  */
+@Slf4j
 @Service
 public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
 
@@ -60,15 +64,19 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     @Transactional
     public void executeBill2TradeAndRefund(PayCheckFileDeatail payCheckFileDeatail) {
         String refundBatchNo = payCheckFileDeatail.getRefundBatchNo();
-        if (isBlank(refundBatchNo)) {
-            doBill2Trade(payCheckFileDeatail);
-            return;
+        try {
+            if (isBlank(refundBatchNo)) {
+                doBill2Trade(payCheckFileDeatail);
+                return;
+            }
+            doBill2TradeRefund(payCheckFileDeatail);
+        } catch (Exception ex) {
+            log.error("文件对交易对账单信息:[{}]和异常信息:[{}]", toJSONString(payCheckFileDeatail), getFullStackTrace(ex));
         }
-        doBill2TradeRefund(payCheckFileDeatail);
     }
 
     private void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail) {
-        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSheetSerialNo());
+        TradeOrder tradeOrder = tradeOrderMapper.getByAppSheetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSheetSerialNo());
         if (isNull(tradeOrder)) {
             // 文件单边交易
             PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(payCheckFileDeatail.getAppSheetSerialNo(), NORMAL.getCode());
@@ -106,12 +114,16 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     @Transactional
     public void executeTradeAndRefund2Bill(TradeOrder tradeOrder) {
         String payRefundNo = tradeOrder.getPayRefundNo();
-        if (isBlank(payRefundNo)) {
-            doTrade2Bill(tradeOrder);
-            return;
-        }
+        try {
+            if (isBlank(payRefundNo)) {
+                doTrade2Bill(tradeOrder);
+                return;
+            }
 
-        doTrade2BillRefund(tradeOrder);
+            doTrade2BillRefund(tradeOrder);
+        } catch (Exception ex) {
+            log.error("交易对文件交易信息:[{}]和异常信息:[{}]", toJSONString(tradeOrder), getFullStackTrace(ex));
+        }
     }
 
     private void doTrade2BillRefund(TradeOrder tradeOrder) {
