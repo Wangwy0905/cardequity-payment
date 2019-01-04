@@ -125,6 +125,12 @@ public class TradeOrder extends BaseEntity<String> {
     @Column(name = "PAY_CHECK_DEATAIL_ID")
     private String payCheckDeatailId;
 
+    /**
+     * 业务类型
+     */
+    @Column(name = "BUSIN_CODE")
+    private String businCode;
+
     public TradeOrder() {
 
     }

@@ -194,6 +194,7 @@ public class PayLog extends BaseEntity<String> {
         this.remark = payLogDto.getRemark();
         this.state = getBeanByClass(PayLogStatus4NonPayment.class);
         this.payChannelNo = payLogDto.getPayChannelNo();
+        this.businCode = payLogDto.getBusinCode();
         this.routeVoIdFlag = "0";
         this.tradeCloseFlag = false;
     }

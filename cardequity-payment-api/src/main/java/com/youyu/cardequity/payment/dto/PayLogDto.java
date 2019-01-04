@@ -25,6 +25,17 @@ public class PayLogDto extends BasePageQuery<String> {
      */
     public static final String PAY_CHANNEL_NO_ALIPAY = "000001";
 
+
+    /**
+     * 交易
+     */
+    public static final String BUSIN_CODE_TRADE = "0001";
+
+    /**
+     * 会员充值
+     */
+    public static final String BUSIN_CODE_MEMBER_RECHARGE = "0002";
+
     @ApiModelProperty(value = "主键")
     private String id;
 
@@ -67,5 +78,6 @@ public class PayLogDto extends BasePageQuery<String> {
     @ApiModelProperty(value = "商品主类型：0—虚拟类商品，1—实物类商品")
     private String goodsType;
 
-
+    @ApiModelProperty(value = "业务代码")
+    private String businCode;
 }

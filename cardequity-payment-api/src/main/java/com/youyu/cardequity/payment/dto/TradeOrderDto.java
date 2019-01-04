@@ -54,4 +54,7 @@ public class TradeOrderDto extends BaseDto<String> {
 
     @ApiModelProperty(value = "支付系统退款流水号")
     private String payRefundId;
+
+    @ApiModelProperty(value = "业务类型")
+    private String businCode;
 }
