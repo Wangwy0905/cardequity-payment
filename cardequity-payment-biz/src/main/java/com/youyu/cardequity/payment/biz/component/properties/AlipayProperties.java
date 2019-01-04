@@ -2,6 +2,7 @@ package com.youyu.cardequity.payment.biz.component.properties;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -14,13 +15,13 @@ import java.io.Serializable;
  */
 @Setter
 @Getter
-//@ConfigurationProperties(value = "alipay")
+@ConfigurationProperties(value = "alipay")
 @Component
 public class AlipayProperties implements Serializable {
 
     private static final long serialVersionUID = -1505571997009581142L;
 
-    private String url = "https://openapi.alipay.com/gateway.do";
+    /*private String url = "https://openapi.alipay.com/gateway.do";
 
     private String appId = "2018120562456421";
 
@@ -42,6 +43,30 @@ public class AlipayProperties implements Serializable {
 
     private Integer asyncNotifyThresholdEnd = 10;
 
-    private String billFilePath = "/Users/panqingqing/Downloads/alipay/bill/";
+    private String billFilePath = "/Users/panqingqing/Downloads/alipay/bill/";*/
+
+    private String url;
+
+    private String appId;
+
+    private String appPrivateKey;
+
+    private String format;
+
+    private String charset;
+
+    private String alipayPublicKey;
+
+    private String signType;
+
+    private String sellerId;
+
+    private String notifyUrl;
+
+    private Integer asyncNotifyThresholdStart = 15;
+
+    private Integer asyncNotifyThresholdEnd = 10;
+
+    private String billFilePath;
 
 }
