@@ -88,7 +88,7 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
             }
             tradeOrder.refundSucc(PAY_AFTER_REFUND_STATUS_MESSAGE);
 
-            payCheckDeatail.setCheckStatus(REFUNDED.getCode());
+            payCheckDeatail.setCheckStatus(FILE_UNILATERAL.getCode());
         }
         tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
         tradeOrderMapper.updateReturnStatusPayCheckDeatailIdByRefundAfter(tradeOrder);

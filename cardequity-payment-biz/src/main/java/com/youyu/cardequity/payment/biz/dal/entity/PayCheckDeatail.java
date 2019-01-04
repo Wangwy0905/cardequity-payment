@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import static com.youyu.cardequity.common.base.util.DateUtil.date2String;
 import static com.youyu.cardequity.common.base.util.DateUtil.now;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
+import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.NEED_REFUND;
 import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.NOT_NEED_REFUND;
 import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.REFUNDED;
 import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.*;
@@ -212,7 +213,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this(payCheckFileDeatail);
 
         this.checkStatus = MAY_BE_FILE_UNILATERAL.getCode();
-        this.backFlag = NOT_NEED_REFUND.getCode();
+        this.backFlag = NEED_REFUND.getCode();
 
         this.localAmount = ZERO;
         this.localState = "0";
