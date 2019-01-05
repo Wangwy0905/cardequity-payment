@@ -161,8 +161,8 @@
         </trim>
     </insert>
 
-    <delete id="deleteByTranceNo" parameterType="java.lang.String">
-        delete from TB_PAY_CHECK_FILE_DEATAIL where TRANCE_NO = #{tranceNo,jdbcType=VARCHAR}
+    <delete id="deleteByTranceNoCheckDate" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail">
+        delete from TB_PAY_CHECK_FILE_DEATAIL where TRANCE_NO = #{tranceNo,jdbcType=VARCHAR} and CHECK_DATE = #{checkDate,jdbcType=VARCHAR}
     </delete>
 
     <select id="getListByBillDate" parameterType="java.lang.String" resultMap="BaseResultMap">

@@ -16,9 +16,9 @@ public interface PayCheckFileDeatailMapper {
     /**
      * 根据三方交易号删除
      *
-     * @param tranceNo
+     * @param payCheckFileDeatail
      */
-    void deleteByTranceNo(@Param("tranceNo") String tranceNo);
+    void deleteByTranceNoCheckDate(PayCheckFileDeatail payCheckFileDeatail);
 
     /**
      * 插入

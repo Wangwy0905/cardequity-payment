@@ -90,9 +90,9 @@ public class PayCheckFileDeatailFactory4Alipay extends PayCheckFileDeatailFactor
             payCheckFileDeatails.add(new PayCheckFileDeatail(alipayBill, payCheckFileDeatailDto, fileName, businType));
         }
 
-        List<String> tranceNos = payCheckFileDeatails.stream().map(payCheckFileDeatail -> payCheckFileDeatail.getTranceNo()).collect(toList());
+        List<PayCheckFileDeatail> payCheckFileDeatailDeletes = payCheckFileDeatails.stream().map(payCheckFileDeatail -> new PayCheckFileDeatail(payCheckFileDeatail)).collect(toList());
 
-        batchService.batchDispose(tranceNos, PayCheckFileDeatailMapper.class, "deleteByTranceNo");
+        batchService.batchDispose(payCheckFileDeatailDeletes, PayCheckFileDeatailMapper.class, "deleteByTranceNoCheckDate");
         batchService.batchDispose(payCheckFileDeatails, PayCheckFileDeatailMapper.class, "insertSelective");
     }
 
@@ -105,7 +105,7 @@ public class PayCheckFileDeatailFactory4Alipay extends PayCheckFileDeatailFactor
             boolean billFlag = alipayDataDataserviceBillDownloadurlQueryResponse.isSuccess();
             if (!billFlag) {
                 log.info("支付宝对账单根据参数:[{}]获取下载地址调用失败信息:[{}]!", toJSONString(payCheckFileDeatailDto), toJSONString(alipayDataDataserviceBillDownloadurlQueryResponse));
-                throw new BizException(ALIPAY_BILL_DOWNLOAD_URL_FAILED.getCode(),ALIPAY_BILL_DOWNLOAD_URL_FAILED.getFormatDesc(alipayDataDataserviceBillDownloadurlQueryResponse.getSubMsg()));
+                throw new BizException(ALIPAY_BILL_DOWNLOAD_URL_FAILED.getCode(), ALIPAY_BILL_DOWNLOAD_URL_FAILED.getFormatDesc(alipayDataDataserviceBillDownloadurlQueryResponse.getSubMsg()));
             }
             String billDownloadUrl = alipayDataDataserviceBillDownloadurlQueryResponse.getBillDownloadUrl();
             log.info("支付宝对账单地址信息:[{}]", billDownloadUrl);

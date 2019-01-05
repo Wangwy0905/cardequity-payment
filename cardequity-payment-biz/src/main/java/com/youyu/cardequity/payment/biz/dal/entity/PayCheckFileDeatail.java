@@ -158,6 +158,11 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
         }
     }
 
+    public PayCheckFileDeatail(PayCheckFileDeatail payCheckFileDeatail) {
+        this.tranceNo = payCheckFileDeatail.getTranceNo();
+        this.checkDate = payCheckFileDeatail.getCheckDate();
+    }
+
     @Override
     public String getId() {
         return id;
