@@ -239,7 +239,7 @@
         <include refid="Base_Column_List"/>
         from TB_PAY_CHECK_DEATAIL
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
-        and REFUND_BATCH_NO = #{refundBatchNo,jdbcType=VARCHAR}
+        and REFUND_BATCH_NO = #{payRefundNo,jdbcType=VARCHAR}
     </select>
 
     <update id="updateByDoTradeAndReturn2BillNotFile" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckDeatail">

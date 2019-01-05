@@ -173,7 +173,7 @@
         delete from TB_PAY_CHECK_FILE_DEATAIL where TRANCE_NO = #{tranceNo,jdbcType=VARCHAR} and CHECK_DATE = #{checkDate,jdbcType=VARCHAR}
     </delete>
 
-    <select id="getListByBillDate" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="getListByBillDatePayCheckDeatailIdisNull" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from TB_PAY_CHECK_FILE_DEATAIL

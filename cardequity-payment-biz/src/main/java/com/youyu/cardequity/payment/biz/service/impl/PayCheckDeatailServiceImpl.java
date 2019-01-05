@@ -54,7 +54,7 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     }
 
     private void bill2TradeAndRefund(PayCheckDeatailDto payCheckDeatailDto, PayCheckDeatailService payCheckDeatailService) {
-        List<PayCheckFileDeatail> payCheckFileDeatails = payCheckFileDeatailMapper.getListByBillDate(payCheckDeatailDto.getBillDate());
+        List<PayCheckFileDeatail> payCheckFileDeatails = payCheckFileDeatailMapper.getListByBillDatePayCheckDeatailIdisNull(payCheckDeatailDto.getBillDate());
         for (PayCheckFileDeatail payCheckFileDeatail : payCheckFileDeatails) {
             payCheckDeatailService.executeBill2TradeAndRefund(payCheckFileDeatail);
         }

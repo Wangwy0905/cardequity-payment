@@ -35,7 +35,7 @@ public interface PayCheckFileDeatailMapper {
      * @param billDate
      * @return
      */
-    List<PayCheckFileDeatail> getListByBillDate(@Param("billDate") String billDate);
+    List<PayCheckFileDeatail> getListByBillDatePayCheckDeatailIdisNull(@Param("billDate") String billDate);
 
     /**
      * 根据单号查询退款编号为空的对账单
