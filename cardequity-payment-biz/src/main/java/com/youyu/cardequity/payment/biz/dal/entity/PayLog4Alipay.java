@@ -144,11 +144,6 @@ public class PayLog4Alipay extends PayLog {
         }
     }
 
-
-    /*public boolean canSendMsg2Trade() {
-        return eq(alipayTradeStatus, TRADE_SUCCESS.getCode()) &&
-                eq(alipayOurResponse, ALIPAY_ASYNC_RESPONSE_SUCC);
-    }*/
     public void callAlipayTradeCloseSucc(AlipayTradeCloseResponse alipayTradeCloseResponse) {
         this.alipayTradeCloseMessage = toJSONString(alipayTradeCloseResponse);
         this.tradeCloseFlag = alipayTradeCloseResponse.isSuccess();
