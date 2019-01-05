@@ -1,5 +1,6 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
+import com.youyu.cardequity.payment.biz.dal.dao.PayCheckFileDeatailMapper;
 import com.youyu.cardequity.payment.biz.help.bill.AlipayBill;
 import com.youyu.cardequity.payment.dto.PayCheckFileDeatailDto;
 import com.youyu.common.entity.BaseEntity;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
+import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.MoneyUtil.string2BigDecimal;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_SUCC;
@@ -126,6 +128,12 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
     @Column(name = "RETURN_STATUS")
     private String returnStatus;
 
+    /**
+     * 对账id
+     */
+    @Column(name = "PAY_CHECK_DEATAIL_ID")
+    private String payCheckDeatailId;
+
     public PayCheckFileDeatail() {
     }
 
@@ -161,6 +169,11 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
     public PayCheckFileDeatail(PayCheckFileDeatail payCheckFileDeatail) {
         this.tranceNo = payCheckFileDeatail.getTranceNo();
         this.checkDate = payCheckFileDeatail.getCheckDate();
+    }
+
+    public void reconciliationed(PayCheckDeatail payCheckDeatail) {
+        this.payCheckDeatailId = payCheckDeatail.getId();
+        getBeanByClass(PayCheckFileDeatailMapper.class).updatePayCheckDeatailIdById(id, payCheckDeatailId);
     }
 
     @Override

@@ -21,6 +21,7 @@
         <result column="ORDER_AMOUNT" jdbcType="DECIMAL" property="orderAmount"/>
         <result column="REFUND_BATCH_NO" jdbcType="VARCHAR" property="refundBatchNo"/>
         <result column="RETURN_STATUS" jdbcType="VARCHAR" property="returnStatus"/>
+        <result column="PAY_CHECK_DEATAIL_ID" jdbcType="VARCHAR" property="payCheckDeatailId"/>
 
         <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
@@ -30,7 +31,7 @@
 
     <sql id="Base_Column_List">
         ID, TRANCE_NO, CHANNEL_NO, CHECK_DATE, FILE_ID, APP_DATE, APP_AMOUNT, PAY_STATE, BANK_CARD_NO, APP_SHEET_SERIAL_NO, BUSIN_TYPE, FILE_NAME, REMARK,
-        ORDER_AMOUNT, REFUND_BATCH_NO, RETURN_STATUS, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+        ORDER_AMOUNT, REFUND_BATCH_NO, RETURN_STATUS, PAY_CHECK_DEATAIL_ID, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
     </sql>
 
     <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail">
@@ -83,6 +84,9 @@
             </if>
             <if test="returnStatus != null">
                 RETURN_STATUS,
+            </if>
+            <if test="payCheckDeatailId != null">
+                PAY_CHECK_DEATAIL_ID,
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME,
@@ -146,6 +150,9 @@
             <if test="returnStatus != null">
                 #{returnStatus,jdbcType=VARCHAR},
             </if>
+            <if test="payCheckDeatailId != null">
+                #{payCheckDeatailId,jdbcType=VARCHAR},
+            </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
@@ -161,28 +168,39 @@
         </trim>
     </insert>
 
-    <delete id="deleteByTranceNoCheckDate" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail">
+    <delete id="deleteByTranceNoCheckDate"
+            parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail">
         delete from TB_PAY_CHECK_FILE_DEATAIL where TRANCE_NO = #{tranceNo,jdbcType=VARCHAR} and CHECK_DATE = #{checkDate,jdbcType=VARCHAR}
     </delete>
 
     <select id="getListByBillDate" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List" />
+        select
+        <include refid="Base_Column_List"/>
         from TB_PAY_CHECK_FILE_DEATAIL
         where CHECK_DATE = #{billDate,jdbcType=VARCHAR}
+        and PAY_CHECK_DEATAIL_ID is null
     </select>
 
     <select id="getByAppSeetSerialNoRefundBatchNoIsNull" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List" />
+        select
+        <include refid="Base_Column_List"/>
         from TB_PAY_CHECK_FILE_DEATAIL
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
         and REFUND_BATCH_NO is null
     </select>
 
     <select id="getByAppSeetSerialNoRefundBatchNo" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List" />
+        select
+        <include refid="Base_Column_List"/>
         from TB_PAY_CHECK_FILE_DEATAIL
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
         and REFUND_BATCH_NO = #{refundBatchNo,jdbcType=VARCHAR}
     </select>
+
+    <update id="updatePayCheckDeatailIdById">
+        update TB_PAY_CHECK_FILE_DEATAIL
+        set PAY_CHECK_DEATAIL_ID = #{payCheckDeatailId,jdbcType=VARCHAR}
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.youyu.cardequity.payment.biz.dal.dao;
 
+import com.youyu.cardequity.common.base.annotation.SpringBean;
 import com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @date 2018年12月10日 下午10:00:00
  * @work 对账文件明细信息Mapper
  */
+@SpringBean
 public interface PayCheckFileDeatailMapper {
 
     /**
@@ -51,4 +53,12 @@ public interface PayCheckFileDeatailMapper {
      * @return
      */
     PayCheckFileDeatail getByAppSeetSerialNoRefundBatchNo(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("refundBatchNo") String refundBatchNo);
+
+    /**
+     * 根据id更新对账id,表面已对过账
+     *
+     * @param id
+     * @param payCheckDeatailId
+     */
+    void updatePayCheckDeatailIdById(@Param("id") String id, @Param("payCheckDeatailId") String payCheckDeatailId);
 }

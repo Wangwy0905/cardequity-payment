@@ -206,6 +206,8 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.appSheetSerialNo = payCheckFileDeatail.getAppSheetSerialNo();
         this.businType = payCheckFileDeatail.getBusinType();
         this.refundBatchNo = payCheckFileDeatail.getRefundBatchNo();
+
+        payCheckFileDeatail.reconciliationed(this);
     }
 
     public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail, PayLog payLog) {
