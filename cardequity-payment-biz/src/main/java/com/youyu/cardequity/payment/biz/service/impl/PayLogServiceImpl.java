@@ -13,6 +13,7 @@ import com.youyu.cardequity.payment.dto.TradeCloseDto;
 import com.youyu.cardequity.payment.dto.TradeCloseResponseDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageDto;
 import com.youyu.cardequity.payment.dto.alipay.AlipaySyncMessageResultDto;
+import com.youyu.common.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import static com.youyu.cardequity.common.base.converter.BeanPropertiesConverter
 import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
 import static com.youyu.cardequity.payment.biz.help.constant.AlipayConstant.ALIPAY_ASYNC_RESPONSE_FAIL;
 import static com.youyu.cardequity.payment.biz.help.constant.AlipayConstant.ALIPAY_OUT_TRADE_NO;
+import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.REFUND_AMOUNT_CANNOT_GREATER_PAYMENT_AMOUNT;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -54,8 +56,9 @@ public class PayLogServiceImpl implements PayLogService {
         String payChannelNo = payLogDto.getPayChannelNo();
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payChannelNo);
         PayLog payLog = payChannelInfo.createPayLogAndPay(payLogDto);
-
-        return copyProperties(payLog, PayLogResponseDto.class);
+        throw new BizException(REFUND_AMOUNT_CANNOT_GREATER_PAYMENT_AMOUNT);
+//        throw new BizException("a","b");
+//        return copyProperties(payLog, PayLogResponseDto.class);
     }
 
     @Override

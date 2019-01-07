@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @SpringBootTest(classes = CardequityPaymentApplication.class)
 public class PayLogServiceImplTest extends BaseSpringBootTest {
@@ -31,6 +32,7 @@ public class PayLogServiceImplTest extends BaseSpringBootTest {
         payLogDto.setTransAccountId("111");
         payLogDto.setRemark("支付宝支付");
         payLogDto.setPayChannelNo("000001");
+        payLogDto.setInitDate(LocalDate.now());
 
         BaseDto baseDto = payLogService.pay(payLogDto);
         System.out.println(baseDto);

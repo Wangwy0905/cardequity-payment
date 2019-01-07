@@ -11,11 +11,11 @@
     <logger name="com.youyu.cardequity.payment.biz" level="DEBUG"/>
 
     <!-- 测试环境 -->
-    <springProfile name="test">
+    <springProfile name="dev,test">
         <appender name="LOGSTASH_SOCKET" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
             <destination>test.lb.gs.youyuwo.com:50005</destination>
             <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-                <customFields>{"index":"nirvana-hsk-cardequity-payment","type":"logback"}</customFields>
+                <customFields>{"index":"cardequity-payment","type":"logback"}</customFields>
             </encoder>
         </appender>
         <logger name="org.springframework.web" level="INFO">
@@ -34,7 +34,7 @@
         <appender name="LOGSTASH_SOCKET" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
             <destination>192.168.83.60:50005</destination>
             <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-                <customFields>{"index":"nirvana-hsk-cardequity-payment","type":"logback"}</customFields>
+                <customFields>{"index":"cardequity-payment","type":"logback"}</customFields>
             </encoder>
         </appender>
         <logger name="org.springframework.web" level="INFO">
