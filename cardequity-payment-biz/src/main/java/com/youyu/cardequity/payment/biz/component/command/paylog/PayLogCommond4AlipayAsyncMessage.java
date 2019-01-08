@@ -30,9 +30,6 @@ public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
     @Autowired
     private PayLogMapper payLogMapper;
 
-    /*@Autowired
-    private RabbitmqSender rabbitmqSender;*/
-
     /**
      * 退款状态包含：
      * 1、REFUND_SUCCESS：退款成功，分两种情况
@@ -67,13 +64,6 @@ public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
         if (payLog4Alipay.isPaySucc()) {
             payLogMapper.updateAppSheetSerialNo4OtherPayIdRouteVoIdFlag(payLog4Alipay.getAppSheetSerialNo(), payLog4Alipay.getId(), FAIL.getCode());
         }
-
-        /*if (payLog4Alipay.canSendMsg2Trade()) {
-            PayLogAsyncMessageDto payLogAsyncMessageDto = copyProperties(payLog4Alipay, PayLogAsyncMessageDto.class);
-            String message = toJSONString(payLogAsyncMessageDto);
-            log.info("异步通知交易系统支付宝支付对应的支付流水号:[{}]和消息信息:[{}]", payLog4Alipay.getId(), message);
-            rabbitmqSender.sendMessage(message, PAY_ASYNC_MESSAGE);
-        }*/
     }
 
 }

@@ -211,6 +211,7 @@ public class TradeOrder extends BaseEntity<String> {
         tradeOrder.setPayRefundId(this.payRefundId);
         tradeOrder.setPayRefundNo(this.payChannelNo);
         tradeOrder.setRefundStatus(this.refundStatus);
+        tradeOrder.setBusinCode(this.businCode);
         return toJSONString(tradeOrder);
     }
 
@@ -218,6 +219,7 @@ public class TradeOrder extends BaseEntity<String> {
         TradeOrder tradeOrder = new TradeOrder();
         tradeOrder.setAppSheetSerialNo(this.appSheetSerialNo);
         tradeOrder.setPayState(this.payState);
+        tradeOrder.setBusinCode(this.businCode);
         return toJSONString(tradeOrder);
     }
 }

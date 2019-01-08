@@ -25,17 +25,6 @@ public class PayLogDto extends BasePageQuery<String> {
      */
     public static final String PAY_CHANNEL_NO_ALIPAY = "000001";
 
-
-    /**
-     * 交易
-     */
-    public static final String BUSIN_CODE_TRADE = "0001";
-
-    /**
-     * 会员充值
-     */
-    public static final String BUSIN_CODE_MEMBER_RECHARGE = "0002";
-
     @ApiModelProperty(value = "主键")
     private String id;
 
