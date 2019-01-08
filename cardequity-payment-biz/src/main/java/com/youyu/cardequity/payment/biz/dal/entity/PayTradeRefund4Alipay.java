@@ -70,7 +70,7 @@ public class PayTradeRefund4Alipay extends PayTradeRefund {
     }
 
     public void callRefundFail(String remark) {
-        this.status = status.refunding();
+        this.status = status.refundFail();
         this.remark = remark;
     }
 

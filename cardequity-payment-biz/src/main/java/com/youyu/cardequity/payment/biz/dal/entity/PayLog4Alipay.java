@@ -114,7 +114,7 @@ public class PayLog4Alipay extends PayLog {
 
     public void callPrepaymentFail(String syncResponseBody) {
         this.remark = syncResponseBody;
-        this.state = state.paymenting();
+        this.state = state.paymentFail();
     }
 
     public void analysisAlipaySycnMessage(AlipaySyncMessageDto alipaySyncMessageDto, String sellerId, String appId) {

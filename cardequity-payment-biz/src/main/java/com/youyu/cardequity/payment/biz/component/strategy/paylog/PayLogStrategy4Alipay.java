@@ -42,6 +42,8 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
     public void executePay(PayLog payLog) {
         PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLog;
         AlipayTradeAppPayRequest alipayTradeAppPayRequest = getAlipayTradeAppPayRequest(payLog4Alipay);
+        payLog4Alipay.callPay();
+
         try {
             AlipayTradeAppPayResponse alipayTradeAppPayResponse = alipayClient.sdkExecute(alipayTradeAppPayRequest);
             String syncResponseBody = alipayTradeAppPayResponse.getBody();

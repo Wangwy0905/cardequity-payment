@@ -235,6 +235,14 @@ public class PayLog extends BaseEntity<String> {
         return getAlipayDayCutEnumByTime(getCreateTime());
     }
 
+    public void payFail() {
+        this.state = state.paymentFail();
+    }
+
+    public void callPay() {
+        this.state = state.paymenting();
+    }
+
     @Override
     public String getId() {
         return id;
@@ -251,9 +259,5 @@ public class PayLog extends BaseEntity<String> {
 
     public String getPayLogId() {
         return this.id;
-    }
-
-    public void payFail() {
-        this.state = state.paymentFail();
     }
 }
