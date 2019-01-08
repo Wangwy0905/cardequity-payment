@@ -8,6 +8,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -31,6 +32,9 @@ import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace
 @Aspect
 @Component
 public class ExceptionMonitor {
+
+    @Value("${storage.switch:true}")
+    private boolean storageSwitch;
 
     private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(4, 8, 1, TimeUnit.HOURS, new ArrayBlockingQueue<>(200));
 
@@ -66,13 +70,17 @@ public class ExceptionMonitor {
             String code = bizException.getCode();
             String desc = bizException.getDesc();
             log.error("异常编号:[{}],业务方法:[{}],输入参数:[{}],执行对应的业务异常码:[{}],业务异常描述:[{}]", exceptionId, methodName, parameter, code, desc);
-            exceptionLogMapper.insertSelective(new ExceptionLog(exceptionId, methodName, parameter, code, desc, EXCEPTION_TYPE_BUSINESS));
+            if (storageSwitch) {
+                exceptionLogMapper.insertSelective(new ExceptionLog(exceptionId, methodName, parameter, code, desc, EXCEPTION_TYPE_BUSINESS));
+            }
             return;
         }
 
         String fullStackTrace = getFullStackTrace(throwable);
         log.error("异常编号:[{}],业务方法:[{}],输入参数:[{}],执行的异常信息:[{}]", exceptionId, methodName, parameter, fullStackTrace);
-        exceptionLogMapper.insertSelective(new ExceptionLog(exceptionId, methodName, parameter, fullStackTrace, EXCEPTION_TYPE_NON_BUSINESS));
+        if (storageSwitch) {
+            exceptionLogMapper.insertSelective(new ExceptionLog(exceptionId, methodName, parameter, fullStackTrace, EXCEPTION_TYPE_NON_BUSINESS));
+        }
     }
 
 }
