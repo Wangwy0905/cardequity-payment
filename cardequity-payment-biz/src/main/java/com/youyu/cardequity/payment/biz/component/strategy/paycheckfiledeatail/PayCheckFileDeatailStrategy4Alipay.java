@@ -62,6 +62,7 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
 
             payCheckDeatail.setBackFlag(NEED_REFUND.getCode());
             payCheckDeatail.setCheckStatus(INCONSISTENT_STATE.getCode());
+            payCheckDeatail.setRemark("文件和交易状态不符");
         }
 
         tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
@@ -91,6 +92,7 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
             tradeOrder.refundSucc(PAY_AFTER_REFUND_STATUS_MESSAGE);
 
             payCheckDeatail.setCheckStatus(INCONSISTENT_STATE.getCode());
+            payCheckDeatail.setRemark("文件和退款状态不符");
         }
         tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
         tradeOrderMapper.updateReturnStatusPayCheckDeatailIdByRefundAfter(tradeOrder);

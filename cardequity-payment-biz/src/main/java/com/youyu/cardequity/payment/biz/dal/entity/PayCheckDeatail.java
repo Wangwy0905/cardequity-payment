@@ -227,6 +227,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.localPayState = payLog.getPayState();
         this.clientId = payLog.getClientId();
         this.clientName = payLog.getClientName();
+        this.remark = "文件有,交易没有";
     }
 
     public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder, PayLog payLog) {
@@ -276,6 +277,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.localPayState = payTradeRefund.getRefundStatus();
         this.clientId = payTradeRefund.getClientId();
         this.clientName = payTradeRefund.getClientName();
+        this.remark = "文件有,退款没有";
     }
 
     public PayCheckDeatail(PayLog payLog, TradeOrder tradeOrder) {
@@ -314,6 +316,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
 
         this.checkStatus = MAY_BE_TRADE_UNILATERAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
+        this.remark = "日切导致的数据,交易有,文件没有,需要继续对账";
     }
 
     public void dayCut4Refund(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
@@ -322,6 +325,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
 
         this.checkStatus = MAY_BE_REFUND_UNILATERAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
+        this.remark = "日切导致的数据,退款有,文件没有,需要继续对账";
     }
 
     public void notDayCut4Trade(PayLog payLog, TradeOrder tradeOrder) {
@@ -331,6 +335,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.returnStatus = STATUS_FAIL;
         this.checkStatus = tradeOrder.isPayFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
+        this.remark = "非日切导致的数据,交易有,文件没有,若交易失败则状态一致,否则状态不符";
 
         payLog.payFail();
         tradeOrder.payFail(PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE);
@@ -343,6 +348,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.returnStatus = STATUS_FAIL;
         this.checkStatus = tradeOrder.isRefundFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
+        this.remark = "非日切导致的数据,退款有,文件没有,若退款失败则状态一致,否则状态不符";
 
         payTradeRefund.refundFail();
         tradeOrder.refundFail(PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE);
@@ -358,6 +364,8 @@ public class PayCheckDeatail extends BaseEntity<String> {
 
         this.checkStatus = tradeOrder.isPayFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
+        this.remark = "前一天日切导致的数据,交易有,文件没有,若交易失败则状态一致,否则状态不符";
+
         payLog.payFail();
         tradeOrder.payFail(PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE);
     }
@@ -371,6 +379,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.returnStatus = STATUS_FAIL;
         this.checkStatus = tradeOrder.isRefundFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
+        this.remark = "前一天日切导致的数据,退款有,文件没有,若退款失败则状态一致,否则状态不符";
 
         payTradeRefund.refundFail();
         tradeOrder.refundFail(PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE);
