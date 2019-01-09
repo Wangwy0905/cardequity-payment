@@ -33,10 +33,10 @@
             <groupId>com.youyu.platform</groupId>
             <artifactId>common-handler</artifactId>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>com.youyu.platform</groupId>
             <artifactId>common-monitor</artifactId>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>com.youyu.platform</groupId>
             <artifactId>common-log</artifactId>
