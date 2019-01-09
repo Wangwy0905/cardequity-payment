@@ -29,14 +29,14 @@
             <groupId>com.youyu.platform</groupId>
             <artifactId>common-dao</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>com.youyu.platform</groupId>
-            <artifactId>common-handler</artifactId>
-        </dependency>-->
         <dependency>
             <groupId>com.youyu.platform</groupId>
-            <artifactId>common-monitor</artifactId>
+            <artifactId>common-handler</artifactId>
         </dependency>
+        <!--<dependency>
+            <groupId>com.youyu.platform</groupId>
+            <artifactId>common-monitor</artifactId>
+        </dependency>-->
         <dependency>
             <groupId>com.youyu.platform</groupId>
             <artifactId>common-log</artifactId>
