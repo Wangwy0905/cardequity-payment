@@ -28,6 +28,7 @@ import static com.youyu.cardequity.common.base.util.LocalDateUtils.date2LocalDat
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_SUCC;
 import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_SUCC;
+import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.time.DateUtils.addDays;
 
 /**
@@ -57,7 +58,9 @@ public class MockReconciliationDataServiceImpl implements MockReconciliationData
 
             payLogs.add(payLog);
             tradeOrders.add(tradeOrder);
-            payCheckFileDeatails.add(payCheckFileDeatail);
+            if (nonNull(payCheckFileDeatail)) {
+                payCheckFileDeatails.add(payCheckFileDeatail);
+            }
         }
 
         batchService.batchDispose(payLogs, PayLogMapper.class, "insertSelective");
@@ -82,7 +85,9 @@ public class MockReconciliationDataServiceImpl implements MockReconciliationData
             payLogs.add(payLog);
             payTradeRefunds.add(payTradeRefund);
             tradeOrders.add(tradeOrder);
-            payCheckFileDeatails.add(payCheckFileDeatail);
+            if (nonNull(payCheckFileDeatail)) {
+                payCheckFileDeatails.add(payCheckFileDeatail);
+            }
         }
 
         batchService.batchDispose(payLogs, PayLogMapper.class, "insertSelective");
@@ -112,7 +117,7 @@ public class MockReconciliationDataServiceImpl implements MockReconciliationData
     }
 
     private PayTradeRefund mockPayTradeRefund(PayLog payLog) {
-        PayTradeRefund payTradeRefund = new PayTradeRefund();
+        PayTradeRefund payTradeRefund = new PayTradeRefund4Alipay();
         payTradeRefund.setPayLogId(payLog.getId());
         payTradeRefund.setAppSheetSerialNo(payLog.getAppSheetSerialNo());
         payTradeRefund.setRefundApplyAmount(payLog.getOccurBalance());
@@ -120,9 +125,10 @@ public class MockReconciliationDataServiceImpl implements MockReconciliationData
         payTradeRefund.setRefundNo(uuid4NoRail());
         payTradeRefund.setRefundReason("买错了");
         payTradeRefund.setStatus(randomPayTradeRefundStatus(4));
-        payLog.setClientId(payLog.getClientId());
-        payLog.setClientName(payLog.getClientName());
-        payLog.setPayChannelNo("000001");
+        payTradeRefund.setClientId(payLog.getClientId());
+        payTradeRefund.setClientName(payLog.getClientName());
+        payTradeRefund.setChannelNo("000001");
+        payTradeRefund.setType("1");
         return payTradeRefund;
     }
 

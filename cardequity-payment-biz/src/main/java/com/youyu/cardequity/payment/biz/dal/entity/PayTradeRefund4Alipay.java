@@ -48,6 +48,7 @@ public class PayTradeRefund4Alipay extends PayTradeRefund {
     private String alipayRefundQueryResponse;
 
     public PayTradeRefund4Alipay() {
+        super();
     }
 
     public PayTradeRefund4Alipay(PayTradeRefundDto tradeRefundApplyDto, PayLog payLog) {

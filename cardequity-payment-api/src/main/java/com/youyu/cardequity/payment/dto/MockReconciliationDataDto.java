@@ -21,6 +21,6 @@ public class MockReconciliationDataDto implements Serializable {
     @ApiModelProperty(value = "数据数量", example = "10")
     private Integer quantity;
 
-    @ApiModelProperty(value = "是否是交易", example = "true:交易;false:退款,默认交易")
-    private Boolean isTrade = true;
+    @ApiModelProperty(value = "是否是交易", example = "true:交易;false:退款")
+    private Boolean isTrade;
 }
