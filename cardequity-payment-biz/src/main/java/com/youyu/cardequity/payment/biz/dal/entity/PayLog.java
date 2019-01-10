@@ -178,11 +178,11 @@ public class PayLog extends BaseEntity<String> {
     protected Boolean tradeCloseFlag;
 
     public PayLog() {
-
+        this.id = uuid4NoRail();
     }
 
     public PayLog(PayLogDto payLogDto) {
-        this.id = uuid4NoRail();
+        this();
         this.occurBalance = payLogDto.getOccurBalance();
         this.initDate = payLogDto.getInitDate();
         this.transAccountId = payLogDto.getTransAccountId();

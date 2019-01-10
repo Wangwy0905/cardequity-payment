@@ -132,11 +132,11 @@ public class TradeOrder extends BaseEntity<String> {
     private String businCode;
 
     public TradeOrder() {
-
+        this.id = uuid4NoRail();
     }
 
     public TradeOrder(TradeOrderDto tradeOrderDto) {
-        this.id = uuid4NoRail();
+        this();
         this.appSheetSerialNo = tradeOrderDto.getAppSheetSerialNo();
         this.transAccountId = tradeOrderDto.getTransAccountId();
         this.clientId = tradeOrderDto.getClientId();

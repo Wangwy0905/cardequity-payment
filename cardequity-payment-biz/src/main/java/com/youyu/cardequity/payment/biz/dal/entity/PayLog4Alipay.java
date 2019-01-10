@@ -87,6 +87,7 @@ public class PayLog4Alipay extends PayLog {
     private String alipayTradeQueryMessage;
 
     public PayLog4Alipay() {
+        super();
     }
 
     public PayLog4Alipay(PayLogDto payLogDto) {

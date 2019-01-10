@@ -135,6 +135,7 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
     private String payCheckDeatailId;
 
     public PayCheckFileDeatail() {
+        this.id = uuid4NoRail();
     }
 
     /**
@@ -147,7 +148,7 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
      * @param businType
      */
     public PayCheckFileDeatail(AlipayBill alipayBill, PayCheckFileDeatailDto payCheckFileDeatailDto, String fileName, String businType) {
-        this.id = uuid4NoRail();
+        this();
         this.tranceNo = alipayBill.getTradeNo();
         this.channelNo = payCheckFileDeatailDto.getChannelNo();
         this.checkDate = replace(payCheckFileDeatailDto.getBillDate(), "-", "");

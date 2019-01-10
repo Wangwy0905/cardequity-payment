@@ -109,10 +109,11 @@ public class PayTradeRefund extends BaseEntity<String> {
     protected String channelNo;
 
     public PayTradeRefund() {
+        this.id = uuid4NoRail();
     }
 
     public PayTradeRefund(PayTradeRefundDto tradeRefundApplyDto, PayLog payLog) {
-        this.id = uuid4NoRail();
+        this();
         this.payLogId = payLog.getId();
         this.appSheetSerialNo = tradeRefundApplyDto.getAppSheetSerialNo();
         this.refundApplyAmount = tradeRefundApplyDto.getRefundAmount();
