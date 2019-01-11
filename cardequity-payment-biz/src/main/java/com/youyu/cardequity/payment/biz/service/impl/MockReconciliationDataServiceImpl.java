@@ -3,7 +3,7 @@ package com.youyu.cardequity.payment.biz.service.impl;
 import com.youyu.cardequity.common.base.util.UuidUtil;
 import com.youyu.cardequity.common.spring.service.BatchService;
 import com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus;
-import com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus4PaymentQueuing;
+import com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus4PaymentSucc;
 import com.youyu.cardequity.payment.biz.component.status.paytraderefund.PayTradeRefundStatus;
 import com.youyu.cardequity.payment.biz.dal.dao.PayCheckFileDeatailMapper;
 import com.youyu.cardequity.payment.biz.dal.dao.PayLogMapper;
@@ -189,7 +189,7 @@ public class MockReconciliationDataServiceImpl implements MockReconciliationData
         if (mockReconciliationDataDto.getIsTrade()) {
             payLog.setState(randomPayLogStatus(4));
         } else {
-            payLog.setState(getBeanByClass(PayLogStatus4PaymentQueuing.class));
+            payLog.setState(getBeanByClass(PayLogStatus4PaymentSucc.class));
         }
         return payLog;
     }
