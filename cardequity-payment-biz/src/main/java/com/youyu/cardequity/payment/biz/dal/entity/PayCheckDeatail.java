@@ -20,6 +20,7 @@ import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFT
 import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.BUSIN_TYPE_REFUND;
 import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.BUSIN_TYPE_TRADE;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_FAIL;
+import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_SUCC;
 import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_FAIL;
 import static java.math.BigDecimal.ZERO;
 import static java.util.Objects.isNull;
@@ -344,7 +345,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
     public void notDayCut4Refund(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
         this.localState = STATUS_FAIL;
         this.localPayState = STATUS_FAIL;
-//        this.fileStatus = STATUS_PAYMENT_SUCC;
+        this.fileStatus = STATUS_PAYMENT_SUCC;
         this.returnStatus = STATUS_FAIL;
         this.checkStatus = tradeOrder.isRefundFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
@@ -375,7 +376,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
 
         this.localState = STATUS_FAIL;
         this.localPayState = STATUS_FAIL;
-//        this.fileStatus = STATUS_FAIL;
+        this.fileStatus = STATUS_PAYMENT_SUCC;
         this.returnStatus = STATUS_FAIL;
         this.checkStatus = tradeOrder.isRefundFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
