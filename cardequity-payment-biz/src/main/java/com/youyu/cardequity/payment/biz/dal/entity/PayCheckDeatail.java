@@ -284,8 +284,6 @@ public class PayCheckDeatail extends BaseEntity<String> {
     public PayCheckDeatail(PayLog payLog, TradeOrder tradeOrder) {
         this();
         this.businType = BUSIN_TYPE_TRADE;
-        this.fileStatus = "";
-        this.returnStatus = "";
 
         this.channelNo = payLog.getPayChannelNo();
         this.clientId = payLog.getClientId();
@@ -299,8 +297,6 @@ public class PayCheckDeatail extends BaseEntity<String> {
     public PayCheckDeatail(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
         this();
         this.businType = BUSIN_TYPE_REFUND;
-        this.fileStatus = "";
-        this.returnStatus = "";
 
         this.channelNo = payTradeRefund.getChannelNo();
         this.clientId = payTradeRefund.getClientId();
@@ -333,7 +329,6 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.localState = STATUS_PAYMENT_FAIL;
         this.localPayState = STATUS_PAYMENT_FAIL;
         this.fileStatus = STATUS_PAYMENT_FAIL;
-//        this.returnStatus = STATUS_FAIL;
         this.checkStatus = tradeOrder.isPayFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
         this.remark = "非日切导致的数据,交易有,文件没有,若交易失败则状态一致,否则状态不符";
@@ -361,7 +356,6 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.localState = STATUS_PAYMENT_FAIL;
         this.localPayState = STATUS_PAYMENT_FAIL;
         this.fileStatus = STATUS_PAYMENT_FAIL;
-//        this.returnStatus = STATUS_FAIL;
 
         this.checkStatus = tradeOrder.isPayFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
