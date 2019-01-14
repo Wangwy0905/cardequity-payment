@@ -1,16 +1,14 @@
 package com.youyu.cardequity.payment.biz.config;
 
-import com.youyu.cardequity.payment.biz.service.TradeOrderService;
+import com.youyu.cardequity.common.spring.mq.BaseRabbitConsumer;
+import com.youyu.cardequity.common.spring.service.RabbitConsumerService;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static org.springframework.amqp.core.AcknowledgeMode.MANUAL;
 
 /**
  * @author panqingqing
@@ -19,7 +17,7 @@ import static org.springframework.amqp.core.AcknowledgeMode.MANUAL;
  * @work Rabbitmq consumer
  */
 @Configuration
-public class RabbitmqConsumerConfig {
+public class RabbitmqConsumerConfig extends BaseRabbitConsumer {
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -29,32 +27,22 @@ public class RabbitmqConsumerConfig {
     private Queue tradeOrderMessageQueue;
 
     @Autowired
-    private TradeOrderService tradeOrderService;
+    @Qualifier("tradeOrderService")
+    private RabbitConsumerService rabbitConsumerService;
 
-    /**
-     * 消费:交易订单同步消息数据
-     *
-     * @return
-     */
-    @Bean
-    public SimpleMessageListenerContainer tradeOrderMessageContainer() {
-        SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
-        simpleMessageListenerContainer.setQueues(tradeOrderMessageQueue);
-        simpleMessageListenerContainer.setExposeListenerChannel(true);
-        simpleMessageListenerContainer.setMaxConcurrentConsumers(16);
-        simpleMessageListenerContainer.setConcurrentConsumers(4);
-        simpleMessageListenerContainer.setAcknowledgeMode(MANUAL);
-        simpleMessageListenerContainer.setMessageListener((ChannelAwareMessageListener) (message, channel) -> {
-            byte[] body = message.getBody();
-            try {
-                tradeOrderService.syncTradeOrderMessage(new String(body));
-                //确认消息成功消费,删除queue里面的消息
-                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-            } catch (Exception e) {
-                //拒绝消费消息,消息将会重新投递到别的Consumer
-                channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
-            }
-        });
-        return simpleMessageListenerContainer;
+    @Override
+    @Bean("tradeOrderConsumerMessageContainer")
+    public SimpleMessageListenerContainer consumerMessageContainer(ConnectionFactory connectionFactory) {
+        return super.consumerMessageContainer(connectionFactory);
+    }
+
+    @Override
+    protected RabbitConsumerService getRabbitConsumerService() {
+        return rabbitConsumerService;
+    }
+
+    @Override
+    protected Queue getQueue() {
+        return tradeOrderMessageQueue;
     }
 }

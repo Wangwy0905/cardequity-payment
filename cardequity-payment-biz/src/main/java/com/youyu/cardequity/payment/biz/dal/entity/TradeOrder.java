@@ -220,6 +220,7 @@ public class TradeOrder extends BaseEntity<String> {
         tradeOrder.setAppSheetSerialNo(this.appSheetSerialNo);
         tradeOrder.setPayState(this.payState);
         tradeOrder.setBusinCode(this.businCode);
+        tradeOrder.setPayRefundNo(this.payChannelNo);
         return toJSONString(tradeOrder);
     }
 }
