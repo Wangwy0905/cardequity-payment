@@ -24,20 +24,18 @@ public interface TradeOrderMapper {
      * 查询交易数据,不包括退款的(加了同步日期)
      *
      * @param appSheetSerialNo
-     * @param syncDataDate
      * @return
      */
-    TradeOrder getByAppSheetSerialNoPayRefundNoIsNull(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("syncDataDate") String syncDataDate);
+    TradeOrder getByAppSheetSerialNoPayRefundNoIsNull(@Param("appSheetSerialNo") String appSheetSerialNo);
 
     /**
      * 根据单号和退款编号查询退款数据(加了同步日期)
      *
      * @param appSheetSerialNo
      * @param refundBatchNo
-     * @param syncDataDate
      * @return
      */
-    TradeOrder getByAppSeetSerialNoPayRefundNo(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("refundBatchNo") String refundBatchNo, @Param("syncDataDate") String syncDataDate);
+    TradeOrder getByAppSeetSerialNoPayRefundNo(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("refundBatchNo") String refundBatchNo);
 
     /**
      * 查询未对账的前一天数据和由于日切导致的数据需要继续对账

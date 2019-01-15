@@ -66,17 +66,17 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
         String refundBatchNo = payCheckFileDeatail.getRefundBatchNo();
         try {
             if (isBlank(refundBatchNo)) {
-                doBill2Trade(payCheckFileDeatail, payCheckDeatailDto);
+                doBill2Trade(payCheckFileDeatail);
                 return;
             }
-            doBill2TradeRefund(payCheckFileDeatail, payCheckDeatailDto);
+            doBill2TradeRefund(payCheckFileDeatail);
         } catch (Exception ex) {
             log.error("文件对交易对账单信息:[{}]和异常信息:[{}]", toJSONString(payCheckFileDeatail), getFullStackTrace(ex));
         }
     }
 
-    private void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail, PayCheckDeatailDto payCheckDeatailDto) {
-        TradeOrder tradeOrder = tradeOrderMapper.getByAppSheetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSheetSerialNo(), payCheckDeatailDto.getBillDate());
+    private void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail) {
+        TradeOrder tradeOrder = tradeOrderMapper.getByAppSheetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSheetSerialNo());
         if (isNull(tradeOrder)) {
             // 文件单边交易
             PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(payCheckFileDeatail.getAppSheetSerialNo(), NORMAL.getCode());
@@ -89,8 +89,8 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
         payChannelInfo.doBill2Trade(payCheckFileDeatail, tradeOrder);
     }
 
-    private void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail, PayCheckDeatailDto payCheckDeatailDto) {
-        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo(), payCheckDeatailDto.getBillDate());
+    private void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail) {
+        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
         if (isNull(tradeOrder)) {
             // 文件单边退款
             PayTradeRefund payTradeRefund = payTradeRefundMapper.getByAppSheetSerialNoRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
