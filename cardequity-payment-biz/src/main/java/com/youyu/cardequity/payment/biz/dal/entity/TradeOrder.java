@@ -149,7 +149,7 @@ public class TradeOrder extends BaseEntity<String> {
         this.refundStatus = tradeOrderDto.getRefundStatus();
         this.payLogId = tradeOrderDto.getPayLogId();
         this.payRefundId = tradeOrderDto.getPayRefundId();
-        this.syncDataDate = date2String(addDays(now(), -1), YYYYMMDD);
+        this.syncDataDate = date2String(now(), YYYYMMDD);
         this.businCode = tradeOrderDto.getBusinCode();
     }
 
@@ -172,7 +172,7 @@ public class TradeOrder extends BaseEntity<String> {
     }
 
     public boolean isPayFail() {
-        return eq(this.payState, STATUS_PAYMENT_FAIL);
+        return !isPaySucc();
     }
 
     public boolean isRefundSucc() {
@@ -180,7 +180,7 @@ public class TradeOrder extends BaseEntity<String> {
     }
 
     public boolean isRefundFail() {
-        return eq(this.refundStatus, STATUS_FAIL);
+        return !isRefundSucc();
     }
 
     public void refundSucc(RabbitmqMessageEnum rabbitmqMessageEnum) {

@@ -169,10 +169,11 @@
         update TB_TRADE_ORDER set REFUND_STATUS = #{refundStatus,jdbcType=VARCHAR}, PAY_CHECK_DEATAIL_ID = #{payCheckDeatailId,jdbcType=VARCHAR}  where ID = #{id,jdbcType=VARCHAR}
     </update>
 
-    <select id="getByAppSheetSerialNoPayRefundNoIsNull" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="getByAppSheetSerialNoPayRefundNoIsNull" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
         from TB_TRADE_ORDER
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+        and SYNC_DATA_DATE = #{syncDataDate,jdbcType=VARCHAR}
         and PAY_REFUND_NO is null
     </select>
 
@@ -180,6 +181,7 @@
         select <include refid="Base_Column_List"/>
         from TB_TRADE_ORDER
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+        and SYNC_DATA_DATE = #{syncDataDate,jdbcType=VARCHAR}
         and PAY_REFUND_NO = #{refundBatchNo,jdbcType=VARCHAR}
     </select>
 

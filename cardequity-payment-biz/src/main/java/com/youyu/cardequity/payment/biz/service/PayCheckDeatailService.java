@@ -42,8 +42,9 @@ public interface PayCheckDeatailService {
      * 执行对账单对交易和退款进行对账
      *
      * @param payCheckFileDeatail
+     * @param payCheckDeatailDto
      */
-    void executeBill2TradeAndRefund(PayCheckFileDeatail payCheckFileDeatail);
+    void executeBill2TradeAndRefund(PayCheckFileDeatail payCheckFileDeatail, PayCheckDeatailDto payCheckDeatailDto);
 
     /**
      * 执行交易和退款来对对账单进行对账(主要是日切导致的数据)

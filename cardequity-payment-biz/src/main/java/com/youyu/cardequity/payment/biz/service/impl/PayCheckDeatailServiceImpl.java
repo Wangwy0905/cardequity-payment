@@ -57,27 +57,27 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     private void bill2TradeAndRefund(PayCheckDeatailDto payCheckDeatailDto, PayCheckDeatailService payCheckDeatailService) {
         List<PayCheckFileDeatail> payCheckFileDeatails = payCheckFileDeatailMapper.getListByBillDatePayCheckDeatailIdisNull(payCheckDeatailDto.getBillDate());
         for (PayCheckFileDeatail payCheckFileDeatail : payCheckFileDeatails) {
-            payCheckDeatailService.executeBill2TradeAndRefund(payCheckFileDeatail);
+            payCheckDeatailService.executeBill2TradeAndRefund(payCheckFileDeatail, payCheckDeatailDto);
         }
     }
 
     @Override
     @Transactional
-    public void executeBill2TradeAndRefund(PayCheckFileDeatail payCheckFileDeatail) {
+    public void executeBill2TradeAndRefund(PayCheckFileDeatail payCheckFileDeatail, PayCheckDeatailDto payCheckDeatailDto) {
         String refundBatchNo = payCheckFileDeatail.getRefundBatchNo();
         try {
             if (isBlank(refundBatchNo)) {
-                doBill2Trade(payCheckFileDeatail);
+                doBill2Trade(payCheckFileDeatail, payCheckDeatailDto);
                 return;
             }
-            doBill2TradeRefund(payCheckFileDeatail);
+            doBill2TradeRefund(payCheckFileDeatail, payCheckDeatailDto);
         } catch (Exception ex) {
             log.error("文件对交易对账单信息:[{}]和异常信息:[{}]", toJSONString(payCheckFileDeatail), getFullStackTrace(ex));
         }
     }
 
-    private void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail) {
-        TradeOrder tradeOrder = tradeOrderMapper.getByAppSheetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSheetSerialNo());
+    private void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail, PayCheckDeatailDto payCheckDeatailDto) {
+        TradeOrder tradeOrder = tradeOrderMapper.getByAppSheetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSheetSerialNo(), getSyncDataDate(payCheckDeatailDto.getBillDate()));
         if (isNull(tradeOrder)) {
             // 文件单边交易
             PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(payCheckFileDeatail.getAppSheetSerialNo(), NORMAL.getCode());
@@ -90,8 +90,8 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
         payChannelInfo.doBill2Trade(payCheckFileDeatail, tradeOrder);
     }
 
-    private void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail) {
-        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
+    private void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail, PayCheckDeatailDto payCheckDeatailDto) {
+        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo(), getSyncDataDate(payCheckDeatailDto.getBillDate()));
         if (isNull(tradeOrder)) {
             // 文件单边退款
             PayTradeRefund payTradeRefund = payTradeRefundMapper.getByAppSheetSerialNoRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
