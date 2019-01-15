@@ -16,6 +16,7 @@ import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.NEED_REFUND;
 import static com.youyu.cardequity.payment.biz.enums.CheckStatusEnum.INCONSISTENT_STATE;
 import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_REFUND_MESSAGE;
 import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFTER_REFUND_STATUS_MESSAGE;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * @author panqingqing
@@ -50,6 +51,8 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
     @Override
     public void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder) {
         PayLog payLog = payLogMapper.getById(tradeOrder.getPayLogId());
+        deleteExistPayCheckDeatail(tradeOrder.getPayCheckDeatailId());
+
         PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, tradeOrder, payLog);
 
         if (!payLog.isPaySucc()) {
@@ -81,8 +84,9 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
     @Override
     public void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder) {
         PayTradeRefund payTradeRefund = payTradeRefundMapper.getById(tradeOrder.getPayRefundId());
-        PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, tradeOrder, payTradeRefund);
+        deleteExistPayCheckDeatail(tradeOrder.getPayCheckDeatailId());
 
+        PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, tradeOrder, payTradeRefund);
         if (!payTradeRefund.isRefundSucc()) {
             payTradeRefund.refundAfterBill2TradeRefund();
             payTradeRefundMapper.updateStatusByRefundAfter(payTradeRefund);
@@ -119,5 +123,13 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
         tradeOrderMapper.updateReturnStatusPayCheckDeatailIdByRefundAfter(tradeOrder);
         payTradeRefundMapper.updateStatusByRefundAfter(payTradeRefund);
 
+    }
+
+    private void deleteExistPayCheckDeatail(String payCheckDeatailId) {
+        if (isBlank(payCheckDeatailId)) {
+            return;
+        }
+
+        payCheckDeatailMapper.deleteById(payCheckDeatailId);
     }
 }

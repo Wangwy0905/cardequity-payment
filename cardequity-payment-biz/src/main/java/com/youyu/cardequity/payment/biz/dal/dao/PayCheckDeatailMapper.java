@@ -43,4 +43,19 @@ public interface PayCheckDeatailMapper {
      * @param payCheckDeatail
      */
     void updateByDoTradeAndReturn2BillNotFile(PayCheckDeatail payCheckDeatail);
+
+    /**
+     * 根据主键删除
+     *
+     * @param id
+     */
+    void deleteById(@Param("id") String id);
+
+    /**
+     * 根据主键查询
+     *
+     * @param id
+     * @return
+     */
+    PayCheckDeatail getById(@Param("id") String id);
 }
