@@ -48,7 +48,7 @@ public class PayLogCommond4AlipayTradeFastpayRefundQuery extends PayLogCommond {
             payTradeRefund4Alipay.callRefundQuerySucc(alipayTradeFastpayRefundQueryResponse);
         } catch (AlipayApiException e) {
             log.error("调用支付宝退款查询单号:[{}]对应的退款异常信息:[{}]", payTradeRefund4Alipay.getId(), getFullStackTrace(e));
-            payTradeRefund4Alipay.callRefundQueryFail("支付宝交易查询异常!");
+            payTradeRefund4Alipay.callRefundQueryFail("支付宝交易退款查询异常!");
         }
 
         payTradeRefundMapper.updateByAlipayRefundQuery(payTradeRefund4Alipay);

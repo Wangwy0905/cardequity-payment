@@ -185,6 +185,7 @@ public class MockReconciliationDataServiceImpl implements MockReconciliationData
         Date date = addDays(now(), -1);
         payLog.setCreateTime(date2LocalDateTime(date));
         payLog.setUpdateTime(date2LocalDateTime(date));
+        payLog.setBusinCode("0001");
 
         if (mockReconciliationDataDto.getIsTrade()) {
             payLog.setState(randomPayLogStatus(4));
