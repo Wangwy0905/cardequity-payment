@@ -174,7 +174,6 @@
         from TB_TRADE_ORDER
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
         and PAY_REFUND_NO is null
-        and PAY_CHECK_DEATAIL_ID is null
     </select>
 
     <select id="getByAppSeetSerialNoPayRefundNo" resultMap="BaseResultMap">
@@ -182,7 +181,6 @@
         from TB_TRADE_ORDER
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
         and PAY_REFUND_NO = #{refundBatchNo,jdbcType=VARCHAR}
-        and PAY_CHECK_DEATAIL_ID is null
     </select>
 
     <select id="getBySyncDataDateAndDayCut" resultMap="BaseResultMap">

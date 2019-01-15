@@ -19,6 +19,7 @@ import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 import static org.apache.commons.lang3.time.DateUtils.addDays;
 
 /**
@@ -85,6 +86,10 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
             return;
         }
 
+        if (isNeedTradeReturn2Bill(tradeOrder)) {
+            return;
+        }
+
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
         payChannelInfo.doBill2Trade(payCheckFileDeatail, tradeOrder);
     }
@@ -96,6 +101,10 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
             PayTradeRefund payTradeRefund = payTradeRefundMapper.getByAppSheetSerialNoRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
             PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, payTradeRefund);
             payCheckDeatailMapper.insertSelective(payCheckDeatail);
+            return;
+        }
+
+        if (isNeedTradeReturn2Bill(tradeOrder)) {
             return;
         }
 
@@ -156,5 +165,15 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
             billDate = date2String(addDays(now(), -1), YYYYMMDD);
         }
         payCheckDeatailDto.setBillDate(billDate);
+    }
+
+    /**
+     * 是否需要交易或者退款去对文件
+     *
+     * @param tradeOrder
+     * @return
+     */
+    private boolean isNeedTradeReturn2Bill(TradeOrder tradeOrder) {
+        return isNoneBlank(tradeOrder.getPayCheckDeatailId());
     }
 }
