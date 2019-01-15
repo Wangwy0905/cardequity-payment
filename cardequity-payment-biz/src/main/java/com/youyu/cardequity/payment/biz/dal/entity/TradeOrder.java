@@ -160,6 +160,7 @@ public class TradeOrder extends BaseEntity<String> {
 
     public void payFail(RabbitmqMessageEnum rabbitmqMessageEnum) {
         if (isPayFail()) {
+            this.payState = STATUS_PAYMENT_FAIL;
             return;
         }
 
@@ -190,6 +191,7 @@ public class TradeOrder extends BaseEntity<String> {
 
     public void refundFail(RabbitmqMessageEnum rabbitmqMessageEnum) {
         if (isRefundFail()) {
+            this.refundStatus = STATUS_FAIL;
             return;
         }
 
