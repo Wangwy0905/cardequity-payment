@@ -149,7 +149,7 @@ public class TradeOrder extends BaseEntity<String> {
         this.refundStatus = tradeOrderDto.getRefundStatus();
         this.payLogId = tradeOrderDto.getPayLogId();
         this.payRefundId = tradeOrderDto.getPayRefundId();
-        this.syncDataDate = date2String(now(), YYYYMMDD);
+        this.syncDataDate = date2String(addDays(now(), -1), YYYYMMDD);
         this.businCode = tradeOrderDto.getBusinCode();
     }
 

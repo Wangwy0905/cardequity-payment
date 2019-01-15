@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
@@ -77,7 +76,7 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     }
 
     private void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail, PayCheckDeatailDto payCheckDeatailDto) {
-        TradeOrder tradeOrder = tradeOrderMapper.getByAppSheetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSheetSerialNo(), getSyncDataDate(payCheckDeatailDto.getBillDate()));
+        TradeOrder tradeOrder = tradeOrderMapper.getByAppSheetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSheetSerialNo(), payCheckDeatailDto.getBillDate());
         if (isNull(tradeOrder)) {
             // 文件单边交易
             PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(payCheckFileDeatail.getAppSheetSerialNo(), NORMAL.getCode());
@@ -91,7 +90,7 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     }
 
     private void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail, PayCheckDeatailDto payCheckDeatailDto) {
-        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo(), getSyncDataDate(payCheckDeatailDto.getBillDate()));
+        TradeOrder tradeOrder = tradeOrderMapper.getByAppSeetSerialNoPayRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo(), payCheckDeatailDto.getBillDate());
         if (isNull(tradeOrder)) {
             // 文件单边退款
             PayTradeRefund payTradeRefund = payTradeRefundMapper.getByAppSheetSerialNoRefundNo(payCheckFileDeatail.getAppSheetSerialNo(), payCheckFileDeatail.getRefundBatchNo());
@@ -105,7 +104,7 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     }
 
     private void tradeAndRefund2Bill(PayCheckDeatailDto payCheckDeatailDto, PayCheckDeatailService payCheckDeatailService) {
-        List<TradeOrder> tradeOrders = tradeOrderMapper.getBySyncDataDateAndDayCut(getSyncDataDate(payCheckDeatailDto.getBillDate()), MAY_BE_TRADE_UNILATERAL.getCode(), MAY_BE_REFUND_UNILATERAL.getCode());
+        List<TradeOrder> tradeOrders = tradeOrderMapper.getBySyncDataDateAndDayCut(payCheckDeatailDto.getBillDate(), MAY_BE_TRADE_UNILATERAL.getCode(), MAY_BE_REFUND_UNILATERAL.getCode());
         for (TradeOrder tradeOrder : tradeOrders) {
             payCheckDeatailService.executeTradeAndRefund2Bill(tradeOrder);
         }
@@ -157,10 +156,5 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
             billDate = date2String(addDays(now(), -1), YYYYMMDD);
         }
         payCheckDeatailDto.setBillDate(billDate);
-    }
-
-    private String getSyncDataDate(String billDate) {
-        Date date = addDays(string2Date(billDate, YYYYMMDD), 1);
-        return date2String(date, YYYYMMDD);
     }
 }

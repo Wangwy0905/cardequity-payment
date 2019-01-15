@@ -1,5 +1,6 @@
 package com.youyu.cardequity.payment.biz.service.impl;
 
+import com.youyu.cardequity.common.base.util.DateUtil;
 import com.youyu.cardequity.common.base.util.UuidUtil;
 import com.youyu.cardequity.common.spring.service.BatchService;
 import com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus;
@@ -161,7 +162,7 @@ public class MockReconciliationDataServiceImpl implements MockReconciliationData
         tradeOrder.setOrderAmount(payLog.getOccurBalance());
         tradeOrder.setPayState(payLog.getPayState());
         tradeOrder.setPayLogId(payLog.getId());
-        tradeOrder.setSyncDataDate(date2String(now(), YYYYMMDD));
+        tradeOrder.setSyncDataDate(date2String(addDays(now(), -1), YYYYMMDD));
         tradeOrder.setBusinCode(payLog.getBusinCode());
         return tradeOrder;
     }
