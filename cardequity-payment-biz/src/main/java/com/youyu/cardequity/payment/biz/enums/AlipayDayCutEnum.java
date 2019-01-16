@@ -17,6 +17,7 @@ import static com.youyu.cardequity.common.base.util.LocalDateUtils.localDateTime
 import static com.youyu.cardequity.common.base.util.StringUtil.eq;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_DAY_CUT_CANNOT_NULL;
 import static java.util.Objects.isNull;
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 import static org.apache.commons.lang3.time.DateUtils.addDays;
 
 /**
@@ -31,6 +32,10 @@ public enum AlipayDayCutEnum {
     DAY_CUT("0", "日切") {
         @Override
         public void doTrade2BillNotFile(PayLog payLog, TradeOrder tradeOrder) {
+            if (isExist(tradeOrder.getPayCheckDeatailId())) {
+                return;
+            }
+
             PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payLog, tradeOrder);
             payCheckDeatail.dayCut4Trade(payLog, tradeOrder);
             tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
@@ -39,6 +44,10 @@ public enum AlipayDayCutEnum {
 
         @Override
         public void doTrade2BillRefundNotFile(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
+            if (isExist(tradeOrder.getPayCheckDeatailId())) {
+                return;
+            }
+
             PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payTradeRefund, tradeOrder);
             payCheckDeatail.dayCut4Refund(payTradeRefund, tradeOrder);
             tradeOrder.setPayCheckDeatailId(payCheckDeatail.getId());
@@ -103,6 +112,10 @@ public enum AlipayDayCutEnum {
         Date createDate = localDateTime2Date(time);
         Date dayCutPoint = string2Date(payTimeStr + " 23:50:00", YYYY_MM_DD_HH_MM_SS);
         return createDate.compareTo(dayCutPoint) >= 0 ? DAY_CUT : NOT_DAY_CUT;
+    }
+
+    public boolean isExist(String payCheckDeatailId) {
+        return isNoneBlank(payCheckDeatailId);
     }
 
     public abstract void doTrade2BillNotFile(PayLog payLog, TradeOrder tradeOrder);
