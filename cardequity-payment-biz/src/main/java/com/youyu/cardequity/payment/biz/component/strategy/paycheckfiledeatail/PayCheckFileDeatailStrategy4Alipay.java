@@ -51,9 +51,12 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
     @Override
     public void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder) {
         PayLog payLog = payLogMapper.getById(tradeOrder.getPayLogId());
-        deleteExistPayCheckDeatail(tradeOrder.getPayCheckDeatailId());
+        boolean isExist = deleteExistPayCheckDeatail(tradeOrder.getPayCheckDeatailId());
 
         PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, tradeOrder, payLog);
+        if (isExist) {
+            payCheckDeatail.AddCheckNum();
+        }
 
         if (!payLog.isPaySucc()) {
             payLog.payAfterBill2TradeSucc();
@@ -84,9 +87,13 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
     @Override
     public void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder) {
         PayTradeRefund payTradeRefund = payTradeRefundMapper.getById(tradeOrder.getPayRefundId());
-        deleteExistPayCheckDeatail(tradeOrder.getPayCheckDeatailId());
+        boolean isExist = deleteExistPayCheckDeatail(tradeOrder.getPayCheckDeatailId());
 
         PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, tradeOrder, payTradeRefund);
+        if (isExist) {
+            payCheckDeatail.AddCheckNum();
+        }
+
         if (!payTradeRefund.isRefundSucc()) {
             payTradeRefund.refundAfterBill2TradeRefund();
             payTradeRefundMapper.updateStatusByRefundAfter(payTradeRefund);
@@ -125,11 +132,12 @@ public class PayCheckFileDeatailStrategy4Alipay extends PayCheckFileDeatailStrat
 
     }
 
-    private void deleteExistPayCheckDeatail(String payCheckDeatailId) {
+    private boolean deleteExistPayCheckDeatail(String payCheckDeatailId) {
         if (isBlank(payCheckDeatailId)) {
-            return;
+            return false;
         }
 
         payCheckDeatailMapper.deleteById(payCheckDeatailId);
+        return true;
     }
 }

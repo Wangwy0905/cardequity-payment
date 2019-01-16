@@ -20,7 +20,6 @@ import static com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum.PAY_AFT
 import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.BUSIN_TYPE_REFUND;
 import static com.youyu.cardequity.payment.biz.help.constant.BusinessConstant.BUSIN_TYPE_TRADE;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_FAIL;
-import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_SUCC;
 import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_FAIL;
 import static java.math.BigDecimal.ZERO;
 import static java.util.Objects.isNull;
@@ -379,6 +378,10 @@ public class PayCheckDeatail extends BaseEntity<String> {
 
         payTradeRefund.refundFail();
         tradeOrder.refundFail(PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE);
+    }
+
+    public void AddCheckNum() {
+        this.checkNum = this.checkNum + 1;
     }
 
     @Override
