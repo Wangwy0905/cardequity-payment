@@ -19,6 +19,7 @@ import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass
 import static com.youyu.cardequity.common.base.util.StatusAndStrategyNumUtil.getNumber;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.biz.enums.AlipayDayCutEnum.getAlipayDayCutEnumByTime;
+import static java.time.LocalDateTime.now;
 
 /**
  * @author panqingqing
@@ -179,6 +180,7 @@ public class PayLog extends BaseEntity<String> {
 
     public PayLog() {
         this.id = uuid4NoRail();
+        setCreateTime(now());
     }
 
     public PayLog(PayLogDto payLogDto) {

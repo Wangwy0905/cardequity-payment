@@ -17,6 +17,7 @@ import static com.youyu.cardequity.common.base.util.MoneyUtil.string2BigDecimal;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_SUCC;
 import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_SUCC;
+import static java.time.LocalDateTime.now;
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 import static org.apache.commons.lang3.StringUtils.replace;
 
@@ -136,6 +137,7 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
 
     public PayCheckFileDeatail() {
         this.id = uuid4NoRail();
+        setCreateTime(now());
     }
 
     /**
