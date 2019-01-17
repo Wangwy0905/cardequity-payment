@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import static com.youyu.cardequity.common.base.util.DateUtil.date2String;
 import static com.youyu.cardequity.common.base.util.DateUtil.now;
@@ -192,7 +191,6 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.transActionDate = date2String(now(), "YYYYMMDD");
         this.checkNum = 1;
         this.checkStatus = UNTREATED.getCode();
-        setCreateTime(LocalDateTime.now());
     }
 
     public PayCheckDeatail(PayCheckFileDeatail payCheckFileDeatail) {

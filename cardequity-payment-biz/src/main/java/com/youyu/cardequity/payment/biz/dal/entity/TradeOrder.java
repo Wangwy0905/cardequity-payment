@@ -11,7 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
@@ -134,7 +133,6 @@ public class TradeOrder extends BaseEntity<String> {
 
     public TradeOrder() {
         this.id = uuid4NoRail();
-        setCreateTime(LocalDateTime.now());
     }
 
     public TradeOrder(TradeOrderDto tradeOrderDto) {
