@@ -130,6 +130,10 @@ public class MockReconciliationDataServiceImpl implements MockReconciliationData
         payTradeRefund.setClientName(payLog.getClientName());
         payTradeRefund.setChannelNo("000001");
         payTradeRefund.setType("1");
+
+        Date date = addDays(now(), -1);
+        payTradeRefund.setCreateTime(date2LocalDateTime(date));
+        payTradeRefund.setUpdateTime(date2LocalDateTime(date));
         return payTradeRefund;
     }
 
