@@ -319,6 +319,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
     public void dayCut4Refund(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
         this.localState = tradeOrder.getRefundStatus();
         this.localPayState = payTradeRefund.getRefundStatus();
+        this.fileStatus = "0";
 
         this.checkStatus = MAY_BE_REFUND_UNILATERAL.getCode();
         this.backFlag = NOT_NEED_REFUND.getCode();
@@ -341,6 +342,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
     public void notDayCut4Refund(PayTradeRefund payTradeRefund, TradeOrder tradeOrder) {
         this.localState = tradeOrder.getRefundStatus();
         this.localPayState = payTradeRefund.getRefundStatus();
+        this.fileStatus = "0";
         this.returnStatus = STATUS_FAIL;
 
         this.checkStatus = tradeOrder.isRefundFail() ? NORMAL.getCode() : INCONSISTENT_STATE.getCode();
