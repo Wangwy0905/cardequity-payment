@@ -304,6 +304,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
         this.localPayAmount = payTradeRefund.getRefundAmount();
 
         this.localAmount = tradeOrder.getRefundAmount();
+        this.refundBatchNo = tradeOrder.getPayRefundNo();
     }
 
     public void dayCut4Trade(PayLog payLog, TradeOrder tradeOrder) {
