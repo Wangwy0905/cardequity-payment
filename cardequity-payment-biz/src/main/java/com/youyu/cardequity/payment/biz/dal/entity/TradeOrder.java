@@ -153,18 +153,6 @@ public class TradeOrder extends BaseEntity<String> {
         this.businCode = tradeOrderDto.getBusinCode();
     }
 
-    public TradeOrder(TradeOrder tradeOrder, boolean isTrade) {
-        this.appSheetSerialNo = tradeOrder.getAppSheetSerialNo();
-        this.payState = tradeOrder.getPayState();
-        this.businCode = tradeOrder.getBusinCode();
-        this.payChannelNo = tradeOrder.getPayChannelNo();
-        if (!isTrade) {
-            tradeOrder.setPayRefundId(this.payRefundId);
-            tradeOrder.setPayRefundNo(this.payRefundNo);
-            tradeOrder.setRefundStatus(this.refundStatus);
-        }
-    }
-
     public void paySucc(RabbitmqMessageEnum rabbitmqMessageEnum) {
         this.payState = STATUS_PAYMENT_SUCC;
         senderTradeMessage(rabbitmqMessageEnum);
@@ -220,12 +208,23 @@ public class TradeOrder extends BaseEntity<String> {
     }
 
     private String getReturnMessage() {
-        TradeOrder tradeOrder = new TradeOrder(this, false);
+        TradeOrder tradeOrder = new TradeOrder();
+        tradeOrder.setAppSheetSerialNo(this.appSheetSerialNo);
+        tradeOrder.setPayState(this.payState);
+        tradeOrder.setBusinCode(this.businCode);
+        tradeOrder.setPayChannelNo(this.payChannelNo);
+        tradeOrder.setPayRefundId(this.payRefundId);
+        tradeOrder.setPayRefundNo(this.payRefundNo);
+        tradeOrder.setRefundStatus(this.refundStatus);
         return toJSONString(tradeOrder);
     }
 
     private String getTradeMessage() {
-        TradeOrder tradeOrder = new TradeOrder(this, true);
+        TradeOrder tradeOrder = new TradeOrder();
+        tradeOrder.setAppSheetSerialNo(this.appSheetSerialNo);
+        tradeOrder.setPayState(this.payState);
+        tradeOrder.setBusinCode(this.businCode);
+        tradeOrder.setPayChannelNo(this.payChannelNo);
         return toJSONString(tradeOrder);
     }
 
