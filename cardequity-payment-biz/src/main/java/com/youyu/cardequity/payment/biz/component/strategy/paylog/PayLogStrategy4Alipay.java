@@ -73,6 +73,7 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
         }
         alipayTradeAppPayModel.setTotalAmount(payLog4Alipay.getOccurBalance().toString());
         alipayTradeAppPayModel.setProductCode(ALIPAY_PRODUCT_CODE);
+        alipayTradeAppPayModel.setGoodsType(payLog4Alipay.getAlipayGoodsType());
         return alipayTradeAppPayModel;
     }
 }
