@@ -37,8 +37,7 @@ public class PayTradeRefundServiceImpl implements PayTradeRefundService {
     @Override
     public PayTradeRefundResponseDto tradeRefund(PayTradeRefundDto tradeRefundApplyDto) {
         PayLog payLog = getPayLog(tradeRefundApplyDto);
-        String payChannelNo = payLog.getPayChannelNo();
-        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payChannelNo);
+        PayChannelInfo payChannelInfo = getPayChannelInfo(payLog.getPayChannelNo());
 
         PayTradeRefund payTradeRefund = payChannelInfo.createPayRefundAndRefund(tradeRefundApplyDto, payLog);
         return copyProperties(payTradeRefund, PayTradeRefundResponseDto.class);
@@ -61,6 +60,11 @@ public class PayTradeRefundServiceImpl implements PayTradeRefundService {
         }
 
         return payLog;
+    }
+
+    private PayChannelInfo getPayChannelInfo(String payChannelNo) {
+        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payChannelNo);
+        return payChannelInfo;
     }
 
     private PayTradeRefund getPayTradeRefund(PayTradeRefundDto tradeRefundApplyDto) {

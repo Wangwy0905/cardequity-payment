@@ -189,6 +189,7 @@ public class PayLog4Alipay extends PayLog {
         if (isBlank(appSheetSerialNo)) {
             throw new BizException(ORDER_NO_CANNOT_EMPTY);
         }
+
         if (checkParameterGtLength(appSheetSerialNo, ORDER_LENGTH_LIMIT)) {
             throw new BizException(ORDER_NO_DIGITS.getCode(), ORDER_NO_DIGITS.getFormatDesc(ORDER_LENGTH_LIMIT));
         }

@@ -31,6 +31,10 @@
         </dependency>
         <dependency>
             <groupId>com.youyu.platform</groupId>
+            <artifactId>common-dts</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.youyu.platform</groupId>
             <artifactId>common-handler</artifactId>
         </dependency>
         <dependency>
