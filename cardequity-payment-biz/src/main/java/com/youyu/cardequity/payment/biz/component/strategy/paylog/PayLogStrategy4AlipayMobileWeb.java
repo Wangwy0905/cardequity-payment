@@ -26,7 +26,7 @@ import static org.apache.commons.lang3.StringUtils.isNoneBlank;
  * @work Alipay Pay支付宝支付策略
  */
 @Slf4j
-@StatusAndStrategyNum(superClass = PayLogStrategy.class, number = "1", describe = "支付宝手机网站支付策略")
+@StatusAndStrategyNum(superClass = PayLogStrategy.class, number = "2", describe = "支付宝手机网站支付策略")
 @Component
 public class PayLogStrategy4AlipayMobileWeb extends PayLogStrategy {
 
