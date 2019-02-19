@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import static com.youyu.cardequity.payment.biz.help.constant.AlipayConstant.ALIPAY_PRODUCT_CODE;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
 /**
@@ -25,7 +26,7 @@ import static org.apache.commons.lang3.StringUtils.isNoneBlank;
  * @work Alipay Pay支付宝支付策略
  */
 @Slf4j
-@StatusAndStrategyNum(superClass = PayLogStrategy.class, number = "1", describe = "支付宝支付策略")
+@StatusAndStrategyNum(superClass = PayLogStrategy.class, number = "1", describe = "支付宝App支付策略")
 @Component
 public class PayLogStrategy4Alipay extends PayLogStrategy {
 
@@ -49,10 +50,10 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
             String syncResponseBody = alipayTradeAppPayResponse.getBody();
             payLog4Alipay.callPrepaymentSucc(syncResponseBody);
         } catch (AlipayApiException ex) {
-            log.error("调用支付宝预支付的支付编号:[{}]和异常信息:[{}]", payLog4Alipay.getId(), getFullStackTrace(ex));
-            payLog4Alipay.callPrepaymentFail("调用支付宝预支付信息异常!");
+            log.error("调用支付宝App预支付的支付编号:[{}]和异常信息:[{}]", payLog4Alipay.getId(), getFullStackTrace(ex));
+            payLog4Alipay.callPrepaymentFail("调用支付宝App预支付信息异常!");
         }
-
+        
         payLogMapper.updateAlipayPrepayment(payLog4Alipay);
     }
 
@@ -73,7 +74,7 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
         }
         alipayTradeAppPayModel.setTotalAmount(payLog4Alipay.getOccurBalance().toString());
         alipayTradeAppPayModel.setProductCode(ALIPAY_PRODUCT_CODE);
-        alipayTradeAppPayModel.setGoodsType(payLog4Alipay.getAlipayGoodsType());
+        alipayTradeAppPayModel.setGoodsType(defaultIfBlank(payLog4Alipay.getAlipayGoodsType(), "1"));
         return alipayTradeAppPayModel;
     }
 }

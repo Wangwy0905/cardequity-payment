@@ -21,9 +21,13 @@ public class PayLogDto extends BasePageQuery<String> {
     private static final long serialVersionUID = 1340491747252445259L;
 
     /**
-     * 支付宝支付渠道
+     * 支付宝App支付渠道
      */
     public static final String PAY_CHANNEL_NO_ALIPAY = "000001";
+    /**
+     * 支付宝手机网站支付渠道
+     */
+    public static final String PAY_CHANNEL_NO_ALIPAY_MOBILE_WEB = "000002";
 
     @ApiModelProperty(value = "主键")
     private String id;

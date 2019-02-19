@@ -53,9 +53,13 @@ public final class AlipayConstant {
      */
     public static final String ALIPAY_TRADE_NO = "trade_no";
     /**
-     * 支付宝销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
+     * 支付宝App支付销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
      */
     public static final String ALIPAY_PRODUCT_CODE = "QUICK_MSECURITY_PAY";
+    /**
+     * 支付宝手机网站支付销售产品码，商家和支付宝签约的产品码，为固定值QUICK_WAP_WAY
+     */
+    public static final String ALIPAY_MOBILE_WEB_PRODUCT_CODE = "QUICK_WAP_WAY";
     /**
      * 支付宝对账文件名称
      */

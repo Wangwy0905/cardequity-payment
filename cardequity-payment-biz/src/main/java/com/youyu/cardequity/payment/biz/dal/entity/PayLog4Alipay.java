@@ -184,6 +184,10 @@ public class PayLog4Alipay extends PayLog {
         getBeanByClass(PayLogCommond4TimeAlipayTradeQuery.class).executeCmd(this, null);
     }
 
+    public String getPrePayFlag() {
+        return "1";
+    }
+
     private void checkParameters(PayLogDto payLogDto) {
         String appSheetSerialNo = payLogDto.getAppSheetSerialNo();
         if (isBlank(appSheetSerialNo)) {
