@@ -73,4 +73,7 @@ public class PayLogDto extends BasePageQuery<String> {
 
     @ApiModelProperty(value = "业务代码")
     private String businCode;
+
+    @ApiModelProperty(value = "支付后返回url")
+    private String returnUrl;
 }

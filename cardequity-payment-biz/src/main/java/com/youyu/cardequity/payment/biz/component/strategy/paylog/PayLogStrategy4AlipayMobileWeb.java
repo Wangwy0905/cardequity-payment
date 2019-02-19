@@ -61,6 +61,9 @@ public class PayLogStrategy4AlipayMobileWeb extends PayLogStrategy {
         AlipayTradeWapPayModel alipayTradeWapPayModel = getAlipayTradeWapPayModel(payLog4Alipay);
         alipayTradeWapPayRequest.setBizModel(alipayTradeWapPayModel);
         alipayTradeWapPayRequest.setNotifyUrl(alipayProperties.getNotifyUrl());
+        if (isNoneBlank(payLog4Alipay.getReturnUrl())) {
+            alipayTradeWapPayRequest.setReturnUrl(payLog4Alipay.getReturnUrl());
+        }
         return alipayTradeWapPayRequest;
     }
 

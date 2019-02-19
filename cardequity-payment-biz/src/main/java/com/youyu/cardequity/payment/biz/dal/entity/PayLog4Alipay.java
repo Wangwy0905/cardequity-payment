@@ -86,6 +86,8 @@ public class PayLog4Alipay extends PayLog {
     @Column(name = "ALIPAY_TRADE_QUERY_MESSAGE")
     private String alipayTradeQueryMessage;
 
+    private String returnUrl;
+
     public PayLog4Alipay() {
         super();
     }
@@ -97,6 +99,7 @@ public class PayLog4Alipay extends PayLog {
         this.alipaySubject = payLogDto.getSubject();
         this.alipayTimeoutExpress = payLogDto.getTimeoutExpress();
         this.alipayGoodsType = payLogDto.getGoodsType();
+        this.returnUrl = payLogDto.getReturnUrl();
     }
 
     public void alipaySyncMessage(AlipaySyncMessageDto alipaySyncMessageDto) {
