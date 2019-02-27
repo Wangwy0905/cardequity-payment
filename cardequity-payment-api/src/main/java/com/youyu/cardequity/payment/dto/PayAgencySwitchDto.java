@@ -20,7 +20,7 @@ public class PayAgencySwitchDto implements Serializable {
     /**
      * 支付机构编码
      */
-    @ApiModelProperty(value = "支付机构编码", example = "1:支付宝支付机构;")
+    @ApiModelProperty(value = "支付机构编码:1:支付宝支付机构;", example = "1")
     private String payAgencyCode;
 
 }
