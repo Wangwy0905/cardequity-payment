@@ -68,8 +68,7 @@ public class PayTradeRefundServiceImpl implements PayTradeRefundService {
     }
 
     private PayTradeRefund getPayTradeRefund(PayTradeRefundDto tradeRefundApplyDto) {
-        String id = tradeRefundApplyDto.getId();
-        PayTradeRefund payTradeRefund = payTradeRefundMapper.getById(id);
+        PayTradeRefund payTradeRefund = payTradeRefundMapper.getByAppSheetSerialNoRefundNo(tradeRefundApplyDto.getAppSheetSerialNo(),tradeRefundApplyDto.getRefundNo());
         if (isNull(payTradeRefund)) {
             throw new BizException(REFUND_NO_NOT_EXIST);
         }
