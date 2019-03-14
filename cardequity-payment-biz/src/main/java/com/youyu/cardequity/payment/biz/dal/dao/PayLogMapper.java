@@ -1,6 +1,7 @@
 package com.youyu.cardequity.payment.biz.dal.dao;
 
 import com.youyu.cardequity.common.base.annotation.SpringBean;
+import com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail;
 import com.youyu.cardequity.payment.biz.dal.entity.PayLog;
 import org.apache.ibatis.annotations.Param;
 
@@ -74,6 +75,14 @@ public interface PayLogMapper {
      * @return
      */
     PayLog getByAppSheetSerialNoRouteVoIdFlag(@Param("appSheetSerialNo") String appSheetSerialNo, @Param("routeVoIdFlag") String routeVoIdFlag);
+
+    /**
+     * 根据对账文件查询支付日志
+     *
+     * @param payCheckFileDeatail
+     * @return
+     */
+    PayLog getByPayCheckFileDeatail(PayCheckFileDeatail payCheckFileDeatail);
 
     /**
      * 在阈值范围内还未收到支付宝异步回调通知时,主动查询未通知的订单进行主动查询

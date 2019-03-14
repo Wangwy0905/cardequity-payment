@@ -176,6 +176,16 @@
         and PAY_REFUND_NO is null
     </select>
 
+    <select id="getByPayCheckFileDeatail" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail" resultMap="BaseResultMap">
+        select t1.*
+        from TB_TRADE_ORDER t1
+        inner join TB_PAY_CHECK_FILE_DEATAIL t2 on t1.APP_SHEET_SERIAL_NO = t2.APP_SHEET_SERIAL_NO
+        inner join TB_PAY_LOG t3 on t1.PAY_LOG_ID = t3.ID
+        where t1.APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+        and t3.THIRD_SERIAL_NO = #{tranceNo,jdbcType=VARCHAR}
+        and t1.PAY_REFUND_NO is null
+    </select>
+
     <select id="getByAppSeetSerialNoPayRefundNo" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
         from TB_TRADE_ORDER

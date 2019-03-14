@@ -77,10 +77,10 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     }
 
     private void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail) {
-        TradeOrder tradeOrder = tradeOrderMapper.getByAppSheetSerialNoPayRefundNoIsNull(payCheckFileDeatail.getAppSheetSerialNo());
+        TradeOrder tradeOrder = tradeOrderMapper.getByPayCheckFileDeatail(payCheckFileDeatail);
         if (isNull(tradeOrder)) {
             // 文件单边交易
-            PayLog payLog = payLogMapper.getByAppSheetSerialNoRouteVoIdFlag(payCheckFileDeatail.getAppSheetSerialNo(), NORMAL.getCode());
+            PayLog payLog = payLogMapper.getByPayCheckFileDeatail(payCheckFileDeatail);
             PayCheckDeatail payCheckDeatail = new PayCheckDeatail(payCheckFileDeatail, payLog);
             payCheckDeatailMapper.insertSelective(payCheckDeatail);
             return;
@@ -148,7 +148,7 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     }
 
     private void doTrade2Bill(TradeOrder tradeOrder) {
-        PayCheckFileDeatail payCheckFileDeatail = payCheckFileDeatailMapper.getByAppSeetSerialNoRefundBatchNoIsNull(tradeOrder.getAppSheetSerialNo());
+        PayCheckFileDeatail payCheckFileDeatail = payCheckFileDeatailMapper.getByTradeOrder(tradeOrder);
         if (isNull(payCheckFileDeatail)) {
             PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
             payChannelInfo.doTrade2BillNotFile(tradeOrder);

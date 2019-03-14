@@ -1,5 +1,6 @@
 package com.youyu.cardequity.payment.biz.dal.dao;
 
+import com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail;
 import com.youyu.cardequity.payment.biz.dal.entity.TradeOrder;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,6 +28,14 @@ public interface TradeOrderMapper {
      * @return
      */
     TradeOrder getByAppSheetSerialNoPayRefundNoIsNull(@Param("appSheetSerialNo") String appSheetSerialNo);
+
+    /**
+     * 根据对账单查询交易订单信息
+     *
+     * @param payCheckFileDeatail
+     * @return
+     */
+    TradeOrder getByPayCheckFileDeatail(@Param("payCheckFileDeatail") PayCheckFileDeatail payCheckFileDeatail);
 
     /**
      * 根据单号和退款编号查询退款数据(加了同步日期)

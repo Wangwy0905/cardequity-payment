@@ -2,6 +2,7 @@ package com.youyu.cardequity.payment.biz.dal.dao;
 
 import com.youyu.cardequity.common.base.annotation.SpringBean;
 import com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail;
+import com.youyu.cardequity.payment.biz.dal.entity.TradeOrder;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -44,6 +45,14 @@ public interface PayCheckFileDeatailMapper {
      * @return
      */
     PayCheckFileDeatail getByAppSeetSerialNoRefundBatchNoIsNull(@Param("appSheetSerialNo") String appSheetSerialNo);
+
+    /**
+     * 根据交易数据查询对账单
+     *
+     * @param tradeOrder
+     * @return
+     */
+    PayCheckFileDeatail getByTradeOrder(TradeOrder tradeOrder);
 
     /**
      * 根据单号和退款编号查询对账单

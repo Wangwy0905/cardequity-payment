@@ -187,6 +187,17 @@
         from TB_PAY_CHECK_FILE_DEATAIL
         where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
         and REFUND_BATCH_NO is null
+
+
+    </select>
+
+    <select id="getByTradeOrder" parameterType="com.youyu.cardequity.payment.biz.dal.entity.TradeOrder" resultMap="BaseResultMap">
+        select t1.* from TB_PAY_CHECK_FILE_DEATAIL t1
+          inner join TB_TRADE_ORDER t2 on t1.APP_SHEET_SERIAL_NO = t2.APP_SHEET_SERIAL_NO
+          inner join TB_PAY_LOG t3 on t1.TRANCE_NO = t3.THIRD_SERIAL_NO
+          where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+          and t3.ID = #{payLogId,jdbcType=VARCHAR}
+          and REFUND_BATCH_NO is null
     </select>
 
     <select id="getByAppSeetSerialNoRefundBatchNo" resultMap="BaseResultMap">
