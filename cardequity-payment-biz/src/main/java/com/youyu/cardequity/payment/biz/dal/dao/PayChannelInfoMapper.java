@@ -21,4 +21,12 @@ public interface PayChannelInfoMapper extends BaseMapper<PayChannelInfo, String>
      * @return
      */
     PayChannelInfo getById(@Param("channelNo") String channelNo);
+
+    /**
+     * 根据支付日志编号查询支付渠道
+     *
+     * @param payLogId
+     * @return
+     */
+    PayChannelInfo getByPayLogId(@Param("payLogId") String payLogId);
 }

@@ -42,6 +42,13 @@
         where CHANNEL_NO = #{channelNo,jdbcType=VARCHAR}
     </select>
 
+    <select id="getByPayLogId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_PAY_CHANNEL_INFO
+        where CHANNEL_NO = (select t.PAY_CHANNEL_NO from TB_PAY_LOG t where t.id = #{payLogId,jdbcType=VARCHAR})
+    </select>
+
     <select id="getByEntity" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayChannelInfo"
             resultMap="BaseResultMap">
         select

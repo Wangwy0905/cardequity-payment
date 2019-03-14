@@ -90,7 +90,7 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
             return;
         }
 
-        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
+        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payCheckFileDeatail.getChannelNo());
         payChannelInfo.doBill2Trade(payCheckFileDeatail, tradeOrder);
     }
 
@@ -108,7 +108,7 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
             return;
         }
 
-        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
+        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payCheckFileDeatail.getChannelNo());
         payChannelInfo.doBill2TradeRefund(payCheckFileDeatail, tradeOrder);
     }
 
@@ -138,24 +138,24 @@ public class PayCheckDeatailServiceImpl implements PayCheckDeatailService {
     private void doTrade2BillRefund(TradeOrder tradeOrder) {
         PayCheckFileDeatail payCheckFileDeatail = payCheckFileDeatailMapper.getByAppSeetSerialNoRefundBatchNo(tradeOrder.getAppSheetSerialNo(), tradeOrder.getPayRefundNo());
         if (isNull(payCheckFileDeatail)) {
-            PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
+            PayChannelInfo payChannelInfo = payChannelInfoMapper.getByPayLogId(tradeOrder.getPayLogId());
             payChannelInfo.doTrade2BillRefundNotFile(tradeOrder);
             return;
         }
 
-        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
+        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payCheckFileDeatail.getChannelNo());
         payChannelInfo.doTrade2BillRefund(tradeOrder, payCheckFileDeatail);
     }
 
     private void doTrade2Bill(TradeOrder tradeOrder) {
         PayCheckFileDeatail payCheckFileDeatail = payCheckFileDeatailMapper.getByTradeOrder(tradeOrder);
         if (isNull(payCheckFileDeatail)) {
-            PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
+            PayChannelInfo payChannelInfo = payChannelInfoMapper.getByPayLogId(tradeOrder.getPayLogId());
             payChannelInfo.doTrade2BillNotFile(tradeOrder);
             return;
         }
 
-        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(tradeOrder.getPayChannelNo());
+        PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(payCheckFileDeatail.getChannelNo());
         payChannelInfo.doTrade2Bill(tradeOrder, payCheckFileDeatail);
     }
 
