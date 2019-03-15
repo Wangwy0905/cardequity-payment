@@ -15,13 +15,13 @@ import java.io.Serializable;
  */
 @Setter
 @Getter
-@ConfigurationProperties(value = "alipay")
+//@ConfigurationProperties(value = "alipay")
 @Component
 public class AlipayProperties implements Serializable {
 
     private static final long serialVersionUID = -1505571997009581142L;
 
-    /*private String url = "https://openapi.alipay.com/gateway.do";
+    private String url = "https://openapi.alipay.com/gateway.do";
 
     private String appId = "2018120562456421";
 
@@ -43,9 +43,9 @@ public class AlipayProperties implements Serializable {
 
     private Integer asyncNotifyThresholdEnd = 10;
 
-    private String billFilePath = "/Users/panqingqing/Downloads/alipay/bill/";*/
+    private String billFilePath = "/Users/panqingqing/Downloads/alipay/bill/";
 
-    private String url;
+    /*private String url;
 
     private String appId;
 
@@ -67,6 +67,6 @@ public class AlipayProperties implements Serializable {
 
     private Integer asyncNotifyThresholdEnd = 10;
 
-    private String billFilePath;
+    private String billFilePath;*/
 
 }
