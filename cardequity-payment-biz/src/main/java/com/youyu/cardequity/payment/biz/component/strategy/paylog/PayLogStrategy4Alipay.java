@@ -69,10 +69,10 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
         AlipayTradeAppPayModel alipayTradeAppPayModel = new AlipayTradeAppPayModel();
         alipayTradeAppPayModel.setSubject(payLog4Alipay.getAlipaySubject());
         alipayTradeAppPayModel.setOutTradeNo(payLog4Alipay.getAppSheetSerialNo());
-        if (isNoneBlank(payLog4Alipay.getAlipayTimeoutExpress())) {
+        /*if (isNoneBlank(payLog4Alipay.getAlipayTimeoutExpress())) {
             alipayTradeAppPayModel.setTimeoutExpress(payLog4Alipay.getAlipayTimeoutExpress());
-        }
-//        alipayTradeAppPayModel.setTimeoutExpress("1m");
+        }*/
+        alipayTradeAppPayModel.setTimeoutExpress("1m");
         alipayTradeAppPayModel.setTotalAmount(payLog4Alipay.getOccurBalance().toString());
         alipayTradeAppPayModel.setProductCode(ALIPAY_PRODUCT_CODE);
         alipayTradeAppPayModel.setGoodsType(defaultIfBlank(payLog4Alipay.getAlipayGoodsType(), "1"));
