@@ -9,8 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
-import static com.youyu.cardequity.common.base.util.DateUtil.date2String;
-import static com.youyu.cardequity.common.base.util.DateUtil.now;
+import static com.youyu.cardequity.common.base.util.DateUtil.*;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.*;
 import static com.youyu.cardequity.payment.biz.enums.BackFlagEnum.REFUNDED;
@@ -188,7 +187,7 @@ public class PayCheckDeatail extends BaseEntity<String> {
 
     public PayCheckDeatail() {
         this.id = uuid4NoRail();
-        this.transActionDate = date2String(now(), "YYYYMMDD");
+        this.transActionDate = date2String(now(), YYYYMMDD);
         this.checkNum = 1;
         this.checkStatus = UNTREATED.getCode();
     }
