@@ -35,7 +35,7 @@ public interface TradeOrderMapper {
      * @param payCheckFileDeatail
      * @return
      */
-    TradeOrder getByPayCheckFileDeatail(@Param("payCheckFileDeatail") PayCheckFileDeatail payCheckFileDeatail);
+    TradeOrder getByPayCheckFileDeatail(PayCheckFileDeatail payCheckFileDeatail);
 
     /**
      * 根据单号和退款编号查询退款数据(加了同步日期)
