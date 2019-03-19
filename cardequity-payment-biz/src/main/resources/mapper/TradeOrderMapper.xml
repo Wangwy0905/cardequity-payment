@@ -183,6 +183,7 @@
         inner join TB_PAY_LOG t3 on t1.PAY_LOG_ID = t3.ID
         where t1.APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
         and t3.THIRD_SERIAL_NO = #{tranceNo,jdbcType=VARCHAR}
+        and t2.BUSIN_TYPE = '1'
         and t1.PAY_REFUND_NO is null
     </select>
 
