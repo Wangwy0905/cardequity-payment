@@ -6,6 +6,7 @@ import com.youyu.cardequity.payment.biz.service.PayCheckFileDeatailService;
 import com.youyu.cardequity.payment.dto.PayCheckFileDeatailDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author panqingqing
@@ -20,6 +21,7 @@ public class PayCheckFileDeatailServiceImpl implements PayCheckFileDeatailServic
     private PayChannelInfoMapper payChannelInfoMapper;
 
     @Override
+    @Transactional
     public void downloadBill(PayCheckFileDeatailDto payCheckFileDeatailDto) {
         String channelNo = payCheckFileDeatailDto.getChannelNo();
         PayChannelInfo payChannelInfo = payChannelInfoMapper.getById(channelNo);

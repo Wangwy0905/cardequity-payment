@@ -1,5 +1,6 @@
 package com.youyu.cardequity.payment.biz.component.rabbitmq;
 
+import com.youyu.cardequity.common.base.annotation.SpringBean;
 import com.youyu.cardequity.common.base.tuple2.Tuple2;
 import com.youyu.cardequity.payment.biz.enums.RabbitmqMessageEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +15,9 @@ import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
  * @author panqingqing
  * @version v1.0
  * @date 2018年12月6日 下午10:00:00
- * @work Ra
+ * @work Rabbitmq sender
  */
+@SpringBean
 @Slf4j
 @Component
 public class RabbitmqSender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {

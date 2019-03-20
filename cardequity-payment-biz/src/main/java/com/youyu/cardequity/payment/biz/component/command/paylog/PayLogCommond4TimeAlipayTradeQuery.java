@@ -52,15 +52,13 @@ public class PayLogCommond4TimeAlipayTradeQuery extends PayLogCommond {
         AlipayTradeQueryRequest alipayTradeQueryRequest = getAlipayTradeQueryRequest(payLog4Alipay);
         try {
             AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(alipayTradeQueryRequest);
-            boolean tradeQueryFlag = payLog4Alipay.analysisAlipayTradeQueryResponse(alipayTradeQueryResponse);
-            if (tradeQueryFlag) {
-                payLogMapper.updateAlipayTradeQuery(payLog);
+            payLog4Alipay.analysisAlipayTradeQueryResponse(alipayTradeQueryResponse);
+            payLogMapper.updateAlipayTradeQuery(payLog);
 
-                PayLogAsyncMessageDto payLogAsyncMessageDto = copyProperties(payLog4Alipay, PayLogAsyncMessageDto.class);
-                String message = toJSONString(payLogAsyncMessageDto);
-                log.info("定时任务主动查询支付宝支付未收到异步通知的支付结果通知交易系统支付流水号:[{}]和消息信息:[{}]", payLog4Alipay.getId(), message);
-                rabbitmqSender.sendMessage(message, PAY_ASYNC_MESSAGE);
-            }
+            PayLogAsyncMessageDto payLogAsyncMessageDto = copyProperties(payLog4Alipay, PayLogAsyncMessageDto.class);
+            String message = toJSONString(payLogAsyncMessageDto);
+            log.info("定时任务主动查询支付宝支付未收到异步通知的支付结果通知交易系统支付流水号:[{}]和消息信息:[{}]", payLog4Alipay.getId(), message);
+            rabbitmqSender.sendMessage(message, PAY_ASYNC_MESSAGE);
         } catch (AlipayApiException e) {
             log.error("调用支付宝交易查询订单:[{}]对应的交易异常信息:[{}]", payLog.getAppSheetSerialNo(), getFullStackTrace(e));
         }

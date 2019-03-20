@@ -18,9 +18,45 @@ public enum RabbitmqMessageEnum {
     PAY_ASYNC_MESSAGE("0", "支付宝异步支付消息") {
         @Override
         public Tuple2<String, String> getExchangeRoutingKey() {
-            RabbitmqProperties rabbitmqAlipayProperties = getBeanByClass(RabbitmqProperties.class);
-            String exchange = rabbitmqAlipayProperties.getPayAsyncMessageExchange();
-            String routingKey = rabbitmqAlipayProperties.getPayAsyncMessageRoutingKey();
+            RabbitmqProperties rabbitmqProperties = getBeanByClass(RabbitmqProperties.class);
+            String exchange = rabbitmqProperties.getPayAsyncMessageExchange();
+            String routingKey = rabbitmqProperties.getPayAsyncMessageRoutingKey();
+            return new Tuple2<>(exchange, routingKey);
+        }
+    },
+    PAY_AFTER_REFUND_MESSAGE("1", "支付宝盘后对账退款消息,需交易系统进行退款操作") {
+        @Override
+        public Tuple2<String, String> getExchangeRoutingKey() {
+            RabbitmqProperties rabbitmqProperties = getBeanByClass(RabbitmqProperties.class);
+            String exchange = rabbitmqProperties.getPayAfterRefundMessageExchange();
+            String routingKey = rabbitmqProperties.getPayAfterRefundMessageRoutingKey();
+            return new Tuple2<>(exchange, routingKey);
+        }
+    },
+    PAY_AFTER_REFUND_STATUS_MESSAGE("2", "支付宝盘后对账退款消息,需交易系统进行退款状态修改即可") {
+        @Override
+        public Tuple2<String, String> getExchangeRoutingKey() {
+            RabbitmqProperties rabbitmqProperties = getBeanByClass(RabbitmqProperties.class);
+            String exchange = rabbitmqProperties.getPayAfterRefundStatusMessageExchange();
+            String routingKey = rabbitmqProperties.getPayAfterRefundStatusMessageRoutingKey();
+            return new Tuple2<>(exchange, routingKey);
+        }
+    },
+    PAY_AFTER_PAY_FAIL_NOT_DAY_CUT_MESSAGE("3", "盘后对账支付失败,需通知交易系统进行支付状态变为支付失败,并进行相关操作或人工干预") {
+        @Override
+        public Tuple2<String, String> getExchangeRoutingKey() {
+            RabbitmqProperties rabbitmqProperties = getBeanByClass(RabbitmqProperties.class);
+            String exchange = rabbitmqProperties.getPayAfterPayFailNotDayCutMessageExchange();
+            String routingKey = rabbitmqProperties.getPayAfterPayFailNotDayCutMessageRoutingKey();
+            return new Tuple2<>(exchange, routingKey);
+        }
+    },
+    PAY_AFTER_RETURN_FAIL_NOT_DAY_CUT_MESSAGE("4", "盘后对账退款失败,需通知交易系统进行退款状态变为退款失败,并进行相关操作或人工干预") {
+        @Override
+        public Tuple2<String, String> getExchangeRoutingKey() {
+            RabbitmqProperties rabbitmqProperties = getBeanByClass(RabbitmqProperties.class);
+            String exchange = rabbitmqProperties.getPayAfterReturnFailNotDayCutMessageExchange();
+            String routingKey = rabbitmqProperties.getPayAfterReturnFailNotDayCutMessageRoutingKey();
             return new Tuple2<>(exchange, routingKey);
         }
     };

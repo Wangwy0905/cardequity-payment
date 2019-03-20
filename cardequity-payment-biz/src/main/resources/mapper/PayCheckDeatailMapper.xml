@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyu.cardequity.payment.biz.dal.dao.PayCheckDeatailMapper">
+
+    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.PayCheckDeatail">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="TRANCE_NO" jdbcType="VARCHAR" property="tranceNo"/>
+        <result column="CHECK_DATE" jdbcType="VARCHAR" property="checkDate"/>
+        <result column="CHANNEL_NO" jdbcType="VARCHAR" property="channelNo"/>
+        <result column="APP_DATE" jdbcType="VARCHAR" property="appDate"/>
+        <result column="LOCAL_AMOUNT" jdbcType="DECIMAL" property="localAmount"/>
+        <result column="LOCAL_PAY_AMOUNT" jdbcType="DECIMAL" property="localPayAmount"/>
+        <result column="LOCAL_STATE" jdbcType="VARCHAR" property="localState"/>
+        <result column="LOCAL_PAY_STATE" jdbcType="VARCHAR" property="localPayState"/>
+        <result column="FILE_AMOUNT" jdbcType="DECIMAL" property="fileAmount"/>
+        <result column="FILE_STATUS" jdbcType="VARCHAR" property="fileStatus"/>
+        <result column="RETURN_STATUS" jdbcType="VARCHAR" property="returnStatus"/>
+        <result column="DEAL_DATE" jdbcType="VARCHAR" property="dealDate"/>
+        <result column="TRANS_ACTION_DATE" jdbcType="VARCHAR" property="transActionDate"/>
+        <result column="CLIENT_ID" jdbcType="VARCHAR" property="clientId"/>
+        <result column="CLIENT_NAME" jdbcType="VARCHAR" property="clientName"/>
+        <result column="BANK_CODE" jdbcType="VARCHAR" property="bankCode"/>
+        <result column="BANK_CARD_NO" jdbcType="VARCHAR" property="bankCardNo"/>
+        <result column="APP_SHEET_SERIAL_NO" jdbcType="VARCHAR" property="appSheetSerialNo"/>
+        <result column="BUSIN_TYPE" jdbcType="VARCHAR" property="businType"/>
+        <result column="CHECK_NUM" jdbcType="INTEGER" property="checkNum"/>
+        <result column="CHECK_STATUS" jdbcType="VARCHAR" property="checkStatus"/>
+        <result column="BACK_FLAG" jdbcType="VARCHAR" property="backFlag"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="REFUND_BATCH_NO" jdbcType="VARCHAR" property="refundBatchNo"/>
+
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, TRANCE_NO, CHECK_DATE, CHANNEL_NO, APP_DATE, LOCAL_AMOUNT, LOCAL_PAY_AMOUNT, LOCAL_STATE, LOCAL_PAY_STATE,
+        FILE_AMOUNT, FILE_STATUS, RETURN_STATUS, DEAL_DATE, TRANS_ACTION_DATE, CLIENT_ID, CLIENT_NAME, BANK_CODE,
+        BANK_CARD_NO, APP_SHEET_SERIAL_NO, BUSIN_TYPE, CHECK_NUM, CHECK_STATUS, BACK_FLAG, REMARK, REFUND_BATCH_NO,
+        UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckDeatail">
+        insert into TB_PAY_CHECK_DEATAIL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="tranceNo != null">
+                TRANCE_NO,
+            </if>
+            <if test="checkDate != null">
+                CHECK_DATE,
+            </if>
+            <if test="channelNo != null">
+                CHANNEL_NO,
+            </if>
+            <if test="appDate != null">
+                APP_DATE,
+            </if>
+            <if test="localAmount != null">
+                LOCAL_AMOUNT,
+            </if>
+            <if test="localPayAmount != null">
+                LOCAL_PAY_AMOUNT,
+            </if>
+            <if test="localState != null">
+                LOCAL_STATE,
+            </if>
+            <if test="localPayState != null">
+                LOCAL_PAY_STATE,
+            </if>
+            <if test="fileAmount != null">
+                FILE_AMOUNT,
+            </if>
+            <if test="fileStatus != null">
+                FILE_STATUS,
+            </if>
+            <if test="returnStatus != null">
+                RETURN_STATUS,
+            </if>
+            <if test="dealDate != null">
+                DEAL_DATE,
+            </if>
+            <if test="transActionDate != null">
+                TRANS_ACTION_DATE,
+            </if>
+            <if test="clientId != null">
+                CLIENT_ID,
+            </if>
+            <if test="clientName != null">
+                CLIENT_NAME,
+            </if>
+            <if test="bankCode != null">
+                BANK_CODE,
+            </if>
+            <if test="bankCardNo != null">
+                BANK_CARD_NO,
+            </if>
+            <if test="appSheetSerialNo != null">
+                APP_SHEET_SERIAL_NO,
+            </if>
+            <if test="businType != null">
+                BUSIN_TYPE,
+            </if>
+            <if test="checkNum != null">
+                CHECK_NUM,
+            </if>
+            <if test="checkStatus != null">
+                CHECK_STATUS,
+            </if>
+            <if test="backFlag != null">
+                BACK_FLAG,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="refundBatchNo != null">
+                REFUND_BATCH_NO,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="createAuthor != null">
+                CREATE_AUTHOR,
+            </if>
+            <if test="updateAuthor != null">
+                UPDATE_AUTHOR,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="tranceNo != null">
+                #{tranceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="checkDate != null">
+                #{checkDate,jdbcType=VARCHAR},
+            </if>
+            <if test="channelNo != null">
+                #{channelNo,jdbcType=VARCHAR},
+            </if>
+            <if test="appDate != null">
+                #{appDate,jdbcType=VARCHAR},
+            </if>
+            <if test="localAmount != null">
+                #{localAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="localPayAmount != null">
+                #{localPayAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="localState != null">
+                #{localState,jdbcType=VARCHAR},
+            </if>
+            <if test="localPayState != null">
+                #{localPayState,jdbcType=VARCHAR},
+            </if>
+            <if test="fileAmount != null">
+                #{fileAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="fileStatus != null">
+                #{fileStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="returnStatus != null">
+                #{returnStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="dealDate != null">
+                #{dealDate,jdbcType=VARCHAR},
+            </if>
+            <if test="transActionDate != null">
+                #{transActionDate,jdbcType=VARCHAR},
+            </if>
+            <if test="clientId != null">
+                #{clientId,jdbcType=VARCHAR},
+            </if>
+            <if test="clientName != null">
+                #{clientName,jdbcType=VARCHAR},
+            </if>
+            <if test="bankCode != null">
+                #{bankCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bankCardNo != null">
+                #{bankCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="appSheetSerialNo != null">
+                #{appSheetSerialNo,jdbcType=VARCHAR},
+            </if>
+            <if test="businType != null">
+                #{businType,jdbcType=VARCHAR},
+            </if>
+            <if test="checkNum != null">
+                #{checkNum,jdbcType=INTEGER},
+            </if>
+            <if test="checkStatus != null">
+                #{checkStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="backFlag != null">
+                #{backFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="refundBatchNo != null">
+                #{refundBatchNo,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createAuthor != null">
+                #{createAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAuthor != null">
+                #{updateAuthor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getByAppSeetSerialNoRefundBatchNoIsNull" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_PAY_CHECK_DEATAIL
+        where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+        and REFUND_BATCH_NO is null
+    </select>
+
+    <select id="getByAppSeetSerialNoRefundBatchNo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_PAY_CHECK_DEATAIL
+        where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+        and REFUND_BATCH_NO = #{payRefundNo,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateByDoTradeAndReturn2BillNotFile" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckDeatail">
+        update TB_PAY_CHECK_DEATAIL
+        set CHECK_NUM = #{checkNum,jdbcType=INTEGER},
+        LOCAL_STATE = #{localState,jdbcType=VARCHAR},
+        LOCAL_PAY_STATE = #{localPayState,jdbcType=VARCHAR},
+        FILE_STATUS = #{fileStatus,jdbcType=VARCHAR},
+        CHECK_STATUS = #{checkStatus,jdbcType=VARCHAR},
+        RETURN_STATUS = #{returnStatus,jdbcType=VARCHAR},
+        BACK_FLAG = #{backFlag,jdbcType=VARCHAR}
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+        delete from TB_PAY_CHECK_DEATAIL where ID = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from TB_PAY_CHECK_DEATAIL where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

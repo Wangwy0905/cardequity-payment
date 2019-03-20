@@ -221,8 +221,7 @@
         delete from TB_CHANNEL_REF_BANK_CODE where ID = #{id,jdbcType=VARCHAR}
     </delete>
 
-    <update id="updateByPrimaryKeySelective"
-            parameterType="com.youyu.cardequity.payment.biz.dal.entity.ChannelRefBankCode">
+    <update id="updateByPrimaryKeySelective" parameterType="com.youyu.cardequity.payment.biz.dal.entity.ChannelRefBankCode">
         update TB_CHANNEL_REF_BANK_CODE
         <set>
             <if test="channelNo != null">

@@ -26,4 +26,7 @@ public class PayLogAsyncMessageDto implements Serializable {
 
     @ApiModelProperty(value = "支付状态:PayLogResponseDto对象状态定义")
     private String payState;
+
+    @ApiModelProperty(value = "业务代码")
+    private String businCode;
 }

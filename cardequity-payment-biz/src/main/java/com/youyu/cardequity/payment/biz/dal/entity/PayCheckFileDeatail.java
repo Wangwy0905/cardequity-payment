@@ -1,5 +1,7 @@
 package com.youyu.cardequity.payment.biz.dal.entity;
 
+import com.youyu.cardequity.payment.biz.dal.dao.PayCheckFileDeatailMapper;
+import com.youyu.cardequity.payment.biz.help.bill.AlipayBill;
 import com.youyu.cardequity.payment.dto.PayCheckFileDeatailDto;
 import com.youyu.common.entity.BaseEntity;
 import lombok.Getter;
@@ -10,9 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
+import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.MoneyUtil.string2BigDecimal;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.dto.PayLogResponseDto.STATUS_PAYMENT_SUCC;
+import static com.youyu.cardequity.payment.dto.PayTradeRefundResponseDto.STATUS_SUCC;
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
+import static org.apache.commons.lang3.StringUtils.replace;
 
 /**
  * @author panqingqing
@@ -83,8 +89,8 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
     /**
      * 申请单号:交易申请单号
      */
-    @Column(name = "APP_SEET_SERIAL_NO")
-    private String appSeetSerialNo;
+    @Column(name = "APP_SHEET_SERIAL_NO")
+    private String appSheetSerialNo;
 
     /**
      * 业务类型:可能需要转义
@@ -104,31 +110,71 @@ public class PayCheckFileDeatail extends BaseEntity<String> {
     @Column(name = "REMARK")
     private String remark;
 
+    /**
+     * 订单金额
+     */
+    @Column(name = "ORDER_AMOUNT")
+    private BigDecimal orderAmount;
+
+    /**
+     * 退款批次号
+     */
+    @Column(name = "REFUND_BATCH_NO")
+    private String refundBatchNo;
+
+    /**
+     * 退款状态:每个渠道定义不一样，需要解析后转义
+     */
+    @Column(name = "RETURN_STATUS")
+    private String returnStatus;
+
+    /**
+     * 对账id
+     */
+    @Column(name = "PAY_CHECK_DEATAIL_ID")
+    private String payCheckDeatailId;
+
     public PayCheckFileDeatail() {
+        this.id = uuid4NoRail();
     }
 
     /**
      * data格式:param1,param2,param3...
      * 具体参数参考支付宝对账单:https://docs.open.alipay.com/204/106262/
      *
-     * @param datas
+     * @param alipayBill
      * @param payCheckFileDeatailDto
      * @param fileName
      * @param businType
      */
-    public PayCheckFileDeatail(String[] datas, PayCheckFileDeatailDto payCheckFileDeatailDto, String fileName, String businType) {
-        this.id = uuid4NoRail();
-        this.tranceNo = datas[0];
+    public PayCheckFileDeatail(AlipayBill alipayBill, PayCheckFileDeatailDto payCheckFileDeatailDto, String fileName, String businType) {
+        this();
+        this.tranceNo = alipayBill.getTradeNo();
         this.channelNo = payCheckFileDeatailDto.getChannelNo();
-        this.checkDate = payCheckFileDeatailDto.getBillDate().replace("-", "");
-        this.appDate = datas[4];
-        this.appAmount = string2BigDecimal(datas[12]);
+        this.checkDate = replace(payCheckFileDeatailDto.getBillDate(), "-", "");
+        this.appDate = alipayBill.getCreateTime();
+        this.appAmount = string2BigDecimal(alipayBill.getMerchantsPaidIn());
         this.payState = STATUS_PAYMENT_SUCC;
-        this.appSeetSerialNo = datas[1];
+        this.appSheetSerialNo = alipayBill.getOrderNo();
         this.businType = businType;
         this.fileName = fileName;
-        this.remark = datas[datas.length - 1];
+        this.remark = alipayBill.getRemark();
+        this.orderAmount = string2BigDecimal(alipayBill.getOrderAmount());
+        String refundBatchNo = alipayBill.getReturnBatchNo();
+        if (isNoneBlank(refundBatchNo)) {
+            this.refundBatchNo = refundBatchNo;
+            this.returnStatus = STATUS_SUCC;
+        }
+    }
 
+    public PayCheckFileDeatail(PayCheckFileDeatail payCheckFileDeatail) {
+        this.tranceNo = payCheckFileDeatail.getTranceNo();
+        this.checkDate = payCheckFileDeatail.getCheckDate();
+    }
+
+    public void reconciliationed(PayCheckDeatail payCheckDeatail) {
+        this.payCheckDeatailId = payCheckDeatail.getId();
+        getBeanByClass(PayCheckFileDeatailMapper.class).updatePayCheckDeatailIdById(id, payCheckDeatailId);
     }
 
     @Override

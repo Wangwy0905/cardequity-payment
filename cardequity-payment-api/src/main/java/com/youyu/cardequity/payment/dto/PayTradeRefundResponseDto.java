@@ -18,23 +18,28 @@ public class PayTradeRefundResponseDto extends BaseDto<String> {
     private static final long serialVersionUID = 1019448792108327168L;
 
     /**
-     * 未退款
+     * 未退款:跟支付保持一致(目的:复用对账单里面的状态字段)
      */
     public static final String STATUS_NON_REFUND = "0";
     /**
-     * 退款中
+     * 退款中:跟支付保持一致(目的:复用对账单里面的状态字段)
      */
-    public static final String STATUS_REFUNDING = "1";
+    public static final String STATUS_REFUNDING = "2";
 
     /**
-     * 退款成功
+     * 退款成功:跟支付保持一致(目的:复用对账单里面的状态字段)
      */
-    public static final String STATUS_SUCC = "2";
+    public static final String STATUS_SUCC = "3";
 
     /**
-     * 退款失败
+     * 退款失败:跟支付保持一致(目的:复用对账单里面的状态字段)
      */
-    public static final String STATUS_FAIL = "3";
+    public static final String STATUS_FAIL = "4";
+
+    /**
+     * 无需退款
+     */
+    public static final String STATUS_NOT_NEED_REFUND = "5";
 
     @ApiModelProperty(value = "订单编号")
     private String appSheetSerialNo;

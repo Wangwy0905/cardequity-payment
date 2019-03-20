@@ -58,7 +58,7 @@ public class FileUtil {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage(), e);
         } finally {
             close(fileOutputStream, inputStream, zip);
         }

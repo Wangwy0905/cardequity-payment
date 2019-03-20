@@ -21,7 +21,7 @@ import static org.springframework.amqp.core.BindingBuilder.bind;
 public class RabbitmqBindingConfig {
 
     @Autowired
-    private RabbitmqProperties rabbitmqAlipayProperties;
+    private RabbitmqProperties rabbitmqProperties;
 
     @Autowired
     @Qualifier("payAsyncMessageQueue")
@@ -32,12 +32,84 @@ public class RabbitmqBindingConfig {
     private DirectExchange payAsyncMessageExchange;
 
     /**
-     * 支付宝支付异步通知消息:Binding
+     * 支付异步通知消息:Binding
      *
      * @return
      */
     @Bean
-    public Binding alipayAsyncMessageBinding() {
-        return bind(payAsyncMessageQueue).to(payAsyncMessageExchange).with(rabbitmqAlipayProperties.getPayAsyncMessageRoutingKey());
+    public Binding payAsyncMessageBinding() {
+        return bind(payAsyncMessageQueue).to(payAsyncMessageExchange).with(rabbitmqProperties.getPayAsyncMessageRoutingKey());
+    }
+
+    @Autowired
+    @Qualifier("payAfterRefundMessageQueue")
+    private Queue payAfterRefundMessageQueue;
+
+    @Autowired
+    @Qualifier("payAfterRefundMessageExchange")
+    private DirectExchange payAfterRefundMessageExchange;
+
+    /**
+     * 支付盘后对账退款消息通知:Binding
+     *
+     * @return
+     */
+    @Bean
+    public Binding payAfterRefundMessageBinding() {
+        return bind(payAfterRefundMessageQueue).to(payAfterRefundMessageExchange).with(rabbitmqProperties.getPayAfterRefundMessageRoutingKey());
+    }
+
+    @Autowired
+    @Qualifier("payAfterRefundStatusMessageQueue")
+    private Queue payAfterRefundStatusMessageQueue;
+
+    @Autowired
+    @Qualifier("payAfterRefundStatusMessageExchange")
+    private DirectExchange payAfterRefundStatusMessageExchange;
+
+    /**
+     * 支付盘后对账退款状态消息通知:Binding
+     *
+     * @return
+     */
+    @Bean
+    public Binding payAfterRefundStatusMessageBinding() {
+        return bind(payAfterRefundStatusMessageQueue).to(payAfterRefundStatusMessageExchange).with(rabbitmqProperties.getPayAfterRefundStatusMessageRoutingKey());
+    }
+
+    @Autowired
+    @Qualifier("payAfterPayFailNotDayCutMessageQueue")
+    private Queue payAfterPayFailNotDayCutMessageQueue;
+
+    @Autowired
+    @Qualifier("payAfterPayFailNotDayCutMessageExchange")
+    private DirectExchange payAfterPayFailNotDayCutMessageExchange;
+
+    /**
+     * 支付宝盘后对账支付失败状态且非日切的消息通知:Binding
+     *
+     * @return
+     */
+    @Bean
+    public Binding payAfterPayFailNotDayCutMessageBinding() {
+        return bind(payAfterPayFailNotDayCutMessageQueue).to(payAfterPayFailNotDayCutMessageExchange).with(rabbitmqProperties.getPayAfterPayFailNotDayCutMessageRoutingKey());
+    }
+
+    @Autowired
+    @Qualifier("payAfterReturnFailNotDayCutMessageQueue")
+    private Queue payAfterReturnFailNotDayCutMessageQueue;
+
+    @Autowired
+    @Qualifier("payAfterReturnFailNotDayCutMessageExchange")
+    private DirectExchange payAfterReturnFailNotDayCutMessageExchange;
+
+    /**
+     * 支付宝盘后对账退款失败状态且非日切的消息通知:Binding
+     *
+     * @return
+     */
+    @Bean
+    public Binding payAfterReturnFailNotDayCutMessageBinding() {
+        return bind(payAfterReturnFailNotDayCutMessageQueue).to(payAfterReturnFailNotDayCutMessageExchange).with(rabbitmqProperties.getPayAfterReturnFailNotDayCutMessageRoutingKey());
     }
 }

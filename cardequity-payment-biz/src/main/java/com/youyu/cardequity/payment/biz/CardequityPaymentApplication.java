@@ -1,8 +1,8 @@
 package com.youyu.cardequity.payment.biz;
 
-import com.youyu.cardequity.common.spring.base.BaseSpringBootApplication;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
+import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author panqingqing
@@ -10,8 +10,9 @@ import org.springframework.boot.SpringApplication;
  * @date 2018年12月6日 下午10:00:00
  * @work 支付系统基础应用启动类
  */
+@SpringCloudApplication
 @MapperScan("com.youyu.cardequity.payment.biz.dal.dao")
-public class CardequityPaymentApplication extends BaseSpringBootApplication {
+public class CardequityPaymentApplication {
 
     /**
      * 主启动方法

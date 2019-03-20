@@ -48,6 +48,7 @@ public class PayTradeRefund4Alipay extends PayTradeRefund {
     private String alipayRefundQueryResponse;
 
     public PayTradeRefund4Alipay() {
+        super();
     }
 
     public PayTradeRefund4Alipay(PayTradeRefundDto tradeRefundApplyDto, PayLog payLog) {
@@ -69,8 +70,8 @@ public class PayTradeRefund4Alipay extends PayTradeRefund {
         this.refundAmount = string2BigDecimal(alipayTradeRefundResponse.getRefundFee());
     }
 
-    public void callRefundFail(String remark) {
-        this.status = status.refunding();
+    public void callRefundException(String remark) {
+//        this.status = status.refundFail();
         this.remark = remark;
     }
 

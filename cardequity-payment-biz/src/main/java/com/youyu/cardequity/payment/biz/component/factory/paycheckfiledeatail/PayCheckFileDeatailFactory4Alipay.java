@@ -11,6 +11,7 @@ import com.youyu.cardequity.common.spring.service.BatchService;
 import com.youyu.cardequity.payment.biz.component.properties.AlipayProperties;
 import com.youyu.cardequity.payment.biz.dal.dao.PayCheckFileDeatailMapper;
 import com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail;
+import com.youyu.cardequity.payment.biz.help.bill.AlipayBill;
 import com.youyu.cardequity.payment.dto.PayCheckFileDeatailDto;
 import com.youyu.common.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,6 @@ import static java.io.File.separator;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.split;
 import static org.apache.commons.lang3.time.DateUtils.addDays;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
@@ -70,30 +70,29 @@ public class PayCheckFileDeatailFactory4Alipay extends PayCheckFileDeatailFactor
 
         unZip2File(fileNameZip, filePath, CHARSERT_GBK);
 
-        Tuple2<String, List<String>> dataTuple2 = parseAlipayCsv2DataList(filePath, ALIPAY_BILL_FILE_NAME);
+        Tuple2<String, List<AlipayBill>> dataTuple2 = parseAlipayCsv2DataList(filePath, ALIPAY_BILL_FILE_NAME);
 
         batchDisposeDatas2PayCheckFileDeatails(dataTuple2, payCheckFileDeatailDto);
     }
 
-    private void batchDisposeDatas2PayCheckFileDeatails(Tuple2<String, List<String>> dataTuple2, PayCheckFileDeatailDto payCheckFileDeatailDto) {
+    private void batchDisposeDatas2PayCheckFileDeatails(Tuple2<String, List<AlipayBill>> dataTuple2, PayCheckFileDeatailDto payCheckFileDeatailDto) {
         String fileName = dataTuple2.a;
-        List<String> datas = dataTuple2.b;
+        List<AlipayBill> alipayBills = dataTuple2.b;
 
-        if (isEmpty(datas)) {
+        if (isEmpty(alipayBills)) {
             return;
         }
 
         List<PayCheckFileDeatail> payCheckFileDeatails = new ArrayList<>();
-        for (String data : datas) {
-            String[] dataArray = split(data, COMMA);
-            String type = dataArray[2];
+        for (AlipayBill alipayBill : alipayBills) {
+            String type = alipayBill.getBusinType();
             String businType = eq(type, ALIPAY_BILL_BUSIN_TYPE_TRADE) ? BUSIN_TYPE_TRADE : BUSIN_TYPE_REFUND;
-            payCheckFileDeatails.add(new PayCheckFileDeatail(dataArray, payCheckFileDeatailDto, fileName, businType));
+            payCheckFileDeatails.add(new PayCheckFileDeatail(alipayBill, payCheckFileDeatailDto, fileName, businType));
         }
 
-        List<String> tranceNos = payCheckFileDeatails.stream().map(payCheckFileDeatail -> payCheckFileDeatail.getTranceNo()).collect(toList());
+        List<PayCheckFileDeatail> payCheckFileDeatailDeletes = payCheckFileDeatails.stream().map(payCheckFileDeatail -> new PayCheckFileDeatail(payCheckFileDeatail)).collect(toList());
 
-        batchService.batchDispose(tranceNos, PayCheckFileDeatailMapper.class, "deleteByTranceNo");
+        batchService.batchDispose(payCheckFileDeatailDeletes, PayCheckFileDeatailMapper.class, "deleteByTranceNoCheckDate");
         batchService.batchDispose(payCheckFileDeatails, PayCheckFileDeatailMapper.class, "insertSelective");
     }
 
@@ -106,7 +105,7 @@ public class PayCheckFileDeatailFactory4Alipay extends PayCheckFileDeatailFactor
             boolean billFlag = alipayDataDataserviceBillDownloadurlQueryResponse.isSuccess();
             if (!billFlag) {
                 log.info("支付宝对账单根据参数:[{}]获取下载地址调用失败信息:[{}]!", toJSONString(payCheckFileDeatailDto), toJSONString(alipayDataDataserviceBillDownloadurlQueryResponse));
-                throw new BizException(ALIPAY_BILL_DOWNLOAD_URL_FAILED);
+                throw new BizException(ALIPAY_BILL_DOWNLOAD_URL_FAILED.getCode(), ALIPAY_BILL_DOWNLOAD_URL_FAILED.getFormatDesc(alipayDataDataserviceBillDownloadurlQueryResponse.getSubMsg()));
             }
             String billDownloadUrl = alipayDataDataserviceBillDownloadurlQueryResponse.getBillDownloadUrl();
             log.info("支付宝对账单地址信息:[{}]", billDownloadUrl);

@@ -2,6 +2,7 @@ package com.youyu.cardequity.payment.biz.dal.entity;
 
 import com.youyu.cardequity.payment.biz.component.status.paytraderefund.PayTradeRefundStatus;
 import com.youyu.cardequity.payment.biz.component.status.paytraderefund.PayTradeRefundStatus4NonRefund;
+import com.youyu.cardequity.payment.biz.enums.AlipayDayCutEnum;
 import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
 import com.youyu.common.entity.BaseEntity;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.StatusAndStrategyNumUtil.getNumber;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
+import static com.youyu.cardequity.payment.biz.enums.AlipayDayCutEnum.getAlipayDayCutEnumByTime;
 
 /**
  * @author panqingqing
@@ -88,17 +90,39 @@ public class PayTradeRefund extends BaseEntity<String> {
     @Column(name = "REMARK")
     protected String remark;
 
+    /**
+     * 客户号:
+     */
+    @Column(name = "CLIENT_ID")
+    protected String clientId;
+
+    /**
+     * 客户姓名:
+     */
+    @Column(name = "CLIENT_NAME")
+    protected String clientName;
+
+    /**
+     * 渠道号:
+     */
+    @Column(name = "CHANNEL_NO")
+    protected String channelNo;
+
     public PayTradeRefund() {
+        this.id = uuid4NoRail();
     }
 
     public PayTradeRefund(PayTradeRefundDto tradeRefundApplyDto, PayLog payLog) {
-        this.id = uuid4NoRail();
+        this();
         this.payLogId = payLog.getId();
         this.appSheetSerialNo = tradeRefundApplyDto.getAppSheetSerialNo();
         this.refundApplyAmount = tradeRefundApplyDto.getRefundAmount();
         this.refundNo = tradeRefundApplyDto.getRefundNo();
         this.refundReason = tradeRefundApplyDto.getRefundReason();
         this.status = getBeanByClass(PayTradeRefundStatus4NonRefund.class);
+        this.clientId = payLog.getClientId();
+        this.clientName = payLog.getClientName();
+        this.channelNo = payLog.getPayChannelNo();
     }
 
     public void getTradeRefund(PayLog payLog) {
@@ -111,6 +135,18 @@ public class PayTradeRefund extends BaseEntity<String> {
 
     public boolean isRefundSucc() {
         return status.isRefundSucc();
+    }
+
+    public void refundAfterBill2TradeRefund() {
+        this.status = status.refundSucc();
+    }
+
+    public AlipayDayCutEnum getAlipayDayCutEnum() {
+        return getAlipayDayCutEnumByTime(getCreateTime());
+    }
+
+    public void refundFail() {
+        this.status = status.refundFail();
     }
 
     @Override

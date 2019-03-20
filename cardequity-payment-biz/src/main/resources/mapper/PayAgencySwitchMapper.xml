@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyu.cardequity.payment.biz.dal.dao.PayAgencySwitchMapper">
+
+    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.PayAgencySwitch">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="PAY_AGENCY_NAME" jdbcType="VARCHAR" property="payAgencyName"/>
+        <result column="PAY_AGENCY_CODE" jdbcType="VARCHAR" property="payAgencyCode"/>
+        <result column="PAY_SWITCH" jdbcType="BOOLEAN" property="paySwitch"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, PAY_AGENCY_NAME, PAY_AGENCY_CODE, PAY_SWITCH, UPDATE_TIME, CREATE_TIME, CREATE_AUTHOR, UPDATE_AUTHOR
+    </sql>
+
+    <select id="getPayAgencySwitch" parameterType="com.youyu.cardequity.payment.dto.PayAgencySwitchDto" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from TB_PAY_AGENCY_SWITCH
+        where PAY_AGENCY_CODE = #{payAgencyCode,jdbcType=VARCHAR}
+    </select>
+</mapper>

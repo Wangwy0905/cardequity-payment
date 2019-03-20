@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import static com.youyu.cardequity.common.base.util.MoneyUtil.gt;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.*;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
  * @author panqingqing
@@ -32,13 +33,13 @@ public class PayTradeRefundFactory4Alipay extends PayTradeRefundFactory {
     @Override
     public PayTradeRefund createPayRefund(PayTradeRefundDto tradeRefundApplyDto, PayLog payLog) {
         PayTradeRefund existPayTradeRefund = checkExistPayTradeRefund(tradeRefundApplyDto, payLog);
-        if (isNull(existPayTradeRefund)) {
-            PayTradeRefund4Alipay payTradeRefund4Alipay = new PayTradeRefund4Alipay(tradeRefundApplyDto, payLog);
-            payTradeRefundMapper.insertSelective(payTradeRefund4Alipay);
-
-            return payTradeRefund4Alipay;
+        if (nonNull(existPayTradeRefund)) {
+            return existPayTradeRefund;
         }
-        return existPayTradeRefund;
+
+        PayTradeRefund4Alipay payTradeRefund4Alipay = new PayTradeRefund4Alipay(tradeRefundApplyDto, payLog);
+        payTradeRefundMapper.insertSelective(payTradeRefund4Alipay);
+        return payTradeRefund4Alipay;
     }
 
     private PayTradeRefund checkExistPayTradeRefund(PayTradeRefundDto tradeRefundApplyDto, PayLog payLog) {

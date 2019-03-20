@@ -25,6 +25,9 @@ public class PayTradeRefundDto extends BaseDto<String> {
     @ApiModelProperty(value = "订单编号")
     private String appSheetSerialNo;
 
+    @ApiModelProperty(value = "支付编号")
+    private String payLogId;
+
     @ApiModelProperty(value = "退款金额")
     private BigDecimal refundAmount;
 

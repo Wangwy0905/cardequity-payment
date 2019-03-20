@@ -47,7 +47,7 @@ public class PayTradeRefundStrategy4Alipay extends PayTradeRefundStrategy {
             payTradeRefund4Alipay.callRefundSucc(alipayTradeRefundResponse);
         } catch (AlipayApiException e) {
             log.error("调用支付宝退款编号:[{}]和异常信息:[{}]", payTradeRefund4Alipay.getId(), getFullStackTrace(e));
-            payTradeRefund4Alipay.callRefundFail("支付宝退款调用失败!");
+            payTradeRefund4Alipay.callRefundException("支付宝退款调用失败!");
         }
 
         payTradeRefundMapper.updateByAlipayRefund(payTradeRefund4Alipay);
@@ -65,6 +65,7 @@ public class PayTradeRefundStrategy4Alipay extends PayTradeRefundStrategy {
         alipayTradeRefundModel.setOutTradeNo(payTradeRefund4Alipay.getAppSheetSerialNo());
         alipayTradeRefundModel.setTradeNo(payTradeRefund4Alipay.getAlipayTradeNo());
         alipayTradeRefundModel.setRefundAmount(payTradeRefund4Alipay.getRefundApplyAmount().toString());
+        alipayTradeRefundModel.setOutRequestNo(payTradeRefund4Alipay.getRefundNo());
         alipayTradeRefundModel.setRefundReason(payTradeRefund4Alipay.getRefundReason());
         return alipayTradeRefundModel;
     }

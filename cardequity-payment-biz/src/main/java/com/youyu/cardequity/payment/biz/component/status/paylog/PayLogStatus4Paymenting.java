@@ -1,7 +1,6 @@
 package com.youyu.cardequity.payment.biz.component.status.paylog;
 
 import com.youyu.cardequity.common.base.annotation.StatusAndStrategyNum;
-import com.youyu.cardequity.payment.dto.PayLogResponseDto;
 import org.springframework.stereotype.Component;
 
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;

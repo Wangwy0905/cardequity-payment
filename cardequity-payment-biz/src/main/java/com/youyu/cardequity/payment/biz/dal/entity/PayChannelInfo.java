@@ -189,14 +189,32 @@ public class PayChannelInfo extends BaseEntity<String> {
         payCheckFileDeatailFactory.createPayCheckFileDeatail(payCheckFileDeatailDto);
     }
 
-    @Override
-    public String getId() {
-        return channelNo;
+    public void doBill2Trade(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder) {
+        checkState();
+        payCheckFileDeatailStrategy.doBill2Trade(payCheckFileDeatail, tradeOrder);
     }
 
-    @Override
-    public void setId(String channelNo) {
-        this.channelNo = channelNo;
+    public void doBill2TradeRefund(PayCheckFileDeatail payCheckFileDeatail, TradeOrder tradeOrder) {
+        checkState();
+        payCheckFileDeatailStrategy.doBill2TradeRefund(payCheckFileDeatail, tradeOrder);
+    }
+
+    public void doTrade2Bill(TradeOrder tradeOrder, PayCheckFileDeatail payCheckFileDeatail) {
+        doBill2Trade(payCheckFileDeatail, tradeOrder);
+    }
+
+    public void doTrade2BillRefund(TradeOrder tradeOrder, PayCheckFileDeatail payCheckFileDeatail) {
+        doBill2TradeRefund(payCheckFileDeatail, tradeOrder);
+    }
+
+    public void doTrade2BillNotFile(TradeOrder tradeOrder) {
+        checkState();
+        payCheckFileDeatailStrategy.doTrade2BillNotFile(tradeOrder);
+    }
+
+    public void doTrade2BillRefundNotFile(TradeOrder tradeOrder) {
+        checkState();
+        payCheckFileDeatailStrategy.doTrade2BillRefundNotFile(tradeOrder);
     }
 
     public String getPayLogFactoryNo() {
@@ -221,5 +239,15 @@ public class PayChannelInfo extends BaseEntity<String> {
 
     public String getPayCheckFileDeatailStrategyNo() {
         return getNumber(this.payCheckFileDeatailStrategy);
+    }
+
+    @Override
+    public String getId() {
+        return channelNo;
+    }
+
+    @Override
+    public void setId(String channelNo) {
+        this.channelNo = channelNo;
     }
 }

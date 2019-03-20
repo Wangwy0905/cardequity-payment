@@ -375,10 +375,16 @@
         and ROUTE_VO_ID_FLAG = #{routeVoIdFlag,jdbcType=VARCHAR}
     </select>
 
+    <select id="getByPayCheckFileDeatail" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayCheckFileDeatail" resultMap="BaseResultMap">
+        select * from TB_PAY_LOG
+        where APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
+        and THIRD_SERIAL_NO = #{tranceNo,jdbcType=VARCHAR}
+    </select>
+
     <select id="getByTimeTradeQuery" resultMap="BaseResultMap">
         select * from TB_PAY_LOG
         where CREATE_TIME between CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdStart,jdbcType=INTEGER} MINUTE
-        AND CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdEnd,jdbcType=INTEGER} MINUTE
+        and CURRENT_TIMESTAMP - INTERVAL #{alipayAsyncNotifyThresholdEnd,jdbcType=INTEGER} MINUTE
     </select>
 
     <update id="updateByAppSheetSerialNoRouteVoIdFlag">
@@ -394,4 +400,7 @@
         and APP_SHEET_SERIAL_NO = #{appSheetSerialNo,jdbcType=VARCHAR}
     </update>
 
+    <update id="updateStatusByPayAfter" parameterType="com.youyu.cardequity.payment.biz.dal.entity.PayLog">
+        update TB_PAY_LOG set STATE = #{state,jdbcType=VARCHAR} where ID = #{id,jdbcType=VARCHAR}
+    </update>
 </mapper>

@@ -2,6 +2,7 @@ package com.youyu.cardequity.payment.biz.dal.entity;
 
 import com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus;
 import com.youyu.cardequity.payment.biz.component.status.paylog.PayLogStatus4NonPayment;
+import com.youyu.cardequity.payment.biz.enums.AlipayDayCutEnum;
 import com.youyu.cardequity.payment.dto.PayLogDto;
 import com.youyu.cardequity.payment.dto.TradeCloseDto;
 import com.youyu.common.entity.BaseEntity;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.StatusAndStrategyNumUtil.getNumber;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
+import static com.youyu.cardequity.payment.biz.enums.AlipayDayCutEnum.getAlipayDayCutEnumByTime;
 
 /**
  * @author panqingqing
@@ -176,11 +178,11 @@ public class PayLog extends BaseEntity<String> {
     protected Boolean tradeCloseFlag;
 
     public PayLog() {
-
+        this.id = uuid4NoRail();
     }
 
     public PayLog(PayLogDto payLogDto) {
-        this.id = uuid4NoRail();
+        this();
         this.occurBalance = payLogDto.getOccurBalance();
         this.initDate = payLogDto.getInitDate();
         this.transAccountId = payLogDto.getTransAccountId();
@@ -192,6 +194,7 @@ public class PayLog extends BaseEntity<String> {
         this.remark = payLogDto.getRemark();
         this.state = getBeanByClass(PayLogStatus4NonPayment.class);
         this.payChannelNo = payLogDto.getPayChannelNo();
+        this.businCode = payLogDto.getBusinCode();
         this.routeVoIdFlag = "0";
         this.tradeCloseFlag = false;
     }
@@ -222,6 +225,22 @@ public class PayLog extends BaseEntity<String> {
 
     public boolean isPaySucc() {
         return state.isPaySucc();
+    }
+
+    public void payAfterBill2TradeSucc() {
+        this.state = state.paymentSucc();
+    }
+
+    public AlipayDayCutEnum getAlipayDayCutEnum() {
+        return getAlipayDayCutEnumByTime(getCreateTime());
+    }
+
+    public void payFail() {
+        this.state = state.paymentFail();
+    }
+
+    public void callPay() {
+        this.state = state.paymenting();
     }
 
     @Override
