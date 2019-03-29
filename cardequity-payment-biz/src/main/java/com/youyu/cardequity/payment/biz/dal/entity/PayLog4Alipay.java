@@ -4,10 +4,10 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.response.AlipayTradeCloseResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.youyu.cardequity.common.base.util.MoneyUtil;
-import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4AlipayAsyncMessage;
-import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4AlipaySyncMessage;
-import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4AlipayTradeClose;
-import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4TimeAlipayTradeQuery;
+import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommand4AlipayAsyncMessage;
+import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommand4AlipaySyncMessage;
+import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommand4AlipayTradeClose;
+import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommand4TimeAlipayTradeQuery;
 import com.youyu.cardequity.payment.biz.component.rabbitmq.RabbitmqSender;
 import com.youyu.cardequity.payment.dto.PayLogAsyncMessageDto;
 import com.youyu.cardequity.payment.dto.PayLogDto;
@@ -103,11 +103,11 @@ public class PayLog4Alipay extends PayLog {
     }
 
     public void alipaySyncMessage(AlipaySyncMessageDto alipaySyncMessageDto) {
-        getBeanByClass(PayLogCommond4AlipaySyncMessage.class).executeCmd(this, alipaySyncMessageDto);
+        getBeanByClass(PayLogCommand4AlipaySyncMessage.class).executeCmd(this, alipaySyncMessageDto);
     }
 
     public String alipayAsyncMessage(Map<String, String> params2Map) {
-        getBeanByClass(PayLogCommond4AlipayAsyncMessage.class).executeCmd(this, params2Map);
+        getBeanByClass(PayLogCommand4AlipayAsyncMessage.class).executeCmd(this, params2Map);
         return alipayOurResponse;
     }
 
@@ -170,7 +170,7 @@ public class PayLog4Alipay extends PayLog {
             throw new BizException(PAYMENT_SUCCESS_ORDER_CANNOT_CLOSED);
         }
 
-        getBeanByClass(PayLogCommond4AlipayTradeClose.class).executeCmd(this, tradeCloseDto);
+        getBeanByClass(PayLogCommand4AlipayTradeClose.class).executeCmd(this, tradeCloseDto);
     }
 
     public void callAlipayTradeCloseFail(String remark) {
@@ -184,7 +184,7 @@ public class PayLog4Alipay extends PayLog {
             return;
         }
 
-        getBeanByClass(PayLogCommond4TimeAlipayTradeQuery.class).executeCmd(this, null);
+        getBeanByClass(PayLogCommand4TimeAlipayTradeQuery.class).executeCmd(this, null);
     }
 
     public String getPrePayFlag() {
