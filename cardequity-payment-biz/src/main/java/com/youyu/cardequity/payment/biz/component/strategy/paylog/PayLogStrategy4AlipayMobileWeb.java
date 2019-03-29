@@ -51,7 +51,7 @@ public class PayLogStrategy4AlipayMobileWeb extends PayLogStrategy {
             payLog4Alipay.callPrepaymentSucc(syncResponseBody);
         } catch (AlipayApiException ex) {
             log.error("调用支付宝手机网站预支付的支付编号:[{}]和异常信息:[{}]", payLog4Alipay.getId(), getFullStackTrace(ex));
-            payLog4Alipay.callPrepaymentFail("调用支付宝手机网站预支付信息异常!");
+            payLog4Alipay.callPrepaymentFail("调用支付宝手机网站预支付错误码:" + ex.getErrCode() + "和错误原因:" + ex.getErrMsg());
         }
         payLogMapper.updateAlipayPrepayment(payLog4Alipay);
     }
