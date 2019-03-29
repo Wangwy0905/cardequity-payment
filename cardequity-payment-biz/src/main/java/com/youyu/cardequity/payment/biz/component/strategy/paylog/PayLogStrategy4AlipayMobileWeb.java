@@ -69,7 +69,9 @@ public class PayLogStrategy4AlipayMobileWeb extends PayLogStrategy {
 
     private AlipayTradeWapPayModel getAlipayTradeWapPayModel(PayLog4Alipay payLog4Alipay) {
         AlipayTradeWapPayModel alipayTradeWapPayModel = new AlipayTradeWapPayModel();
-        alipayTradeWapPayModel.setSubject(payLog4Alipay.getAlipaySubject());
+//        alipayTradeWapPayModel.setSubject(payLog4Alipay.getAlipaySubject());
+        //先写死
+        alipayTradeWapPayModel.setSubject("有鱼惠刷卡会员充值");
         alipayTradeWapPayModel.setOutTradeNo(payLog4Alipay.getAppSheetSerialNo());
         alipayTradeWapPayModel.setTotalAmount(payLog4Alipay.getOccurBalance().toString());
         alipayTradeWapPayModel.setProductCode(ALIPAY_MOBILE_WEB_PRODUCT_CODE);
