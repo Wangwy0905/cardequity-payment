@@ -27,9 +27,9 @@ import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace
  * @work Alipay 定时Pay交易查询命令:查询阈值内未收到支付异步通知
  */
 @Slf4j
-@StatusAndStrategyNum(superClass = PayLogCommond.class, number = "4", describe = "定时支付宝交易查询")
+@StatusAndStrategyNum(superClass = PayLogCommand.class, number = "4", describe = "定时支付宝交易查询")
 @Component
-public class PayLogCommond4TimeAlipayTradeQuery extends PayLogCommond {
+public class PayLogCommand4TimeAlipayTradeQuery extends PayLogCommand {
 
     @Autowired
     private AlipayClient alipayClient;

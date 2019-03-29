@@ -2,7 +2,7 @@ package com.youyu.cardequity.payment.biz.dal.entity;
 
 import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
-import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommond4AlipayTradeFastpayRefundQuery;
+import com.youyu.cardequity.payment.biz.component.command.paylog.PayLogCommand4AlipayTradeFastpayRefundQuery;
 import com.youyu.cardequity.payment.dto.PayTradeRefundDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -77,7 +77,7 @@ public class PayTradeRefund4Alipay extends PayTradeRefund {
 
     @Override
     public void getTradeRefund(PayLog payLog) {
-        getBeanByClass(PayLogCommond4AlipayTradeFastpayRefundQuery.class).executeCmd(payLog, this);
+        getBeanByClass(PayLogCommand4AlipayTradeFastpayRefundQuery.class).executeCmd(payLog, this);
     }
 
     public void callRefundQuerySucc(AlipayTradeFastpayRefundQueryResponse alipayTradeFastpayRefundQueryResponse) {

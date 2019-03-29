@@ -23,9 +23,9 @@ import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace
  * @work Alipay 统一收单交易退款查询
  */
 @Slf4j
-@StatusAndStrategyNum(superClass = PayLogCommond.class, number = "5", describe = "支付宝统一收单交易退款查询")
+@StatusAndStrategyNum(superClass = PayLogCommand.class, number = "5", describe = "支付宝统一收单交易退款查询")
 @Component
-public class PayLogCommond4AlipayTradeFastpayRefundQuery extends PayLogCommond {
+public class PayLogCommand4AlipayTradeFastpayRefundQuery extends PayLogCommand {
 
     @Autowired
     private PayTradeRefundMapper payTradeRefundMapper;
