@@ -23,9 +23,9 @@ import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace
  * @work Alipay Pay交易关闭命令
  */
 @Slf4j
-@StatusAndStrategyNum(superClass = PayLogCommond.class, number = "3", describe = "支付宝交易关闭")
+@StatusAndStrategyNum(superClass = PayLogCommand.class, number = "3", describe = "支付宝交易关闭")
 @Component
-public class PayLogCommond4AlipayTradeClose extends PayLogCommond {
+public class PayLogCommand4AlipayTradeClose extends PayLogCommand {
 
     @Autowired
     private AlipayClient alipayClient;

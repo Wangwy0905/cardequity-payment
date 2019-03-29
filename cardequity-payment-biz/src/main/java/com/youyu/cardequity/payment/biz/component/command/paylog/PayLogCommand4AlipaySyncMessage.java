@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
  * @date 2018年12月6日 下午10:00:00
  * @work Alipay Pay同步支付命令
  */
-@StatusAndStrategyNum(superClass = PayLogCommond.class, number = "1", describe = "支付宝同步接收参数")
+@StatusAndStrategyNum(superClass = PayLogCommand.class, number = "1", describe = "支付宝同步接收参数")
 @Component
-public class PayLogCommond4AlipaySyncMessage extends PayLogCommond {
+public class PayLogCommand4AlipaySyncMessage extends PayLogCommand {
 
     @Autowired
     private AlipayProperties alipayProperties;

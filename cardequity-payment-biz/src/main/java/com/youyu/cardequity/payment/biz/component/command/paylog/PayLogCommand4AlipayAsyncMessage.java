@@ -20,9 +20,9 @@ import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.FAIL;
  * @work Alipay Pay异步支付命令
  */
 @Slf4j
-@StatusAndStrategyNum(superClass = PayLogCommond.class, number = "2", describe = "支付宝异步接收参数")
+@StatusAndStrategyNum(superClass = PayLogCommand.class, number = "2", describe = "支付宝异步接收参数")
 @Component
-public class PayLogCommond4AlipayAsyncMessage extends PayLogCommond {
+public class PayLogCommand4AlipayAsyncMessage extends PayLogCommand {
 
     @Autowired
     private AlipayProperties alipayProperties;
