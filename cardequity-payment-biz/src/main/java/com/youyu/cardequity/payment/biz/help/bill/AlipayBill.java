@@ -100,7 +100,7 @@ public class AlipayBill implements Serializable {
      * 字段号12
      * 商家实收（元）
      */
-    private String MerchantsPaidIn;
+    private String merchantsPaidIn;
 
     /**
      * 字段号13
@@ -192,7 +192,7 @@ public class AlipayBill implements Serializable {
             this.terminalNo = trim(csvReader.get(9));
             this.buyAccount = trim(csvReader.get(10));
             this.orderAmount = trim(csvReader.get(11));
-            this.MerchantsPaidIn = trim(csvReader.get(12));
+            this.merchantsPaidIn = trim(csvReader.get(12));
             this.alipayRedEnvelope = trim(csvReader.get(13));
             this.setPointsTreasure = trim(csvReader.get(14));
             this.alipayPreferential = trim(csvReader.get(15));
