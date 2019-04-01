@@ -25,6 +25,7 @@ public class AlipayPayCheckFileDeatailTimerStrategy extends TimerStrategy {
     public void execute() {
         PayCheckFileDeatailDto payCheckFileDeatailDto = new PayCheckFileDeatailDto();
         payCheckFileDeatailDto.setChannelNo(PAY_CHANNEL_NO_ALIPAY);
+
         payCheckFileDeatailService.downloadBill(payCheckFileDeatailDto);
     }
 }
