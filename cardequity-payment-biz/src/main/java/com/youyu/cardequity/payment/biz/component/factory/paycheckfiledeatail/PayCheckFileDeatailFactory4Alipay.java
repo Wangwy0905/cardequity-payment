@@ -68,7 +68,7 @@ public class PayCheckFileDeatailFactory4Alipay extends PayCheckFileDeatailFactor
         String fileNameZip = filePath + payCheckFileDeatailDto.getBillDate() + DOT + ZIP;
         downloadAlipayBill(billDownloadUrl, fileNameZip);
 
-        unZip2File(fileNameZip, filePath, CHARSERT_UTF_8);
+        unZip2File(fileNameZip, filePath, CHARSERT_GBK);
 
         Tuple2<String, List<AlipayBill>> dataTuple2 = parseAlipayCsv2DataList(filePath, ALIPAY_BILL_FILE_NAME);
 
