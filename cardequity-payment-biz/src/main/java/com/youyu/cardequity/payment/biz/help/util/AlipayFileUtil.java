@@ -101,7 +101,7 @@ public class AlipayFileUtil {
         String fileNamePath = filePath + fileName;
         CsvReader csvReader = null;
         try {
-            csvReader = new CsvReader(fileNamePath, COMMA.charAt(0), forName(CHARSERT_GBK));
+            csvReader = new CsvReader(fileNamePath, COMMA.charAt(0), forName(CHARSERT_UTF_8));
             csvReader.readHeaders();
             while (csvReader.readRecord()) {
                 String record = csvReader.getRawRecord();
