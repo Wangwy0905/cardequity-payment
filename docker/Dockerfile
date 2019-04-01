@@ -1,4 +1,5 @@
-FROM registry.gs.youyuwo.com/base/docker-springboot-pinpoint:latest
+FROM registry.gs.youyuwo.com/base/docker-springboot-pinpoint:language-pack-zh
+#FROM registry.gs.youyuwo.com/base/docker-springboot-pinpoint:latest
 
 COPY cardequity-payment-biz/target/cardequity-payment-biz-0.0.1-SNAPSHOT.jar /app.jar
 
