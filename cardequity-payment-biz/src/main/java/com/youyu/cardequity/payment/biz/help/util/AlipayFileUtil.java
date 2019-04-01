@@ -46,7 +46,7 @@ public class AlipayFileUtil {
             httpUrlConnection.setDoOutput(true);
             httpUrlConnection.setUseCaches(false);
             httpUrlConnection.setRequestMethod("GET");
-            httpUrlConnection.setRequestProperty("Charsert", CHARSERT_GBK);
+            httpUrlConnection.setRequestProperty("Charsert", CHARSERT_UTF_8);
             httpUrlConnection.connect();
             inputStream = httpUrlConnection.getInputStream();
 
