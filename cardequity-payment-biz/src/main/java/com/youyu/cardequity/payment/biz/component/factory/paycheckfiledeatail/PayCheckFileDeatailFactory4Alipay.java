@@ -33,7 +33,6 @@ import static com.youyu.cardequity.payment.biz.help.util.AlipayFileUtil.download
 import static com.youyu.cardequity.payment.biz.help.util.AlipayFileUtil.parseAlipayCsv2DataList;
 import static com.youyu.cardequity.payment.biz.help.util.FileUtil.unZip2File;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_BILL_DOWNLOAD_FAILED;
-import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.ALIPAY_BILL_DOWNLOAD_URL_FAILED;
 import static java.io.File.separator;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
@@ -105,7 +104,7 @@ public class PayCheckFileDeatailFactory4Alipay extends PayCheckFileDeatailFactor
             boolean billFlag = alipayDataDataserviceBillDownloadurlQueryResponse.isSuccess();
             if (!billFlag) {
                 log.info("支付宝对账单根据参数:[{}]获取下载地址调用失败信息:[{}]!", toJSONString(payCheckFileDeatailDto), toJSONString(alipayDataDataserviceBillDownloadurlQueryResponse));
-                throw new BizException(ALIPAY_BILL_DOWNLOAD_URL_FAILED.getCode(), ALIPAY_BILL_DOWNLOAD_URL_FAILED.getFormatDesc(alipayDataDataserviceBillDownloadurlQueryResponse.getSubMsg()));
+//                throw new BizException(ALIPAY_BILL_DOWNLOAD_URL_FAILED.getCode(), ALIPAY_BILL_DOWNLOAD_URL_FAILED.getFormatDesc(alipayDataDataserviceBillDownloadurlQueryResponse.getSubMsg()));
             }
             String billDownloadUrl = alipayDataDataserviceBillDownloadurlQueryResponse.getBillDownloadUrl();
             log.info("支付宝对账单地址信息:[{}]", billDownloadUrl);
