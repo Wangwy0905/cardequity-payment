@@ -122,6 +122,7 @@ public class PayCheckFileDeatailFactory4Alipay extends PayCheckFileDeatailFactor
             billDate = date2String(addDays(now(), -1), YYYY_MM_DD);
             payCheckFileDeatailDto.setBillDate(billDate);
         }
+        log.info("下载支付宝对账单对账日期:[{}]" + billDate);
     }
 
     private AlipayDataDataserviceBillDownloadurlQueryRequest getAlipayDataDataserviceBillDownloadurlQueryRequest(PayCheckFileDeatailDto payCheckFileDeatailDto) {
