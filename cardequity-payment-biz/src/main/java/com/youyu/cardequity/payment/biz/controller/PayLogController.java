@@ -47,7 +47,7 @@ public class PayLogController implements PayLogApi {
     @Override
     @PostMapping(value = "/alipayAsyncMessage")
     public String alipayAsyncMessage(@RequestBody Map<String, String> params2Map) {
-        return payLogService.alipayAsyncMessage(params2Map);
+        return payLogService.alipayAsyncMessage(params2Map, payLogService);
     }
 
     @Override

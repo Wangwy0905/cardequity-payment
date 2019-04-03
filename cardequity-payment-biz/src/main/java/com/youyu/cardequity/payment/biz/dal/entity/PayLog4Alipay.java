@@ -268,7 +268,7 @@ public class PayLog4Alipay extends PayLog {
         return true;
     }
 
-    private void sendMsg2Trade() {
+    public void sendMsg2Trade() {
         PayLogAsyncMessageDto payLogAsyncMessageDto = copyProperties(this, PayLogAsyncMessageDto.class);
         String message = toJSONString(payLogAsyncMessageDto);
         log.info("异步通知交易系统支付宝支付对应的支付流水号:[{}]和消息信息:[{}]", this.id, message);

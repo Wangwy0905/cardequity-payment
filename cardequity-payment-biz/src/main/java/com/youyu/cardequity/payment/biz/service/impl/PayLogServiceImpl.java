@@ -72,8 +72,7 @@ public class PayLogServiceImpl implements PayLogService {
     }
 
     @Override
-    @Transactional
-    public String alipayAsyncMessage(Map<String, String> params2Map) {
+    public String alipayAsyncMessage(Map<String, String> params2Map, PayLogService payLogService) {
         if (isEmpty(params2Map)) {
             return ALIPAY_ASYNC_RESPONSE_FAIL;
         }
@@ -84,7 +83,9 @@ public class PayLogServiceImpl implements PayLogService {
             return ALIPAY_ASYNC_RESPONSE_FAIL;
         }
 
-        String ourResponse2Alipay = payLog4Alipay.alipayAsyncMessage(params2Map);
+        String payLogId = payLog4Alipay.getId();
+        String ourResponse2Alipay = payLogService.doAlipayAsyncMessage(params2Map, payLogId);
+        payLogService.doSendAlipayAsyncMessage2Trade(payLogId);
         return ourResponse2Alipay;
     }
 
@@ -104,6 +105,20 @@ public class PayLogServiceImpl implements PayLogService {
         for (PayLog payLog : payLogs) {
             payLog.tradeQuery();
         }
+    }
+
+    @Override
+    @Transactional
+    public String doAlipayAsyncMessage(Map<String, String> params2Map, String payLogId) {
+        PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLogMapper.getById(payLogId);
+        String ourResponse2Alipay = payLog4Alipay.alipayAsyncMessage(params2Map);
+        return ourResponse2Alipay;
+    }
+
+    @Override
+    public void doSendAlipayAsyncMessage2Trade(String payLogId) {
+        PayLog4Alipay payLog4Alipay = (PayLog4Alipay) payLogMapper.getById(payLogId);
+        payLog4Alipay.sendMsg2Trade();
     }
 
     /**

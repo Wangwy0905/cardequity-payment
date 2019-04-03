@@ -36,9 +36,10 @@ public interface PayLogService {
      * 支付宝异步消息通知
      *
      * @param params2Map
+     * @param payLogService
      * @return
      */
-    String alipayAsyncMessage(Map<String, String> params2Map);
+    String alipayAsyncMessage(Map<String, String> params2Map, PayLogService payLogService);
 
     /**
      * 交易关闭
@@ -52,4 +53,20 @@ public interface PayLogService {
      * 定时任务查询交易
      */
     void timeTradeQuery();
+
+    /**
+     * 执行异步消息
+     *
+     * @param params2Map
+     * @param payLogId
+     * @return
+     */
+    String doAlipayAsyncMessage(Map<String, String> params2Map, String payLogId);
+
+    /**
+     * 发送异步消息通知交易系统
+     *
+     * @param payLogId
+     */
+    void doSendAlipayAsyncMessage2Trade(String payLogId);
 }
