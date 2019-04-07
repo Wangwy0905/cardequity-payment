@@ -144,7 +144,6 @@ public class PayLog4Alipay extends PayLog {
         if (matches(alipayTradeStatus, TRADE_SUCCESS.getCode(), TRADE_FINISHED.getCode())) {
             this.state = eq(alipayOurResponse, ALIPAY_ASYNC_RESPONSE_SUCC) ? state.paymentSucc() : state.paymentFail();
             this.routeVoIdFlag = state.isPaySucc() ? NORMAL.getCode() : this.routeVoIdFlag;
-            sendMsg2Trade();
         }
     }
 
@@ -269,9 +268,11 @@ public class PayLog4Alipay extends PayLog {
     }
 
     public void sendMsg2Trade() {
-        PayLogAsyncMessageDto payLogAsyncMessageDto = copyProperties(this, PayLogAsyncMessageDto.class);
-        String message = toJSONString(payLogAsyncMessageDto);
-        log.info("异步通知交易系统支付宝支付对应的支付流水号:[{}]和消息信息:[{}]", this.id, message);
-        getBeanByClass(RabbitmqSender.class).sendMessage(message, PAY_ASYNC_MESSAGE);
+        if (matches(alipayTradeStatus, TRADE_SUCCESS.getCode(), TRADE_FINISHED.getCode())) {
+            PayLogAsyncMessageDto payLogAsyncMessageDto = copyProperties(this, PayLogAsyncMessageDto.class);
+            String message = toJSONString(payLogAsyncMessageDto);
+            log.info("异步通知交易系统支付宝支付对应的支付流水号:[{}]和消息信息:[{}]", this.id, message);
+            getBeanByClass(RabbitmqSender.class).sendMessage(message, PAY_ASYNC_MESSAGE);
+        }
     }
 }
