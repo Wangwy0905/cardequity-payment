@@ -67,7 +67,8 @@ public class PayLogStrategy4Alipay extends PayLogStrategy {
 
     private AlipayTradeAppPayModel getAlipayTradeAppPayModel(PayLog4Alipay payLog4Alipay) {
         AlipayTradeAppPayModel alipayTradeAppPayModel = new AlipayTradeAppPayModel();
-        alipayTradeAppPayModel.setSubject(payLog4Alipay.getAlipaySubject());
+//        alipayTradeAppPayModel.setSubject(payLog4Alipay.getAlipaySubject());
+        alipayTradeAppPayModel.setSubject("有鱼商城收款");
         alipayTradeAppPayModel.setOutTradeNo(payLog4Alipay.getAppSheetSerialNo());
         if (isNoneBlank(payLog4Alipay.getAlipayTimeoutExpress())) {
             alipayTradeAppPayModel.setTimeoutExpress(payLog4Alipay.getAlipayTimeoutExpress());
