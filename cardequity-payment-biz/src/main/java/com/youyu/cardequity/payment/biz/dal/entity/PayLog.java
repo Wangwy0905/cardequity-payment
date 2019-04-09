@@ -17,8 +17,10 @@ import java.time.LocalDate;
 
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.StatusAndStrategyNumUtil.getNumber;
+import static com.youyu.cardequity.common.base.util.StringUtil.eq;
 import static com.youyu.cardequity.common.base.util.UuidUtil.uuid4NoRail;
 import static com.youyu.cardequity.payment.biz.enums.AlipayDayCutEnum.getAlipayDayCutEnumByTime;
+import static com.youyu.cardequity.payment.biz.enums.RouteVoIdFlagEnum.NORMAL;
 
 /**
  * @author panqingqing
@@ -241,6 +243,10 @@ public class PayLog extends BaseEntity<String> {
 
     public void callPay() {
         this.state = state.paymenting();
+    }
+
+    public boolean isValidRoute() {
+        return eq(routeVoIdFlag, NORMAL.getCode());
     }
 
     @Override
