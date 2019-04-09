@@ -103,7 +103,9 @@ public class PayLogServiceImpl implements PayLogService {
     public void timeTradeQuery() {
         List<PayLog> payLogs = payLogMapper.getByTimeTradeQuery(alipayProperties.getAsyncNotifyThresholdStart(), alipayProperties.getAsyncNotifyThresholdEnd());
         for (PayLog payLog : payLogs) {
-            payLog.tradeQuery();
+            if (payLog.isValidRoute()) {
+                payLog.tradeQuery();
+            }
         }
     }
 
