@@ -29,7 +29,7 @@ public class SqlQueryEngineServiceImpl implements SqlQueryEngineService {
     private SqlQueryEngineMapper sqlQueryEngineMapper;
 
     @Override
-    public SqlQueryEngineResponseDto getRealSql(Map<String, String> paramMap) {
+    public SqlQueryEngineResponseDto getSqlQueryEngine(Map<String, String> paramMap) {
         checkParamMap(paramMap);
 
         String serviceFlag = paramMap.get(SERVICE_FLAG);

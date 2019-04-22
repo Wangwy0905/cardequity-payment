@@ -25,7 +25,7 @@ public class SqlQueryEngineParseStrategy4Simple extends SqlQueryEngineParseStrat
 
     @Override
     public String parse(SqlQueryEngine sqlQueryEngine, Map<String, String> paramMap) {
-        String sqlTemplate = sqlQueryEngine.getSqlTemplate();
+        String sqlTemplate = replacePattern(sqlQueryEngine.getSqlTemplate(), "\t|\n", " ");
 
         List<String> conditionTemplates = sqlQueryEngine.getSqlWhereConditionTemplate();
         if (isEmpty(conditionTemplates)) {
@@ -33,10 +33,13 @@ public class SqlQueryEngineParseStrategy4Simple extends SqlQueryEngineParseStrat
         }
 
         List<String> validConditionTemplates = getValidConditionTemplates(paramMap, conditionTemplates);
-        if (isEmpty(conditionTemplates)) {
+        if (isEmpty(validConditionTemplates)) {
             return sqlTemplate;
         }
-        String sql = join(sqlTemplate, " where ", join(validConditionTemplates, " ,"));
+
+        String join = join(validConditionTemplates, " ,");
+
+        String sql = join(sqlTemplate, " where 1 = 1 ", join(validConditionTemplates, " ,"));
         return parseString4Map(sql, paramMap);
     }
 
