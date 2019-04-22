@@ -45,7 +45,10 @@ public enum PaymentResultCodeEnum implements CardequityIBaseResultCode {
     ALIPAY_BILL_DOWNLOAD_FAILED("0016", "支付宝对账单下载失败!"),
     ALIPAY_BILL_DOWNLOAD_URL_FAILED("0017", "支付宝对账单获取下载地址错误信息:{0}!"),
     ALIPAY_DAY_CUT_CANNOT_NULL("0018", "获取支付宝日切参数对应的时间不能为null!"),
-    ALIPAY_SYNC_MESSAGE_ABNORMAL("0019", "获取支付宝支付同步消息异常!");
+    ALIPAY_SYNC_MESSAGE_ABNORMAL("0019", "获取支付宝支付同步消息异常!"),
+    QUERY_SQL_ENGINE_EXCEPTION("0020", "查询sql引擎异常!"),
+    QUERY_SQL_SERVICE_FLAG_NOT_NULL("0021", "查询sql服务标志不能为空!"),
+    QUERY_SQL_CODE_NOT_NULL("0022", "查询sql服务编码不能为空!");
 
     private String code;
 

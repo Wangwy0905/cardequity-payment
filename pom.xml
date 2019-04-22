@@ -31,6 +31,7 @@
         <alipay.sdk.java.version>3.3.2</alipay.sdk.java.version>
         <commons.logging.version>1.1.1</commons.logging.version>
         <javacsv.version>2.0</javacsv.version>
+        <freemarker.version>2.3.23</freemarker.version>
     </properties>
 
     <dependencyManagement>
@@ -78,6 +79,12 @@
                 <groupId>net.sourceforge.javacsv</groupId>
                 <artifactId>javacsv</artifactId>
                 <version>${javacsv.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
             </dependency>
 
         </dependencies>

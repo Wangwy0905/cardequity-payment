@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyu.cardequity.payment.biz.dal.dao.SqlQueryEngineMapper">
+
+    <resultMap id="BaseResultMap" type="com.youyu.cardequity.payment.biz.dal.entity.SqlQueryEngine">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="SERVICE_FLAG" jdbcType="VARCHAR" property="serviceFlag"/>
+        <result column="CODE" jdbcType="VARCHAR" property="code"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="INIT_SQL" jdbcType="VARCHAR" property="initSql"/>
+        <result column="SQL_TEMPLATE" jdbcType="VARCHAR" property="sqlTemplate"/>
+        <result column="SQL_WHERE_CONDITION_TEMPLATE" jdbcType="VARCHAR" property="sqlWhereConditionTemplate"/>
+        <result column="SQL_HAVING_CONDITION_TEMPLATE" jdbcType="VARCHAR" property="sqlHavingConditionTemplate"/>
+        <result column="PARSE_TYPE" jdbcType="VARCHAR" property="parseType"/>
+        <result column="DTO_NAME" jdbcType="VARCHAR" property="dtoName"/>
+
+        <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
+        <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, SERVICE_FLAG, CODE, NAME, REMARK, INIT_SQL, SQL_TEMPLATE, SQL_WHERE_CONDITION_TEMPLATE, SQL_HAVING_CONDITION_TEMPLATE,
+        PARSE_TYPE, DTO_NAME, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getByServiceFlagCode" resultType="com.youyu.cardequity.payment.biz.dal.entity.SqlQueryEngine">
+        select <include refid="Base_Column_List" />
+        from TB_SQL_QUERY_ENGINE
+        <where>
+            <if test="serviceFlag != null">
+                SERVICE_FLAG = #{serviceFlag,jdbcType=VARCHAR}
+            </if>
+            <if test="code != null">
+                and CODE = #{code,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+</mapper>

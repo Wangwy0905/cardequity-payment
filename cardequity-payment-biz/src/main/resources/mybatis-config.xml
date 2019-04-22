@@ -81,6 +81,9 @@
         <typeHandler handler="com.youyu.cardequity.payment.biz.help.handler.PayTradeRefundStatusTypeHandler"
                      javaType="com.youyu.cardequity.payment.biz.component.status.paytraderefund.PayTradeRefundStatus"/>
 
+        <typeHandler handler="com.youyu.cardequity.common.orm.mybatis.handler.String2ListTypeHandler"
+                     javaType="java.util.List"/>
+
     </typeHandlers>
 
 </configuration>

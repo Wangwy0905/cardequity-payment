@@ -3,6 +3,7 @@ package com.youyu.cardequity.payment.biz;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author panqingqing
@@ -11,7 +12,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * @work 支付系统基础应用启动类
  */
 @SpringCloudApplication
-@MapperScan("com.youyu.cardequity.payment.biz.dal.dao")
+@MapperScan({"com.youyu.cardequity.payment.biz.dal.dao", "com.youyu.cardequity.common.orm.mybatis.mapper"})
 public class CardequityPaymentApplication {
 
     /**
