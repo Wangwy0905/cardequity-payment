@@ -39,6 +39,8 @@ public class SqlQueryEngine extends BaseEntity<String> {
 
     private List<String> sqlHavingConditionTemplate;
 
+    private String sortCondition;
+
     private String parseType;
 
     private String dtoName;
