@@ -14,7 +14,6 @@ import static com.youyu.cardequity.payment.biz.help.constant.SqlQueryConstant.CO
 import static com.youyu.cardequity.payment.biz.help.constant.SqlQueryConstant.SERVICE_FLAG;
 import static com.youyu.cardequity.payment.enums.PaymentResultCodeEnum.*;
 import static java.util.Objects.isNull;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * @author panqingqing
@@ -29,11 +28,11 @@ public class SqlQueryEngineServiceImpl implements SqlQueryEngineService {
     private SqlQueryEngineMapper sqlQueryEngineMapper;
 
     @Override
-    public SqlQueryEngineResponseDto getSqlQueryEngine(Map<String, String> paramMap) {
+    public SqlQueryEngineResponseDto getSqlQueryEngine(Map<String, Object> paramMap) {
         checkParamMap(paramMap);
 
-        String serviceFlag = paramMap.get(SERVICE_FLAG);
-        String code = paramMap.get(CODE);
+        String serviceFlag = (String) paramMap.get(SERVICE_FLAG);
+        String code = (String) paramMap.get(CODE);
         SqlQueryEngine sqlQueryEngine = sqlQueryEngineMapper.getByServiceFlagCode(serviceFlag, code);
         if (isNull(sqlQueryEngine)) {
             throw new BizException(QUERY_SQL_ENGINE_EXCEPTION);
@@ -42,12 +41,12 @@ public class SqlQueryEngineServiceImpl implements SqlQueryEngineService {
         return sqlQueryEngine.getSqlQueryEngineResponse(paramMap);
     }
 
-    private void checkParamMap(Map<String, String> paramMap) {
-        if (isBlank(paramMap.get(SERVICE_FLAG))) {
+    private void checkParamMap(Map<String, Object> paramMap) {
+        if (isNull(paramMap.get(SERVICE_FLAG))) {
             throw new BizException(QUERY_SQL_SERVICE_FLAG_NOT_NULL);
         }
 
-        if (isBlank(paramMap.get(CODE))) {
+        if (isNull(paramMap.get(CODE))) {
             throw new BizException(QUERY_SQL_CODE_NOT_NULL);
         }
     }

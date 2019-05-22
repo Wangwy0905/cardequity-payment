@@ -30,5 +30,5 @@ public interface SqlQueryEngineApi {
      */
     @ApiOperation(value = "sql查询")
     @PostMapping("/getSqlQueryEngine")
-    Result<SqlQueryEngineResponseDto> getSqlQueryEngine(@RequestBody Map<String, String> paramMap);
+    Result<SqlQueryEngineResponseDto> getSqlQueryEngine(@RequestBody Map<String, Object> paramMap);
 }

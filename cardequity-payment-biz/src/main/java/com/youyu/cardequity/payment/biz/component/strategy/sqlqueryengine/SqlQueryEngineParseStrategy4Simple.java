@@ -24,7 +24,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 public class SqlQueryEngineParseStrategy4Simple extends SqlQueryEngineParseStrategy {
 
     @Override
-    public String parse(SqlQueryEngine sqlQueryEngine, Map<String, String> paramMap) {
+    public String parse(SqlQueryEngine sqlQueryEngine, Map<String, Object> paramMap) {
         String sqlTemplate = replacePattern(sqlQueryEngine.getSqlTemplate(), "\t|\n", " ");
 
         List<String> conditionTemplates = sqlQueryEngine.getSqlWhereConditionTemplate();
@@ -41,7 +41,7 @@ public class SqlQueryEngineParseStrategy4Simple extends SqlQueryEngineParseStrat
         return join(parseString4Map(sql, paramMap), " ", sqlQueryEngine.getSortCondition());
     }
 
-    private List<String> getValidConditionTemplates(Map<String, String> paramMap, List<String> conditionTemplates) {
+    private List<String> getValidConditionTemplates(Map<String, Object> paramMap, List<String> conditionTemplates) {
         List<String> validConditionTemplates = new ArrayList<>();
         for (String conditionTemplate : conditionTemplates) {
             int start = indexOf(conditionTemplate, "{") + 1;

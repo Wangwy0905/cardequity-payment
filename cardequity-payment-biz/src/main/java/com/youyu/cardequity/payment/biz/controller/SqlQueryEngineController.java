@@ -29,7 +29,7 @@ public class SqlQueryEngineController implements SqlQueryEngineApi {
 
     @Override
     @PostMapping("/getSqlQueryEngine")
-    public Result<SqlQueryEngineResponseDto> getSqlQueryEngine(@RequestBody Map<String, String> paramMap) {
+    public Result<SqlQueryEngineResponseDto> getSqlQueryEngine(@RequestBody Map<String, Object> paramMap) {
         return ok(sqlQueryEngineService.getSqlQueryEngine(paramMap));
     }
 }

@@ -18,5 +18,5 @@ public interface SqlQueryEngineService {
      * @param paramMap
      * @return
      */
-    SqlQueryEngineResponseDto getSqlQueryEngine(Map<String, String> paramMap);
+    SqlQueryEngineResponseDto getSqlQueryEngine(Map<String, Object> paramMap);
 }

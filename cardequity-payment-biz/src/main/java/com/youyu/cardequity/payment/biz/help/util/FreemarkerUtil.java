@@ -29,7 +29,7 @@ public class FreemarkerUtil {
      * @param params
      * @return
      */
-    public static String parseString4Map(String param, Map<String, String> params) {
+    public static String parseString4Map(String param, Map<String, Object> params) {
         StringTemplateLoader stringTemplateLoader = new StringTemplateLoader();
         stringTemplateLoader.putTemplate(STRING_TEMPLATE, param);
         configuration.setTemplateLoader(stringTemplateLoader);

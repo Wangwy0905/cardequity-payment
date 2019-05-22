@@ -19,5 +19,5 @@ public abstract class SqlQueryEngineParseStrategy {
      * @param paramMap
      * @return
      */
-    public abstract String parse(SqlQueryEngine sqlQueryEngine, Map<String, String> paramMap);
+    public abstract String parse(SqlQueryEngine sqlQueryEngine, Map<String, Object> paramMap);
 }

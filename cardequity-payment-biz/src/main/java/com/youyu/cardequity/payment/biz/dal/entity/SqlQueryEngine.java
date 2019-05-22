@@ -48,7 +48,7 @@ public class SqlQueryEngine extends BaseEntity<String> {
     public SqlQueryEngine() {
     }
 
-    public SqlQueryEngineResponseDto getSqlQueryEngineResponse(Map<String, String> paramMap) {
+    public SqlQueryEngineResponseDto getSqlQueryEngineResponse(Map<String, Object> paramMap) {
         SqlQueryEngineResponseDto sqlQueryEngineResponse = new SqlQueryEngineResponseDto();
         String realSql = getRealSql(paramMap);
         sqlQueryEngineResponse.setRealSql(realSql);
@@ -56,7 +56,7 @@ public class SqlQueryEngine extends BaseEntity<String> {
         return sqlQueryEngineResponse;
     }
 
-    private String getRealSql(Map<String, String> paramMap) {
+    private String getRealSql(Map<String, Object> paramMap) {
         SqlQueryEngineParseStrategy sqlQueryEngineStrategy = getBeanInstance(SqlQueryEngineParseStrategy.class, parseType);
         return sqlQueryEngineStrategy.parse(this, paramMap);
     }
