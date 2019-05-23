@@ -17,6 +17,7 @@
         <result column="PARSE_TYPE" jdbcType="VARCHAR" property="parseType"/>
         <result column="DTO_NAME" jdbcType="VARCHAR" property="dtoName"/>
         <result column="SORT_CONDITION" jdbcType="VARCHAR" property="sortCondition"/>
+        <result column="SQL_WHERE_REQUIRE_CONDITION_TEMPLATE" jdbcType="VARCHAR" property="sqlWhereRequireConditionTemplate"/>
 
         <result column="CREATE_AUTHOR" jdbcType="VARCHAR" property="createAuthor"/>
         <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
@@ -26,7 +27,7 @@
 
     <sql id="Base_Column_List">
         ID, SERVICE_FLAG, CODE, NAME, REMARK, INIT_SQL, SQL_TEMPLATE, SQL_WHERE_CONDITION_TEMPLATE, SQL_HAVING_CONDITION_TEMPLATE,
-        PARSE_TYPE, DTO_NAME, SORT_CONDITION, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME
+        PARSE_TYPE, DTO_NAME, SORT_CONDITION, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME, SQL_WHERE_REQUIRE_CONDITION_TEMPLATE
     </sql>
 
     <select id="getByServiceFlagCode" resultType="com.youyu.cardequity.payment.biz.dal.entity.SqlQueryEngine">

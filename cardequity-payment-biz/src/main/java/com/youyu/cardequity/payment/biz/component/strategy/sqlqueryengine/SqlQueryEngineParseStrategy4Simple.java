@@ -37,7 +37,7 @@ public class SqlQueryEngineParseStrategy4Simple extends SqlQueryEngineParseStrat
             return sqlTemplate;
         }
 
-        String sql = join(sqlTemplate, " where 1 = 1 ", join(validConditionTemplates, " "));
+        String sql = join(sqlTemplate, " where 1 = 1 ", join(validConditionTemplates, " "), join(sqlQueryEngine.getSqlWhereRequireConditionTemplate(), " "));
         return join(parseString4Map(sql, paramMap), " ", sqlQueryEngine.getSortCondition());
     }
 
