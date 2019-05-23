@@ -108,6 +108,12 @@ public class PayTradeRefund extends BaseEntity<String> {
     @Column(name = "CHANNEL_NO")
     protected String channelNo;
 
+    /**
+     * 业务代码:
+     */
+    @Column(name = "BUSIN_CODE")
+    protected String businCode;
+
     public PayTradeRefund() {
         this.id = uuid4NoRail();
     }
@@ -123,6 +129,7 @@ public class PayTradeRefund extends BaseEntity<String> {
         this.clientId = payLog.getClientId();
         this.clientName = payLog.getClientName();
         this.channelNo = payLog.getPayChannelNo();
+        this.businCode = tradeRefundApplyDto.getBusinCode();
     }
 
     public void getTradeRefund(PayLog payLog) {

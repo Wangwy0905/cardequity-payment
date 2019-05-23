@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static com.youyu.cardequity.common.base.bean.CustomHandler.getBeanByClass;
 import static com.youyu.cardequity.common.base.util.StatusAndStrategyNumUtil.getNumber;
@@ -179,6 +180,12 @@ public class PayLog extends BaseEntity<String> {
     @Column(name = "TRADE_CLOSE_FLAG")
     protected Boolean tradeCloseFlag;
 
+    /**
+     * 支付时间
+     */
+    @Column(name = "PAY_TIME")
+    protected LocalDateTime payTime;
+
     public PayLog() {
         this.id = uuid4NoRail();
     }
@@ -199,6 +206,7 @@ public class PayLog extends BaseEntity<String> {
         this.businCode = payLogDto.getBusinCode();
         this.routeVoIdFlag = "0";
         this.tradeCloseFlag = false;
+        this.payTime = LocalDateTime.now();
     }
 
     public void tradeClose(TradeCloseDto tradeCloseDto) {

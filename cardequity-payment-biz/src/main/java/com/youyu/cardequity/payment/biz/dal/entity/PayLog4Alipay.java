@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.persistence.Column;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
@@ -144,6 +145,7 @@ public class PayLog4Alipay extends PayLog {
         if (matches(alipayTradeStatus, TRADE_SUCCESS.getCode(), TRADE_FINISHED.getCode())) {
             this.state = eq(alipayOurResponse, ALIPAY_ASYNC_RESPONSE_SUCC) ? state.paymentSucc() : state.paymentFail();
             this.routeVoIdFlag = state.isPaySucc() ? NORMAL.getCode() : this.routeVoIdFlag;
+            this.payTime = LocalDateTime.now();
         }
     }
 

@@ -37,4 +37,7 @@ public class PayTradeRefundDto extends BaseDto<String> {
     @ApiModelProperty(value = "退款原因")
     private String refundReason;
 
+    @ApiModelProperty(value = "业务代码")
+    protected String businCode;
+
 }

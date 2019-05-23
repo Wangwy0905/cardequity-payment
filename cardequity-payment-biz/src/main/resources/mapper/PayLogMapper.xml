@@ -33,6 +33,7 @@
         <result column="UPDATE_AUTHOR" jdbcType="VARCHAR" property="updateAuthor"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="PAY_TIME" jdbcType="TIMESTAMP" property="payTime"/>
 
         <discriminator javaType="java.lang.String" column="TYPE">
             <case value="1" resultType="com.youyu.cardequity.payment.biz.dal.entity.PayLog4Alipay">
@@ -52,7 +53,7 @@
     <sql id="Base_Column_List">
     ID, INIT_DATE, TRANS_ACTION_DATE, APP_SHEET_SERIAL_NO, BUSIN_CODE, BATCH_NO, CLIENT_ID, TRANS_ACCOUNT_ID, CLIENT_NAME,
     BANK_CODE, BANK_CARD_NO, STATE, OCCUR_BALANCE, PAY_CHANNEL_NO, CERTIFICATE_TYPE, CERTIFICATE_NO, REMARK, PAY_SERIAL_NO,
-    THIRD_SERIAL_NO, RESP_CODE, RESP_INFO, ROUTE_VO_ID_FLAG, TRADE_CLOSE_FLAG, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME, TYPE
+    THIRD_SERIAL_NO, RESP_CODE, RESP_INFO, ROUTE_VO_ID_FLAG, TRADE_CLOSE_FLAG, CREATE_AUTHOR, UPDATE_AUTHOR, CREATE_TIME, UPDATE_TIME, PAY_TIME, TYPE
     </sql>
 
     <sql id="Base_Column_List_ALIPAY">
@@ -149,6 +150,9 @@
             </if>
             <if test="type != null">
                 TYPE,
+            </if>
+            <if test="payTime != null">
+                PAY_TIME,
             </if>
             <if test="alipaySubject != null">
                 ALIPAY_SUBJECT,
@@ -260,6 +264,9 @@
             <if test="type != null">
                 #{type,jdbcType=VARCHAR},
             </if>
+            <if test="payTime != null">
+                #{payTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="alipaySubject != null">
                 #{alipaySubject,jdbcType=VARCHAR},
             </if>
@@ -333,6 +340,9 @@
             </if>
             <if test="routeVoIdFlag != null">
                 ROUTE_VO_ID_FLAG = #{routeVoIdFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="payTime != null">
+                PAY_TIME = #{payTime,jdbcType=TIMESTAMP},
             </if>
         </set>
         where ID = #{id,jdbcType=VARCHAR}
